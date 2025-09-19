@@ -1,0 +1,893 @@
+#!/usr/bin/env node
+import express from 'express';
+import { WebSocketServer } from 'ws';
+import http from 'node:http';
+import path from 'node:path';
+import fs from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
+import { generateDomainVariants } from './lib/variants.js';
+import { checkDomains } from './lib/check.js';
+import { runVisualAndContentComparison } from './lib/monitor.js';
+import { runSocialMonitoring } from './lib/social-monitor.js';
+import { monitorMobileApps } from './lib/mobile-monitor.js';
+import { runDarkWebMonitoring } from './lib/darkweb-monitor.js';
+import { batchThreatIntelligence } from './lib/threat-intel.js';
+import { runCryptoMonitoring } from './lib/crypto-monitor.js';
+import { runLegalAutomation } from './lib/legal-automation.js';
+import { searchCTLogs } from './lib/ct-logs.js';
+import { generateSequenceDomains, parsePattern } from './lib/sequence.js';
+import {
+  monitorAffiliateLinks,
+  verifyGamingLicenses,
+  analyzePaymentMethods,
+  verifyGameProviders,
+  checkResponsibleGaming,
+  detectBonusAbuse,
+  checkGeoCompliance,
+  detectOddsManipulation,
+  analyzeCustomerSupport,
+  analyzeGamingSecurity,
+  generateDMCARequests,
+  generateComprehensivePDFReport,
+  analyzeWebsiteInDepth
+} from './lib/igaming-tools.js';
+import {
+  analyzePlayerBehavior,
+  manageTournaments,
+  manageLiveDealers,
+  manageVipPlayers,
+  analyzeGamePerformance,
+  detectFraud,
+  analyzeMarketingCampaigns,
+  monitorCompliance
+} from './lib/igaming-advanced-tools.js';
+import {
+  performRiskAssessment,
+  performKYCVerification,
+  performAMLMonitoring,
+  monitorTransactions,
+  manageLoyaltyPrograms,
+  analyzeChargebackPrevention,
+  verifyGameFairness,
+  performPlayerSegmentation
+} from './lib/igaming-professional-tools.js';
+import 'dotenv/config';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+interface ScanJob {
+  id: string;
+  brand: string;
+  baseUrl: string;
+  features: string[];
+  status: 'pending' | 'running' | 'completed' | 'failed';
+  progress: number;
+  startedAt: string;
+  completedAt?: string;
+  results: any;
+  summary: {
+    totalDomains: number;
+    activeDomains: number;
+    clones: number;
+    highRisk: number;
+  };
+}
+
+class BrandProtectionWebServer {
+  private app: express.Application;
+  private server: http.Server;
+  private wss: WebSocketServer;
+  private scans: Map<string, ScanJob> = new Map();
+  private port: number;
+
+  constructor(port = 3000) {
+    this.port = port;
+    this.app = express();
+    this.server = http.createServer(this.app);
+    this.wss = new WebSocketServer({ server: this.server });
+    
+    this.setupMiddleware();
+    this.setupRoutes();
+    this.setupWebSocket();
+  }
+
+  private setupMiddleware(): void {
+    this.app.use(express.json());
+    
+    // Add cache-busting headers for development
+    this.app.use((req, res, next) => {
+      if (req.url.includes('/assets/')) {
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
+      }
+      next();
+    });
+    
+    this.app.use(express.static(path.join(__dirname, '../dist/frontend')));
+  }
+
+  private setupRoutes(): void {
+    // API Routes
+    this.app.post('/api/scan/start', async (req, res) => {
+      try {
+        const { brand, baseUrl, features, sequence, range, ctDays, logoUrl } = req.body;
+        
+        if (!brand || !baseUrl || !features?.length) {
+          return res.status(400).json({ error: 'Missing required fields' });
+        }
+
+        const scanId = `scan_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        const scan: ScanJob = {
+          id: scanId,
+          brand,
+          baseUrl,
+          features,
+          status: 'pending',
+          progress: 0,
+          startedAt: new Date().toISOString(),
+          results: {
+            domains: [],
+            threats: [],
+            mobile: [],
+            crypto: [],
+            darkweb: [],
+            social: []
+          },
+          summary: {
+            totalDomains: 0,
+            activeDomains: 0,
+            clones: 0,
+            highRisk: 0
+          }
+        };
+
+        this.scans.set(scanId, scan);
+        
+        // Start scan in background
+        this.runScan(scanId, { brand, baseUrl, features, sequence, range, ctDays, logoUrl });
+        
+        res.json({ scanId, status: 'started' });
+      } catch (error) {
+        console.error('Failed to start scan:', error);
+        res.status(500).json({ error: 'Failed to start scan' });
+      }
+    });
+
+    this.app.get('/api/scan/:scanId', (req, res) => {
+      const scan = this.scans.get(req.params.scanId);
+      if (!scan) {
+        return res.status(404).json({ error: 'Scan not found' });
+      }
+      res.json(scan);
+    });
+
+    this.app.get('/api/scans', (req, res) => {
+      const scans = Array.from(this.scans.values()).map(scan => ({
+        id: scan.id,
+        brand: scan.brand,
+        status: scan.status,
+        progress: scan.progress,
+        startedAt: scan.startedAt,
+        completedAt: scan.completedAt
+      }));
+      res.json(scans);
+    });
+
+    this.app.get('/api/scan/:scanId/export', async (req, res) => {
+      try {
+        const scan = this.scans.get(req.params.scanId);
+        if (!scan) {
+          return res.status(404).json({ error: 'Scan not found' });
+        }
+
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        const filename = `${scan.brand}-protection-report-${timestamp}.pdf`;
+        
+        // Generate professional PDF report for iGaming companies
+        const { generateIGamingPdfReport } = await import('./lib/igaming-report.js');
+        
+        const reportData = {
+          brand: scan.brand,
+          baseUrl: scan.baseUrl,
+          scanId: scan.id,
+          timestamp: new Date().toISOString(),
+          summary: scan.summary,
+          domains: scan.results.domains || [],
+          threats: scan.results.threats || [],
+          mobile: scan.results.mobile || [],
+          crypto: scan.results.crypto || [],
+          darkweb: scan.results.darkweb || [],
+          social: scan.results.social || []
+        };
+
+        const pdfPath = await generateIGamingPdfReport(reportData, `./temp-reports/${filename}`);
+        
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+        res.sendFile(path.resolve(pdfPath));
+        
+        // Clean up temp file after sending
+        setTimeout(() => {
+          import('node:fs/promises').then(fs => fs.unlink(pdfPath).catch(() => {}));
+        }, 5000);
+        
+      } catch (error) {
+        console.error('PDF export failed:', error);
+        res.status(500).json({ error: 'PDF export failed' });
+      }
+    });
+
+    this.app.get('/api/metrics', (req, res) => {
+      const allScans = Array.from(this.scans.values());
+      const metrics = {
+        totalScans: allScans.length,
+        activeThreats: allScans.reduce((sum, scan) => sum + scan.summary.highRisk, 0),
+        domainsMonitored: allScans.reduce((sum, scan) => sum + scan.summary.totalDomains, 0),
+        riskScore: allScans.length > 0 ? Math.round(
+          allScans.reduce((sum, scan) => sum + scan.summary.highRisk, 0) / allScans.length * 10
+        ) : 0
+      };
+      res.json(metrics);
+    });
+
+    // iGaming Tools API Endpoints
+    this.app.post('/api/igaming/affiliate-monitor', async (req, res) => {
+      try {
+        const { brand, officialAffiliateIds } = req.body;
+        const result = await monitorAffiliateLinks(brand, officialAffiliateIds);
+        res.json(result);
+      } catch (error) {
+        res.status(500).json({ error: 'Affiliate monitoring failed' });
+      }
+    });
+
+    this.app.post('/api/igaming/license-verify', async (req, res) => {
+      try {
+        const { domains } = req.body;
+        const result = await verifyGamingLicenses(domains);
+        res.json(result);
+      } catch (error) {
+        res.status(500).json({ error: 'License verification failed' });
+      }
+    });
+
+    this.app.post('/api/igaming/payment-analysis', async (req, res) => {
+      try {
+        const { domains } = req.body;
+        const result = await analyzePaymentMethods(domains);
+        res.json(result);
+      } catch (error) {
+        res.status(500).json({ error: 'Payment analysis failed' });
+      }
+    });
+
+    this.app.post('/api/igaming/game-providers', async (req, res) => {
+      try {
+        const { domains } = req.body;
+        const result = await verifyGameProviders(domains);
+        res.json(result);
+      } catch (error) {
+        res.status(500).json({ error: 'Game provider verification failed' });
+      }
+    });
+
+    this.app.post('/api/igaming/responsible-gaming', async (req, res) => {
+      try {
+        const { domains } = req.body;
+        const result = await checkResponsibleGaming(domains);
+        res.json(result);
+      } catch (error) {
+        res.status(500).json({ error: 'Responsible gaming check failed' });
+      }
+    });
+
+    this.app.post('/api/igaming/bonus-abuse', async (req, res) => {
+      try {
+        const { brand } = req.body;
+        const result = await detectBonusAbuse(brand);
+        res.json(result);
+      } catch (error) {
+        res.status(500).json({ error: 'Bonus abuse detection failed' });
+      }
+    });
+
+    this.app.post('/api/igaming/geo-compliance', async (req, res) => {
+      try {
+        const { domains, restrictedRegions } = req.body;
+        const result = await checkGeoCompliance(domains, restrictedRegions);
+        res.json(result);
+      } catch (error) {
+        res.status(500).json({ error: 'Geo-compliance check failed' });
+      }
+    });
+
+    this.app.post('/api/igaming/odds-manipulation', async (req, res) => {
+      try {
+        const { brand } = req.body;
+        const result = await detectOddsManipulation(brand);
+        res.json(result);
+      } catch (error) {
+        res.status(500).json({ error: 'Odds manipulation detection failed' });
+      }
+    });
+
+    this.app.post('/api/igaming/customer-support', async (req, res) => {
+      try {
+        const { domains } = req.body;
+        const result = await analyzeCustomerSupport(domains);
+        res.json(result);
+      } catch (error) {
+        res.status(500).json({ error: 'Customer support analysis failed' });
+      }
+    });
+
+    this.app.post('/api/igaming/security-analysis', async (req, res) => {
+      try {
+        const { domains } = req.body;
+        const result = await analyzeGamingSecurity(domains);
+        res.json(result);
+      } catch (error) {
+        res.status(500).json({ error: 'Security analysis failed' });
+      }
+    });
+
+    // DMCA Takedown System
+    this.app.post('/api/igaming/dmca-takedown', async (req, res) => {
+      try {
+        const { brand, affiliates } = req.body;
+        const result = await generateDMCARequests(affiliates, brand);
+        res.json(result);
+      } catch (error) {
+        res.status(500).json({ error: 'DMCA generation failed' });
+      }
+    });
+
+    // Enhanced PDF Export with DMCA and Affiliate Details
+    this.app.post('/api/igaming/export-comprehensive-pdf', async (req, res) => {
+      try {
+        const { brand, affiliateResults, dmcaResults } = req.body;
+        
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        const filename = `${brand}-comprehensive-affiliate-report-${timestamp}.pdf`;
+        const outputPath = path.join(__dirname, '../temp-reports', filename);
+        
+        // Ensure temp-reports directory exists
+        await fs.mkdir(path.dirname(outputPath), { recursive: true });
+        
+        const reportData = {
+          brand,
+          affiliates: affiliateResults?.affiliates || [],
+          playerTracking: affiliateResults?.playerTracking || [],
+          dmcaRequests: dmcaResults?.dmcaRequests || [],
+          summary: {
+            ...affiliateResults?.summary,
+            ...dmcaResults?.summary
+          }
+        };
+        
+        const pdfPath = await generateComprehensivePDFReport(reportData, outputPath);
+        
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+        res.sendFile(path.resolve(pdfPath));
+        
+        // Clean up temp file after sending
+        setTimeout(() => {
+          fs.unlink(pdfPath).catch(() => {});
+        }, 5000);
+        
+      } catch (error) {
+        console.error('Comprehensive PDF export failed:', error);
+        res.status(500).json({ error: 'PDF export failed' });
+      }
+    });
+
+    // Deep Website Analysis
+    this.app.post('/api/igaming/deep-website-analysis', async (req, res) => {
+      try {
+        const { url, brand } = req.body;
+        
+        if (!url || !brand) {
+          return res.status(400).json({ error: 'URL and brand are required' });
+        }
+        
+        console.log(`🔍 Starting deep analysis for ${url} (brand: ${brand})`);
+        const analysis = await analyzeWebsiteInDepth(url, brand);
+        
+        res.json(analysis);
+      } catch (error) {
+        console.error('Deep website analysis failed:', error);
+        res.status(500).json({ error: 'Website analysis failed' });
+      }
+    });
+
+    // Advanced iGaming Tools
+    
+    // Player Behavior Analytics
+    this.app.post('/api/igaming/player-behavior', async (req, res) => {
+      try {
+        const { playerId, timeframe } = req.body;
+        const result = await analyzePlayerBehavior(playerId, timeframe);
+        res.json(result);
+      } catch (error) {
+        console.error('Player behavior analysis failed:', error);
+        res.status(500).json({ error: 'Player behavior analysis failed' });
+      }
+    });
+
+    // Tournament Management
+    this.app.post('/api/igaming/tournaments', async (req, res) => {
+      try {
+        const { action, tournamentData } = req.body;
+        const result = await manageTournaments(action, tournamentData);
+        res.json(result);
+      } catch (error) {
+        console.error('Tournament management failed:', error);
+        res.status(500).json({ error: 'Tournament management failed' });
+      }
+    });
+
+    // Live Dealer Management
+    this.app.post('/api/igaming/live-dealers', async (req, res) => {
+      try {
+        const { action } = req.body;
+        const result = await manageLiveDealers(action);
+        res.json(result);
+      } catch (error) {
+        console.error('Live dealer management failed:', error);
+        res.status(500).json({ error: 'Live dealer management failed' });
+      }
+    });
+
+    // VIP Player Management
+    this.app.post('/api/igaming/vip-players', async (req, res) => {
+      try {
+        const { playerId } = req.body;
+        const result = await manageVipPlayers(playerId);
+        res.json(result);
+      } catch (error) {
+        console.error('VIP player management failed:', error);
+        res.status(500).json({ error: 'VIP player management failed' });
+      }
+    });
+
+    // Game Performance Analytics
+    this.app.post('/api/igaming/game-performance', async (req, res) => {
+      try {
+        const { gameId, timeframe } = req.body;
+        const result = await analyzeGamePerformance(gameId, timeframe);
+        res.json(result);
+      } catch (error) {
+        console.error('Game performance analysis failed:', error);
+        res.status(500).json({ error: 'Game performance analysis failed' });
+      }
+    });
+
+    // Fraud Detection
+    this.app.post('/api/igaming/fraud-detection', async (req, res) => {
+      try {
+        const { playerId, transactionId } = req.body;
+        const result = await detectFraud(playerId, transactionId);
+        res.json(result);
+      } catch (error) {
+        console.error('Fraud detection failed:', error);
+        res.status(500).json({ error: 'Fraud detection failed' });
+      }
+    });
+
+    // Marketing Campaign Analytics
+    this.app.post('/api/igaming/marketing-campaigns', async (req, res) => {
+      try {
+        const { campaignId } = req.body;
+        const result = await analyzeMarketingCampaigns(campaignId);
+        res.json(result);
+      } catch (error) {
+        console.error('Marketing campaign analysis failed:', error);
+        res.status(500).json({ error: 'Marketing campaign analysis failed' });
+      }
+    });
+
+    // Regulatory Compliance Monitor
+    this.app.post('/api/igaming/compliance-monitor', async (req, res) => {
+      try {
+        const { jurisdiction } = req.body;
+        const result = await monitorCompliance(jurisdiction);
+        res.json(result);
+      } catch (error) {
+        console.error('Compliance monitoring failed:', error);
+        res.status(500).json({ error: 'Compliance monitoring failed' });
+      }
+    });
+
+    // Professional iGaming Tools
+    
+    // Risk Assessment
+    this.app.post('/api/igaming/risk-assessment', async (req, res) => {
+      try {
+        const { playerId = `PLAYER_${Math.floor(Math.random() * 10000)}`, domains = [] } = req.body;
+        const result = await performRiskAssessment(playerId, domains);
+        res.json(result);
+      } catch (error) {
+        console.error('Risk assessment failed:', error);
+        res.status(500).json({ error: 'Risk assessment failed' });
+      }
+    });
+
+    // KYC Verification
+    this.app.post('/api/igaming/kyc-verification', async (req, res) => {
+      try {
+        const { playerId = `PLAYER_${Math.floor(Math.random() * 10000)}` } = req.body;
+        const result = await performKYCVerification(playerId);
+        res.json(result);
+      } catch (error) {
+        console.error('KYC verification failed:', error);
+        res.status(500).json({ error: 'KYC verification failed' });
+      }
+    });
+
+    // AML Monitoring
+    this.app.post('/api/igaming/aml-monitoring', async (req, res) => {
+      try {
+        const { playerId, timeframe = '30d' } = req.body;
+        const result = await performAMLMonitoring(playerId, timeframe);
+        res.json(result);
+      } catch (error) {
+        console.error('AML monitoring failed:', error);
+        res.status(500).json({ error: 'AML monitoring failed' });
+      }
+    });
+
+    // Transaction Monitoring
+    this.app.post('/api/igaming/transaction-monitoring', async (req, res) => {
+      try {
+        const { playerId, timeframe = '24h' } = req.body;
+        const result = await monitorTransactions(playerId, timeframe);
+        res.json(result);
+      } catch (error) {
+        console.error('Transaction monitoring failed:', error);
+        res.status(500).json({ error: 'Transaction monitoring failed' });
+      }
+    });
+
+    // Loyalty Programs
+    this.app.post('/api/igaming/loyalty-programs', async (req, res) => {
+      try {
+        const { action = 'list' } = req.body;
+        const result = await manageLoyaltyPrograms(action);
+        res.json(result);
+      } catch (error) {
+        console.error('Loyalty programs management failed:', error);
+        res.status(500).json({ error: 'Loyalty programs management failed' });
+      }
+    });
+
+    // Chargeback Prevention
+    this.app.post('/api/igaming/chargeback-prevention', async (req, res) => {
+      try {
+        const { timeframe = '30d' } = req.body;
+        const result = await analyzeChargebackPrevention(timeframe);
+        res.json(result);
+      } catch (error) {
+        console.error('Chargeback prevention analysis failed:', error);
+        res.status(500).json({ error: 'Chargeback prevention analysis failed' });
+      }
+    });
+
+    // Game Fairness
+    this.app.post('/api/igaming/game-fairness', async (req, res) => {
+      try {
+        const { gameId } = req.body;
+        const result = await verifyGameFairness(gameId);
+        res.json(result);
+      } catch (error) {
+        console.error('Game fairness verification failed:', error);
+        res.status(500).json({ error: 'Game fairness verification failed' });
+      }
+    });
+
+    // Player Segmentation
+    this.app.post('/api/igaming/player-segmentation', async (req, res) => {
+      try {
+        const { criteria = 'value' } = req.body;
+        const result = await performPlayerSegmentation(criteria);
+        res.json(result);
+      } catch (error) {
+        console.error('Player segmentation failed:', error);
+        res.status(500).json({ error: 'Player segmentation failed' });
+      }
+    });
+
+    // Serve React app for all other routes
+    this.app.get('*', (req, res) => {
+      res.sendFile(path.join(__dirname, '../dist/frontend/index.html'));
+    });
+  }
+
+  private setupWebSocket(): void {
+    this.wss.on('connection', (ws) => {
+      console.log('Client connected to WebSocket');
+      
+      ws.on('message', (message) => {
+        try {
+          const data = JSON.parse(message.toString());
+          console.log('WebSocket message:', data);
+        } catch (error) {
+          console.error('Invalid WebSocket message:', error);
+        }
+      });
+
+      ws.on('close', () => {
+        console.log('Client disconnected from WebSocket');
+      });
+    });
+  }
+
+  private broadcastUpdate(type: string, data: any): void {
+    const message = JSON.stringify({ type, data });
+    this.wss.clients.forEach(client => {
+      if (client.readyState === 1) {
+        client.send(message);
+      }
+    });
+  }
+
+  private updateScanProgress(scanId: string, progress: number, status?: string): void {
+    const scan = this.scans.get(scanId);
+    if (scan) {
+      scan.progress = progress;
+      if (status) scan.status = status as any;
+      
+      console.log(`[${scanId}] Broadcasting progress: ${progress}% - ${scan.status}`);
+      
+      this.broadcastUpdate('scan_progress', {
+        scanId,
+        progress,
+        status: scan.status,
+        summary: scan.summary,
+        results: scan.results
+      });
+    }
+  }
+
+  private async runScan(scanId: string, params: any): Promise<void> {
+    const scan = this.scans.get(scanId);
+    if (!scan) return;
+
+    try {
+      scan.status = 'running';
+      this.updateScanProgress(scanId, 5, 'running');
+
+      const { brand, baseUrl, features, sequence, range = 10, ctDays = 30, logoUrl } = params;
+      let allDomains: string[] = [];
+      let totalSteps = features.length;
+      let currentStep = 0;
+
+      // Step 1: Generate domain variants if typosquatting is enabled
+      if (features.includes('typosquatting')) {
+        console.log(`[${scanId}] Generating typosquatting variants...`);
+        const variants = generateDomainVariants(brand);
+        allDomains.push(...variants.map(v => v.domain));
+        
+        // Add sequence domains if provided
+        if (sequence) {
+          const seqDomains = generateSequenceDomains({ 
+            patternDomain: sequence, 
+            range: parseInt(range, 10), 
+            includeWWW: true 
+          });
+          allDomains.push(...seqDomains);
+        }
+
+        // Add CT log domains
+        try {
+          const ctDomains = await searchCTLogs(brand, parseInt(ctDays, 10));
+          allDomains.push(...ctDomains.map(d => d.domain));
+        } catch (e) {
+          console.warn('CT log search failed:', e);
+        }
+
+        scan.summary.totalDomains = allDomains.length;
+        currentStep++;
+        this.updateScanProgress(scanId, (currentStep / totalSteps) * 40);
+      }
+
+      // Step 2: Check domain registration status (optimized)
+      if (allDomains.length > 0) {
+        console.log(`[${scanId}] Checking ${allDomains.length} domains...`);
+        
+        // Limit domains for faster processing in web interface
+        const uniqueDomains = [...new Set(allDomains)];
+        const limitedDomains = uniqueDomains.slice(0, 500); // Limit to 500 for web interface speed
+        
+        console.log(`[${scanId}] Processing ${limitedDomains.length} domains (limited for web interface)...`);
+        
+        // Use higher concurrency for faster processing
+        const domainResults = await checkDomains(limitedDomains, 50);
+        const activeDomains = domainResults.filter(d => d.isRegistered || d.hasARecord);
+        
+        scan.results.domains = domainResults.map(d => ({
+          domain: d.domain,
+          reason: 'Generated variant',
+          isRegistered: d.isRegistered,
+          hasARecord: d.hasARecord,
+          hasMxRecord: d.hasMxRecord,
+          riskLevel: d.isRegistered && d.hasARecord ? 'medium' : 'low',
+          whois: {
+            registrar: d.whoisRegistrar,
+            creationDate: d.whoisCreationDate,
+            nameServers: d.whoisNameServers
+          }
+        }));
+
+        scan.summary.totalDomains = limitedDomains.length;
+        scan.summary.activeDomains = activeDomains.length;
+        this.updateScanProgress(scanId, 60);
+        
+        console.log(`[${scanId}] Found ${activeDomains.length} active domains out of ${limitedDomains.length} checked`);
+      }
+
+      // Step 3: Run additional features
+      const featureProgress = 60;
+      const progressPerFeature = 35 / features.length;
+      let currentProgress = featureProgress;
+
+      for (const feature of features) {
+        try {
+          switch (feature) {
+            case 'social-media':
+              console.log(`[${scanId}] Running social media monitoring...`);
+              const socialData = await runSocialMonitoring(brand);
+              scan.results.social = socialData.social;
+              break;
+
+            case 'mobile-apps':
+              console.log(`[${scanId}] Scanning mobile apps...`);
+              const mobileApps = await monitorMobileApps(brand, logoUrl);
+              scan.results.mobile = mobileApps;
+              break;
+
+            case 'crypto':
+              console.log(`[${scanId}] Scanning cryptocurrency threats...`);
+              const cryptoData = await runCryptoMonitoring(brand);
+              scan.results.crypto = cryptoData.threats;
+              break;
+
+            case 'dark-web':
+              console.log(`[${scanId}] Monitoring dark web...`);
+              const darkWebData = await runDarkWebMonitoring(brand);
+              scan.results.darkweb = darkWebData.threats;
+              break;
+
+            case 'threat-intel':
+              console.log(`[${scanId}] Running threat intelligence...`);
+              const registeredDomains = scan.results.domains
+                .filter((d: any) => d.isRegistered)
+                .map((d: any) => d.domain)
+                .slice(0, 20); // Limit for performance
+              if (registeredDomains.length > 0) {
+                const threats = await batchThreatIntelligence(registeredDomains);
+                scan.results.threats = threats;
+              }
+              break;
+
+            case 'visual-ai':
+              console.log(`[${scanId}] Running visual analysis...`);
+              // Visual analysis on top suspicious domains
+              const topDomains = scan.results.domains
+                .filter((d: any) => d.isRegistered && d.hasARecord)
+                .slice(0, 5);
+              
+              let cloneCount = 0;
+              for (const domain of topDomains) {
+                try {
+                  const result = await runVisualAndContentComparison(
+                    baseUrl,
+                    `http://${domain.domain}`,
+                    `./temp-scan-${scanId}`
+                  );
+                  
+                  domain.similarity = {
+                    visual: result.visual.diffRatio,
+                    dom: result.dom.tagCosine,
+                    text: result.text.hamming
+                  };
+
+                  // Check if it's a potential clone
+                  if (result.visual.diffRatio < 0.1 && 
+                      (result.dom.tagCosine > 0.8 || result.text.hamming < 16)) {
+                    domain.riskLevel = 'high';
+                    cloneCount++;
+                  }
+                } catch (e) {
+                  console.warn(`Visual analysis failed for ${domain.domain}:`, e);
+                }
+              }
+              scan.summary.clones = cloneCount;
+              break;
+
+            case 'legal':
+              console.log(`[${scanId}] Preparing legal documentation...`);
+              const highRiskDomains = scan.results.domains
+                .filter((d: any) => d.riskLevel === 'high')
+                .map((d: any) => d.domain);
+              
+              if (highRiskDomains.length > 0) {
+                try {
+                  await runLegalAutomation(highRiskDomains, brand, `./temp-scan-${scanId}`);
+                } catch (e) {
+                  console.warn('Legal automation failed:', e);
+                }
+              }
+              break;
+          }
+
+          currentProgress += progressPerFeature;
+          this.updateScanProgress(scanId, Math.min(currentProgress, 95));
+          console.log(`[${scanId}] Completed feature: ${feature} (${Math.round(currentProgress)}%)`);
+        } catch (error) {
+          console.error(`[${scanId}] Feature ${feature} failed:`, error);
+          currentProgress += progressPerFeature; // Still increment progress even if feature fails
+          this.updateScanProgress(scanId, Math.min(currentProgress, 95));
+        }
+      }
+
+      // Calculate final summary
+      scan.summary.highRisk = scan.results.domains.filter((d: any) => d.riskLevel === 'high').length +
+                              scan.results.mobile.filter((m: any) => m.riskLevel === 'high').length +
+                              scan.results.crypto.filter((c: any) => c.riskLevel === 'high').length;
+
+      scan.status = 'completed';
+      scan.completedAt = new Date().toISOString();
+      this.updateScanProgress(scanId, 100, 'completed');
+
+      console.log(`[${scanId}] Scan completed successfully`);
+
+      // Broadcast completion
+      this.broadcastUpdate('scan_complete', {
+        scanId,
+        brand,
+        summary: scan.summary
+      });
+
+    } catch (error) {
+      console.error(`Scan ${scanId} failed:`, error);
+      scan.status = 'failed';
+      this.broadcastUpdate('scan_error', {
+        scanId,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  }
+
+  public async start(): Promise<void> {
+    return new Promise((resolve) => {
+      this.server.listen(this.port, () => {
+        console.log(`🌐 Brand Protection Web Server running on http://localhost:${this.port}`);
+        console.log(`📊 Dashboard: http://localhost:${this.port}`);
+        console.log(`🔌 WebSocket: ws://localhost:${this.port}`);
+        resolve();
+      });
+    });
+  }
+
+  public stop(): Promise<void> {
+    return new Promise((resolve) => {
+      this.server.close(() => {
+        console.log('Web server stopped');
+        resolve();
+      });
+    });
+  }
+}
+
+// Start the server
+const server = new BrandProtectionWebServer(3000);
+server.start().catch(console.error);
+
+// Graceful shutdown
+process.on('SIGINT', async () => {
+  console.log('\nShutting down web server...');
+  await server.stop();
+  process.exit(0);
+});

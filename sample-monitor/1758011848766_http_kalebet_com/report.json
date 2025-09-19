@@ -1,0 +1,19 @@
+{
+  "url": "http://kalebet.com",
+  "timestamp": "2025-09-16T08:37:42.220Z",
+  "visual": {
+    "diffRatio": 0.0005663025302267517
+  },
+  "dom": {
+    "tagCosine": 0.9993033024436085,
+    "classCosine": 0.9972559627232167
+  },
+  "text": {
+    "hamming": 2
+  },
+  "artifacts": {
+    "baseShot": "/Users/oa/Documents/gitdosyam/clonesite/sample-monitor/1758011848766_http_kalebet_com/base.png",
+    "variantShot": "/Users/oa/Documents/gitdosyam/clonesite/sample-monitor/1758011848766_http_kalebet_com/variant.png",
+    "diff": "/Users/oa/Documents/gitdosyam/clonesite/sample-monitor/1758011848766_http_kalebet_com/diff.png"
+  }
+}
