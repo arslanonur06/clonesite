@@ -437,4 +437,3 @@ export async function monitorCompliance(jurisdiction = 'all') {
         upcomingAudits: filtered.filter(j => new Date(j.nextAudit) < new Date(Date.now() + 30 * 24 * 60 * 60 * 1000))
     };
 }
-

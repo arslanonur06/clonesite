@@ -49,4 +49,3 @@ export function insertReport(db, row) {
 export function listVariants(db) {
     return db.prepare(`SELECT * FROM variants ORDER BY domain`).all();
 }
-

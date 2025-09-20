@@ -43,4 +43,3 @@ export async function searchCTLogs(brand, days = 7) {
         req.setTimeout(10000, () => reject(new Error('CT log search timeout')));
     });
 }
-

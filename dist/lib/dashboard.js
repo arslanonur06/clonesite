@@ -170,7 +170,7 @@ export class BrandProtectionDashboard {
         }
         catch (error) {
             console.error('Takedown trigger failed:', error);
-            return { success: false, error: error.message };
+            return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
         }
     }
     updateMetrics(updates) {
@@ -378,4 +378,3 @@ export async function startDashboard(port = 3000) {
     await dashboard.start();
     return dashboard;
 }
-

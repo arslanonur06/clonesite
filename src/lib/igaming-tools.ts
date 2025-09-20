@@ -817,7 +817,7 @@ async function analyzePageContent(page: any, brand: string) {
   // Bonus offer extraction
   const bonusRegex = /(\d+)%?\s*(bonus|free\s*spins|deposit|match)/gi;
   const bonusMatches = textContent.match(bonusRegex) || [];
-  pageAnalysis.bonusOffers = bonusMatches.slice(0, 10).map(match => ({
+  pageAnalysis.bonusOffers = bonusMatches.slice(0, 10).map((match: any) => ({
     text: match,
     suspicious: parseInt(match) > 200 // Bonuses over 200% are suspicious
   }));

@@ -4,7 +4,7 @@ export function extractDomFeatures(html) {
     const tagHistogram = {};
     const classHistogram = {};
     $('*').each((_, el) => {
-        const tag = el.tagName.toLowerCase();
+        const tag = el.tagName?.toLowerCase() || 'unknown';
         tagHistogram[tag] = (tagHistogram[tag] ?? 0) + 1;
         const classes = ($(el).attr('class') ?? '').split(/\s+/).filter(Boolean);
         for (const c of classes)
@@ -31,4 +31,3 @@ export function cosineSimilarity(vecA, vecB) {
     const denom = Math.sqrt(a2) * Math.sqrt(b2);
     return denom === 0 ? 0 : dot / denom;
 }
-

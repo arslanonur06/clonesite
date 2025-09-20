@@ -29,7 +29,7 @@ export async function checkDomain(domain) {
         let nameServers = null;
         try {
             const raw = await new Promise((resolve, reject) => {
-                whoisCb.lookup(domain, { follow: 2, timeout: 10000 }, (err, data) => {
+                whoisCb.lookup(domain, (err, data) => {
                     if (err)
                         return reject(err);
                     resolve(String(data ?? ''));
@@ -75,4 +75,3 @@ export async function checkDomains(domains, concurrency = 10) {
     const limit = pLimit(concurrency);
     return Promise.all(domains.map((d) => limit(() => checkDomain(d))));
 }
-

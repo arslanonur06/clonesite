@@ -120,4 +120,3 @@ export async function monitorMobileApps(brand, originalIconUrl) {
     }
     return allApps.filter(app => app.suspiciousReasons.length > 0);
 }
-

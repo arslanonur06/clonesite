@@ -22,4 +22,3 @@ function httpPostJson(urlStr, payload) {
         req.end();
     });
 }
-

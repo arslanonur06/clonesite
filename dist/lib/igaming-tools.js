@@ -644,11 +644,11 @@ export async function analyzeWebsiteInDepth(url, brand) {
         // Technical analysis
         analysis.technicalDetails = await getTechnicalDetails(page);
         // Aggregate analysis
-        analysis.brandMentions = analysis.pages.flatMap(p => p.brandMentions);
-        analysis.suspiciousContent = analysis.pages.flatMap(p => p.suspiciousContent);
-        analysis.affiliateLinks = analysis.pages.flatMap(p => p.affiliateLinks);
-        analysis.bonusOffers = analysis.pages.flatMap(p => p.bonusOffers);
-        analysis.paymentMethods = analysis.pages.flatMap(p => p.paymentMethods);
+        analysis.brandMentions = analysis.pages.flatMap((p) => p.brandMentions);
+        analysis.suspiciousContent = analysis.pages.flatMap((p) => p.suspiciousContent);
+        analysis.affiliateLinks = analysis.pages.flatMap((p) => p.affiliateLinks);
+        analysis.bonusOffers = analysis.pages.flatMap((p) => p.bonusOffers);
+        analysis.paymentMethods = analysis.pages.flatMap((p) => p.paymentMethods);
         // Risk assessment
         analysis.riskScore = calculateRiskScore(analysis, brand);
     }
@@ -708,7 +708,7 @@ async function analyzePageContent(page, brand) {
     // Bonus offer extraction
     const bonusRegex = /(\d+)%?\s*(bonus|free\s*spins|deposit|match)/gi;
     const bonusMatches = textContent.match(bonusRegex) || [];
-    pageAnalysis.bonusOffers = bonusMatches.slice(0, 10).map(match => ({
+    pageAnalysis.bonusOffers = bonusMatches.slice(0, 10).map((match) => ({
         text: match,
         suspicious: parseInt(match) > 200 // Bonuses over 200% are suspicious
     }));
@@ -842,4 +842,3 @@ function extractContextAroundKeyword(text, keyword) {
     const end = Math.min(text.length, index + keyword.length + 30);
     return text.substring(start, end).trim();
 }
-

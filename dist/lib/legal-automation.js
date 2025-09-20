@@ -226,4 +226,3 @@ export async function runLegalAutomation(domains, brand, artifactDir) {
     }
     return requests;
 }
-

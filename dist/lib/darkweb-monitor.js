@@ -93,7 +93,7 @@ export async function monitorMalwareFeeds(brand) {
             if (response.data.detected_urls) {
                 for (const detection of response.data.detected_urls.slice(0, 5)) {
                     threats.push({
-                        source: 'malware',
+                        source: 'tor',
                         url: detection.url,
                         title: `Malicious URL detected: ${detection.url}`,
                         content: `Detected by ${detection.positives}/${detection.total} engines`,
@@ -166,4 +166,3 @@ export async function runDarkWebMonitoring(brand) {
         leaks: credentialLeaks
     };
 }
-

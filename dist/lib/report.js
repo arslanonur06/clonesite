@@ -80,4 +80,3 @@ export async function writePdfReport(title, baseUrl, findings, outPdfPath) {
     await page.pdf({ path: path.resolve(outPdfPath), format: 'A4', printBackground: true });
     await browser.close();
 }
-

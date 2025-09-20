@@ -55,4 +55,3 @@ export async function runVisualAndContentComparison(baseUrl, variantUrl, outDir)
         artifacts: { baseShot, variantShot, diff: diffPath },
     };
 }
-

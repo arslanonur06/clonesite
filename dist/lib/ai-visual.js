@@ -135,4 +135,3 @@ export async function analyzeFavicon(originalUrl, suspiciousUrl) {
         return 0; // No similarity if comparison fails
     }
 }
-

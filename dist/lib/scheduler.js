@@ -37,4 +37,3 @@ export function scheduleDaily(baseDomain, baseUrl, outDir, dbPath, hour = 8) {
         }
     });
 }
-
