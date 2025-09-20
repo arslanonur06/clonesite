@@ -1,218 +1,216 @@
-## 🛡️ Advanced Brand Protection System
+# 🛡️ iGaming Brand Protection Platform
 
-**Enterprise-grade brand monitoring with AI-powered threat detection, real-time analytics, and automated legal response.**
+**Enterprise-grade brand monitoring and protection system specifically designed for the iGaming industry**
 
-### 🚀 Ultimate Brand Protection Features
-- **8 Detection Methods**: Typosquatting, social media, mobile apps, dark web, crypto, visual AI, threat intel, legal automation
-- **Real-time Dashboard**: Live monitoring with WebSocket updates
-- **50+ TLD Coverage**: Complete domain landscape monitoring  
-- **AI Visual Detection**: Logo similarity and design clone detection
-- **Legal Automation**: Automated takedown requests and evidence collection
-- **Multi-platform**: Web, mobile, social media, blockchain monitoring
+<div align="center">
+  <img src="https://img.shields.io/badge/Version-2.0.0-blue" alt="Version">
+  <img src="https://img.shields.io/badge/License-MIT-green" alt="License">
+  <img src="https://img.shields.io/badge/TypeScript-100%25-blue" alt="TypeScript">
+  <img src="https://img.shields.io/badge/Status-Production_Ready-success" alt="Status">
+</div>
 
-### Setup
+## 🎯 Overview
+
+The iGaming Brand Protection Platform is a comprehensive security solution that monitors, detects, and helps mitigate brand threats across multiple channels. Built specifically for online casinos, sports betting platforms, and gaming operators, it provides real-time threat detection and automated response capabilities.
+
+## ✨ Key Features
+
+### 🔍 **8 Core Protection Modules**
+
+1. **Domain Typosquatting Detection** - 2000+ pattern variations across 50+ TLDs
+2. **Visual AI Analysis** - Logo and website clone detection using computer vision
+3. **Mobile App Monitoring** - iOS and Android app store surveillance
+4. **Cryptocurrency Threat Detection** - Fake exchanges and wallet phishing
+5. **Dark Web Monitoring** - Underground forums and credential leak detection
+6. **Threat Intelligence** - Multi-source reputation and malware analysis
+7. **Social Media Monitoring** - Twitter/X and Telegram threat detection
+8. **Legal Automation** - Automated takedown request generation
+
+### 🎰 **26 iGaming-Specific Tools**
+
+Professional tools designed for gaming operators, including:
+- Affiliate link monitoring
+- Gaming license verification
+- Payment method analysis
+- Responsible gaming compliance
+- Bonus abuse detection
+- Geo-blocking compliance
+- Odds manipulation detection
+- And 19 more specialized tools...
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Node.js 18+ and npm/pnpm
+- Chrome/Chromium browser (auto-installed)
+- Optional: API keys for enhanced features (see [Configuration](#configuration))
+
+### Installation
 
 ```bash
-pnpm install # or npm install / yarn
+# Clone the repository
+git clone <repository-url>
+cd igaming-protection
+
+# Install dependencies
+npm install
+
+# Copy environment configuration
+cp .env.example .env
+
+# Build the project
+npm run build
 ```
 
-### Build
+### Running the Platform
+
+#### Web Interface (Recommended)
 
 ```bash
-pnpm build
-```
+# Start the web server
+npm run web
 
-### Run (dev)
-
-```bash
-pnpm dev check kalebet.com
-```
-
-### Run (built)
-
-```bash
-pnpm start check kalebet.com
-```
-
-### Options
-
-- `-c, --concurrency <n>`: number of concurrent checks (default 10)
-- `-e, --extensions <csv>`: extra TLDs to consider, e.g. `-e com.tr,bet,top`
-
-### What it does
-
-- Generates variants via:
-  - substitution, deletion, duplication, transposition
-  - homograph replacements (limited set)
-  - suffix additions (e.g., `official`, `tr`, `123`)
-  - original label across alternate TLDs
-- Resolves A and MX via DNS-over-HTTPS
-- Queries WHOIS (best-effort; falls back to DNS signals if rate-limited)
-
-### Scheduling daily checks
-
-Use `cron` (macOS/Linux) to run daily:
-
-```bash
-crontab -e
-# Run every day at 08:00
-0 8 * * * cd /Users/oa/Documents/gitdosyam/clonesite && pnpm start check kalebet.com | tee -a logs/monitor.log
-```
-
-Ensure the `logs/` directory exists, and adjust domain/TLDs as needed.
-
-### Notes
-
-- WHOIS responses vary by registry; creation dates may be missing. A/MX records are a strong signal of activity even if WHOIS is rate-limited.
-- Add or modify patterns in `src/lib/variants.ts` to expand coverage.
-
-### Visual and Content Similarity Monitoring
-
-Compare a suspected URL against your canonical site:
-
-```bash
-npm run dev -- monitor https://your-base.com https://suspect.com -o monitor-artifacts --threshold 0.1
-```
-
-Artifacts: `base.png`, `variant.png`, `diff.png`, and `report.json` with:
-- visual.diffRatio (0..1), dom.tagCosine, dom.classCosine, text.hamming
-
-### Automated Monitoring of Discovered Variants
-
-Persist results to SQLite and alert when similarity is high:
-
-```bash
-# monitor top registered variants against your base URL
-npm run dev -- monitor-variants kalebet.com https://kalebet.com \
-  --db data/monitor.db -o monitor-artifacts --limit 50
-
-# schedule daily at hour 8
-npm run dev -- schedule kalebet.com https://kalebet.com \
-  --db data/monitor.db -o monitor-artifacts --hour 8
-```
-
-Environment variables for alerts (optional, Telegram only; Slack disabled):
-
-```bash
-TG_BOT_TOKEN=123456:abcdef
-TG_CHAT_ID=123456789
-ENABLE_TG_ALERT=1
-```
-
-## 🌐 Web Interface (NEW!)
-
-**Beautiful React dashboard for any brand monitoring:**
-
-```bash
-# Start the web interface
+# Or use the start script
 ./start-web.sh
-# Visit: http://localhost:3000
+
+# Access the dashboard
+open http://localhost:3000
 ```
 
-### ✨ Web Interface Features
-- **Universal Brand Input**: Monitor ANY brand or domain
-- **Feature Selection**: Choose from 8 monitoring types  
-- **Real-Time Progress**: Live scan progress with WebSocket updates
-- **Interactive Results**: Visual threat analysis and reporting
-- **Responsive Design**: Works on desktop, tablet, and mobile
+#### Command Line Interface
 
-## ✅ Complete Feature Verification
-
-Run the comprehensive verification script:
 ```bash
-./verify-features.sh
+# Basic domain check
+npm run dev check example.com
+
+# Comprehensive scan
+npm run dev ultimate-scan https://example.com example
+
+# View all commands
+npm run dev --help
 ```
 
-This verifies all 8 advanced features, CLI commands, web interface, documentation, and dependencies.
+## 📊 Web Dashboard
 
-## 🎯 Quick Start Commands
+The modern React-based dashboard provides:
 
-### Ultimate Brand Protection Scan
-```bash
-# Complete brand protection analysis
-npm run dev -- ultimate-scan https://www.kalebet.com/ kalebet \
-  --sequence kalebet1256.com --range 10 --ct-days 30 --logo https://kalebet.com/logo.png
+- **Real-time Monitoring** - Live threat detection with WebSocket updates
+- **Universal Brand Input** - Monitor any brand or domain
+- **Interactive Results** - Visual threat analysis and reporting
+- **Professional Reports** - Export detailed PDF reports
+- **Responsive Design** - Works on desktop, tablet, and mobile
+
+### Dashboard Features
+
+- **Overview Dashboard** - Key metrics and threat summary
+- **Brand Scanner** - Comprehensive brand protection analysis
+- **iGaming Tools** - Access to all 26 professional tools
+- **Report Generation** - Professional PDF reports for stakeholders
+
+## 🔧 Configuration
+
+### Environment Variables
+
+Create a `.env` file based on `.env.example`:
+
+```env
+# Required for full functionality
+TWITTER_API_KEY=your_key
+VIRUSTOTAL_API_KEY=your_key
+URLVOID_API_KEY=your_key
+SHODAN_API_KEY=your_key
+
+# Optional
+TG_BOT_TOKEN=your_bot_token
+TG_CHAT_ID=your_chat_id
+DASHBOARD_SECRET=your_secret
 ```
 
-### Real-Time Dashboard
-```bash
-# Start monitoring dashboard
-npm run dev -- dashboard --port 3000
-# Visit: http://localhost:3000
+### API Keys
+
+While the platform works without API keys, certain features require them:
+
+| Service | Purpose | Required For |
+|---------|---------|--------------|
+| Twitter API | Social media monitoring | Social threats detection |
+| VirusTotal | Malware detection | Threat intelligence |
+| URLVoid | URL reputation | Domain analysis |
+| Shodan | Infrastructure analysis | Security assessment |
+
+## 📖 Documentation
+
+- [API Reference](docs/API-REFERENCE.md) - Complete API documentation
+- [Features Guide](docs/FEATURES.md) - Detailed feature descriptions
+- [Monitoring Guide](docs/monitoring-guide.md) - Best practices
+- [Web Interface Guide](docs/WEB-INTERFACE.md) - Dashboard usage
+- [Changelog](docs/CHANGELOG.md) - Version history
+
+## 🎮 Use Cases
+
+### Online Casinos
+- Monitor for fake casino sites
+- Detect unauthorized use of game content
+- Track affiliate fraud
+- Ensure regulatory compliance
+
+### Sports Betting
+- Detect odds manipulation
+- Monitor for fake betting apps
+- Track unauthorized live streams
+- Protect brand reputation
+
+### Gaming Software Providers
+- Protect game IP and content
+- Monitor partner compliance
+- Detect pirated games
+- Track brand usage
+
+## 🏗️ Project Structure
+
+```
+igaming-protection/
+├── src/                  # Source code
+│   ├── cli.ts           # CLI interface
+│   ├── web-server.ts    # Web server
+│   └── lib/             # Core libraries
+├── frontend/            # React dashboard
+│   └── src/
+│       ├── components/  # UI components
+│       ├── hooks/       # React hooks
+│       └── types/       # TypeScript types
+├── docs/                # Documentation
+├── data/                # Database files
+└── dist/                # Build output
 ```
 
-### Specialized Scans
-```bash
-# Mobile app monitoring
-npm run dev -- mobile-scan kalebet --logo https://kalebet.com/icon.png
+## 🤝 Contributing
 
-# Cryptocurrency threats
-npm run dev -- crypto-scan kalebet
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
 
-# Dark web monitoring  
-npm run dev -- darkweb-scan kalebet
+## 📄 License
 
-# Social media threats
-npm run dev -- social-monitor kalebet
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-# Threat intelligence analysis
-npm run dev -- threat-intel suspicious1.com suspicious2.com
+## 🔒 Security
 
-# Legal takedown automation
-npm run dev -- legal-takedown suspicious1.com suspicious2.com kalebet
-```
+For security issues, please email security@example.com instead of using the issue tracker.
 
-## 📊 What Gets Detected
+## 🙏 Acknowledgments
 
-### 🔍 Domain Threats
-- **Typosquatting**: kaleebet.com, kalebett.xyz, kalibet.me (2000+ patterns)
-- **Sequence Domains**: kalebet1254.com, kalebet1257.com, kalebet1258.com  
-- **New Registrations**: Certificate Transparency monitoring
-- **50+ TLDs**: .bet, .casino, .xyz, .me, .app, .crypto, .eth
+- Built with TypeScript, React, and Node.js
+- Uses Playwright for web automation
+- Powered by various threat intelligence APIs
 
-### 📱 Mobile Threats  
-- **Fake Apps**: iOS App Store and Google Play impersonation
-- **Icon Clones**: AI-powered visual similarity detection
-- **Developer Analysis**: Unofficial brand usage detection
+## 📞 Support
 
-### 💰 Cryptocurrency Threats
-- **Fake Exchanges**: Fraudulent trading platforms
-- **Phishing Wallets**: Seed phrase theft sites  
-- **ICO Scams**: Token fraud detection
-- **Blockchain Domains**: .crypto, .eth, .nft monitoring
+- **Documentation**: [Full Docs](docs/)
+- **Issues**: [GitHub Issues](https://github.com/yourrepo/issues)
+- **Email**: support@example.com
 
-### 🕵️ Underground Threats
-- **Credential Leaks**: Breach database monitoring
-- **Dark Web**: Tor network brand mentions
-- **Malware**: VirusTotal/URLVoid integration
-- **Forums**: Cybercrime discussion tracking
+---
 
-### 📺 Social Media Threats
-- **Twitter/X**: Phishing and scam tweets
-- **Telegram**: Public channel monitoring  
-- **Email Security**: DMARC/SPF verification
-
-## 📈 Advanced Analytics
-
-- **Risk Scoring**: 0-100 automated threat assessment
-- **Visual Similarity**: Pixel-level website comparison
-- **AI Logo Detection**: Computer vision brand analysis  
-- **Geographic Mapping**: Threat source visualization
-- **Trend Analysis**: Historical threat evolution
-
-## ⚖️ Legal Automation
-
-- **Evidence Collection**: Automated screenshot and data archival
-- **Takedown Requests**: DMCA, trademark, and phishing notices
-- **Abuse Contacts**: Automatic registrar contact extraction
-- **Legal Templates**: Jurisdiction-compliant notice generation
-
-## 📚 Documentation
-
-- **[Complete Features](docs/FEATURES.md)**: Detailed feature documentation
-- **[API Reference](docs/API-REFERENCE.md)**: Programmatic access guide
-- **[Changelog](docs/CHANGELOG.md)**: Version history and updates
-- **[Monitoring Guide](docs/monitoring-guide.md)**: Best practices and workflows
-
-See the detailed guide: `docs/monitoring-guide.md`.
-
+<div align="center">
+  <strong>Built for the iGaming Industry</strong><br>
+  Protecting brands, players, and revenue
+</div>
