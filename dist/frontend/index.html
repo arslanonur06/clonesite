@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brand Protection Dashboard - Advanced iGaming Tools</title>
+    <title>Advanced iGaming Security Suite - 26+ Professional Tools</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <style>
@@ -14,6 +14,14 @@
         .risk-high { background: #fef2f2; border-left: 4px solid #ef4444; }
         .risk-medium { background: #fffbeb; border-left: 4px solid #f59e0b; }
         .risk-low { background: #f0fdf4; border-left: 4px solid #10b981; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .tab-button { transition: all 0.3s ease; }
+        .tab-button.active { background: #3b82f6; color: white; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; }
+        .tool-section { margin-bottom: 2rem; }
+        .pdf-download { background: #10b981; color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; text-decoration: none; display: inline-block; margin-top: 0.5rem; }
+        .pdf-download:hover { background: #059669; }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -25,8 +33,8 @@
                         <i data-lucide="shield" class="w-6 h-6"></i>
                     </div>
                     <div>
-                        <h1 class="text-2xl font-bold">Brand Protection Dashboard</h1>
-                        <p class="text-blue-100">Advanced iGaming Security & Monitoring</p>
+                        <h1 class="text-2xl font-bold">Advanced iGaming Security Suite</h1>
+                        <p class="text-blue-100">26+ Professional Tools for iGaming Operators</p>
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">
@@ -42,65 +50,141 @@
         </div>
     </header>
 
+    <!-- Navigation Tabs -->
+    <nav class="bg-white shadow-sm border-b">
+        <div class="container mx-auto px-6">
+            <div class="flex space-x-1 overflow-x-auto">
+                <button class="tab-button active px-4 py-3 text-sm font-medium rounded-t-lg" onclick="showTab('overview')">
+                    <i data-lucide="home" class="w-4 h-4 mr-2"></i>Overview
+                </button>
+                <button class="tab-button px-4 py-3 text-sm font-medium rounded-t-lg" onclick="showTab('brand-protection')">
+                    <i data-lucide="shield" class="w-4 h-4 mr-2"></i>Brand Protection
+                </button>
+                <button class="tab-button px-4 py-3 text-sm font-medium rounded-t-lg" onclick="showTab('igaming-basic')">
+                    <i data-lucide="gamepad-2" class="w-4 h-4 mr-2"></i>iGaming Basic Tools
+                </button>
+                <button class="tab-button px-4 py-3 text-sm font-medium rounded-t-lg" onclick="showTab('igaming-advanced')">
+                    <i data-lucide="trending-up" class="w-4 h-4 mr-2"></i>iGaming Advanced
+                </button>
+                <button class="tab-button px-4 py-3 text-sm font-medium rounded-t-lg" onclick="showTab('igaming-professional')">
+                    <i data-lucide="crown" class="w-4 h-4 mr-2"></i>iGaming Professional
+                </button>
+                <button class="tab-button px-4 py-3 text-sm font-medium rounded-t-lg" onclick="showTab('reports')">
+                    <i data-lucide="file-text" class="w-4 h-4 mr-2"></i>Reports & Analytics
+                </button>
+                <button class="tab-button px-4 py-3 text-sm font-medium rounded-t-lg" onclick="showTab('monitoring')">
+                    <i data-lucide="monitor" class="w-4 h-4 mr-2"></i>Advanced Monitoring
+                </button>
+                <button class="tab-button px-4 py-3 text-sm font-medium rounded-t-lg" onclick="showTab('automation')">
+                    <i data-lucide="zap" class="w-4 h-4 mr-2"></i>Automation
+                </button>
+                <button class="tab-button px-4 py-3 text-sm font-medium rounded-t-lg" onclick="showTab('integrations')">
+                    <i data-lucide="link" class="w-4 h-4 mr-2"></i>Integrations
+                </button>
+            </div>
+        </div>
+    </nav>
+
     <main class="container mx-auto px-6 py-8">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <div class="bg-white rounded-lg shadow-md p-6 card-hover">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">Total Scans</p>
-                        <p class="text-3xl font-bold text-gray-900">1,247</p>
+        <!-- Overview Tab -->
+        <div id="overview" class="tab-content active">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Total Tools Available</p>
+                            <p class="text-3xl font-bold text-gray-900">26+</p>
+                        </div>
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <i data-lucide="tool" class="w-6 h-6 text-blue-600"></i>
+                        </div>
                     </div>
-                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                        <i data-lucide="activity" class="w-6 h-6 text-blue-600"></i>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Active Scans</p>
+                            <p class="text-3xl font-bold text-red-600" id="activeScans">0</p>
+                        </div>
+                        <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                            <i data-lucide="activity" class="w-6 h-6 text-red-600"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Domains Monitored</p>
+                            <p class="text-3xl font-bold text-gray-900" id="domainsMonitored">0</p>
+                        </div>
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                            <i data-lucide="globe" class="w-6 h-6 text-green-600"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Risk Score</p>
+                            <p class="text-3xl font-bold text-yellow-600" id="riskScore">0</p>
+                        </div>
+                        <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                            <i data-lucide="trending-up" class="w-6 h-6 text-yellow-600"></i>
+                        </div>
                     </div>
                 </div>
             </div>
-            
-            <div class="bg-white rounded-lg shadow-md p-6 card-hover">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">Active Threats</p>
-                        <p class="text-3xl font-bold text-red-600">23</p>
+
+            <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-xl font-bold text-gray-900 mb-6">🎰 iGaming Security Suite Overview</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="text-center p-4 bg-blue-50 rounded-lg">
+                        <i data-lucide="shield" class="w-12 h-12 text-blue-600 mx-auto mb-3"></i>
+                        <h3 class="font-semibold text-gray-900 mb-2">Brand Protection</h3>
+                        <p class="text-sm text-gray-600">Domain monitoring, clone detection, and trademark protection</p>
                     </div>
-                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-                        <i data-lucide="alert-triangle" class="w-6 h-6 text-red-600"></i>
+                    <div class="text-center p-4 bg-green-50 rounded-lg">
+                        <i data-lucide="gamepad-2" class="w-12 h-12 text-green-600 mx-auto mb-3"></i>
+                        <h3 class="font-semibold text-gray-900 mb-2">iGaming Tools</h3>
+                        <p class="text-sm text-gray-600">Affiliate monitoring, license verification, and compliance checks</p>
                     </div>
-                </div>
-            </div>
-            
-            <div class="bg-white rounded-lg shadow-md p-6 card-hover">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">Domains Monitored</p>
-                        <p class="text-3xl font-bold text-gray-900">8,934</p>
-                    </div>
-                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                        <i data-lucide="globe" class="w-6 h-6 text-green-600"></i>
+                    <div class="text-center p-4 bg-purple-50 rounded-lg">
+                        <i data-lucide="bar-chart-3" class="w-12 h-12 text-purple-600 mx-auto mb-3"></i>
+                        <h3 class="font-semibold text-gray-900 mb-2">Analytics & Reports</h3>
+                        <p class="text-sm text-gray-600">Comprehensive reporting and threat intelligence</p>
                     </div>
                 </div>
             </div>
-            
-            <div class="bg-white rounded-lg shadow-md p-6 card-hover">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">Risk Score</p>
-                        <p class="text-3xl font-bold text-yellow-600">7.2</p>
+
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-xl font-bold text-gray-900 mb-6">🚀 Quick Start</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="p-4 border border-gray-200 rounded-lg">
+                        <h3 class="font-semibold text-gray-900 mb-2">Start Brand Protection Scan</h3>
+                        <p class="text-sm text-gray-600 mb-3">Monitor your brand for fake domains and clones</p>
+                        <button onclick="showTab('brand-protection')" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                            Start Scan
+                        </button>
                     </div>
-                    <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
-                        <i data-lucide="trending-up" class="w-6 h-6 text-yellow-600"></i>
+                    <div class="p-4 border border-gray-200 rounded-lg">
+                        <h3 class="font-semibold text-gray-900 mb-2">Run iGaming Analysis</h3>
+                        <p class="text-sm text-gray-600 mb-3">Check affiliate links, licenses, and compliance</p>
+                        <button onclick="showTab('igaming-basic')" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                            Run Analysis
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div class="bg-white rounded-lg shadow-md p-6">
-                <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
-                    <i data-lucide="shield" class="w-5 h-5 mr-2 text-blue-600"></i>
-                    Brand Protection Tools
-                </h2>
-                
-                <div class="space-y-4">
+        <!-- Brand Protection Tab -->
+        <div id="brand-protection" class="tab-content">
+            <div class="tool-section">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">🛡️ Brand Protection Tools</h2>
+                <div class="feature-grid">
                     <div class="feature-card rounded-lg p-4 card-hover">
                         <div class="flex items-center justify-between mb-3">
                             <h3 class="font-semibold text-gray-900">🔍 Fake Domain Checker</h3>
@@ -136,14 +220,13 @@
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="bg-white rounded-lg shadow-md p-6">
-                <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
-                    <i data-lucide="gamepad-2" class="w-5 h-5 mr-2 text-green-600"></i>
-                    iGaming Advanced Tools
-                </h2>
-                
-                <div class="space-y-4">
+        <!-- iGaming Basic Tools Tab -->
+        <div id="igaming-basic" class="tab-content">
+            <div class="tool-section">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">🎰 iGaming Basic Tools (12 Tools)</h2>
+                <div class="feature-grid">
                     <div class="feature-card rounded-lg p-4 card-hover">
                         <div class="flex items-center justify-between mb-3">
                             <h3 class="font-semibold text-gray-900">🔗 Affiliate Monitoring</h3>
@@ -197,6 +280,23 @@
 
                     <div class="feature-card rounded-lg p-4 card-hover">
                         <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">🎮 Game Provider Verification</h3>
+                            <button onclick="runGameProviderVerification()" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+                                <i data-lucide="gamepad-2" class="w-4 h-4 mr-1"></i>
+                                Verify
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" id="gameProviderDomainsInput" placeholder="Enter domains to check" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                        </div>
+                        <div id="gameProviderResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Game provider verification results will appear here...</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
                             <h3 class="font-semibold text-gray-900">🛡️ Responsible Gaming</h3>
                             <button onclick="runResponsibleGaming()" class="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors">
                                 <i data-lucide="shield-check" class="w-4 h-4 mr-1"></i>
@@ -209,6 +309,74 @@
                         </div>
                         <div id="responsibleGamingResults" class="hidden">
                             <div class="text-sm text-gray-600 mb-2">Responsible gaming compliance results will appear here...</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">🎁 Bonus Abuse Detection</h3>
+                            <button onclick="runBonusAbuseDetection()" class="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors">
+                                <i data-lucide="gift" class="w-4 h-4 mr-1"></i>
+                                Detect
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" id="bonusAbuseBrandInput" placeholder="Enter brand name" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                        </div>
+                        <div id="bonusAbuseResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Bonus abuse detection results will appear here...</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">🌍 Geo-blocking Compliance</h3>
+                            <button onclick="runGeoCompliance()" class="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors">
+                                <i data-lucide="globe" class="w-4 h-4 mr-1"></i>
+                                Check
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" id="geoComplianceDomainsInput" placeholder="Enter domains to check" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+                        </div>
+                        <div id="geoComplianceResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Geo-compliance results will appear here...</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">⚽ Odds Manipulation Detection</h3>
+                            <button onclick="runOddsManipulationDetection()" class="px-4 py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-700 transition-colors">
+                                <i data-lucide="target" class="w-4 h-4 mr-1"></i>
+                                Detect
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" id="oddsManipulationBrandInput" placeholder="Enter brand name" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent">
+                        </div>
+                        <div id="oddsManipulationResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Odds manipulation detection results will appear here...</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">💬 Customer Support Analysis</h3>
+                            <button onclick="runCustomerSupportAnalysis()" class="px-4 py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 transition-colors">
+                                <i data-lucide="message-circle" class="w-4 h-4 mr-1"></i>
+                                Analyze
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" id="customerSupportDomainsInput" placeholder="Enter domains to analyze" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
+                        </div>
+                        <div id="customerSupportResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Customer support analysis results will appear here...</div>
                         </div>
                     </div>
 
@@ -228,28 +396,641 @@
                             <div class="text-sm text-gray-600 mb-2">Security analysis results will appear here...</div>
                         </div>
                     </div>
+
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">⚖️ DMCA Takedown System</h3>
+                            <button onclick="runDMCATakedown()" class="px-4 py-2 bg-red-700 text-white rounded-lg hover:bg-red-800 transition-colors">
+                                <i data-lucide="file-x" class="w-4 h-4 mr-1"></i>
+                                Generate
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" id="dmcaBrandInput" placeholder="Enter brand name" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                        </div>
+                        <div id="dmcaResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">DMCA takedown requests will appear here...</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">🔍 Deep Website Analysis</h3>
+                            <button onclick="runDeepWebsiteAnalysis()" class="px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition-colors">
+                                <i data-lucide="search" class="w-4 h-4 mr-1"></i>
+                                Analyze
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <input type="url" id="deepAnalysisUrlInput" placeholder="Enter URL to analyze" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent">
+                            <input type="text" id="deepAnalysisBrandInput" placeholder="Enter brand name" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent mt-2">
+                        </div>
+                        <div id="deepAnalysisResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Deep website analysis results will appear here...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <!-- iGaming Advanced Tools Tab -->
+        <div id="igaming-advanced" class="tab-content">
+            <div class="tool-section">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">🚀 iGaming Advanced Tools (8 Tools)</h2>
+                <div class="feature-grid">
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">🎲 Player Behavior Analytics</h3>
+                            <button onclick="runPlayerBehaviorAnalysis()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                                <i data-lucide="users" class="w-4 h-4 mr-1"></i>
+                                Analyze
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" id="playerIdInput" placeholder="Enter player ID" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div id="playerBehaviorResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Player behavior analysis results will appear here...</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">🏆 Tournament Management</h3>
+                            <button onclick="runTournamentManagement()" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                                <i data-lucide="trophy" class="w-4 h-4 mr-1"></i>
+                                Manage
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <select id="tournamentActionInput" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                                <option value="list">List Tournaments</option>
+                                <option value="create">Create Tournament</option>
+                                <option value="update">Update Tournament</option>
+                            </select>
+                        </div>
+                        <div id="tournamentResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Tournament management results will appear here...</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">🎭 Live Dealer Management</h3>
+                            <button onclick="runLiveDealerManagement()" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+                                <i data-lucide="user" class="w-4 h-4 mr-1"></i>
+                                Manage
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <select id="dealerActionInput" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                <option value="list">List Dealers</option>
+                                <option value="schedule">Schedule Dealer</option>
+                                <option value="performance">View Performance</option>
+                            </select>
+                        </div>
+                        <div id="dealerResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Live dealer management results will appear here...</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">👑 VIP Player Management</h3>
+                            <button onclick="runVipPlayerManagement()" class="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors">
+                                <i data-lucide="crown" class="w-4 h-4 mr-1"></i>
+                                Manage
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" id="vipPlayerIdInput" placeholder="Enter VIP player ID (optional)" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                        </div>
+                        <div id="vipPlayerResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">VIP player management results will appear here...</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">🎮 Game Performance Analytics</h3>
+                            <button onclick="runGamePerformanceAnalysis()" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+                                <i data-lucide="bar-chart-3" class="w-4 h-4 mr-1"></i>
+                                Analyze
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" id="gameIdInput" placeholder="Enter game ID (optional)" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                        </div>
+                        <div id="gamePerformanceResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Game performance analysis results will appear here...</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">🛡️ Fraud Detection</h3>
+                            <button onclick="runFraudDetection()" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+                                <i data-lucide="shield-alert" class="w-4 h-4 mr-1"></i>
+                                Detect
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" id="fraudPlayerIdInput" placeholder="Enter player ID (optional)" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                        </div>
+                        <div id="fraudDetectionResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Fraud detection results will appear here...</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">📈 Marketing Campaign Analytics</h3>
+                            <button onclick="runMarketingCampaignAnalysis()" class="px-4 py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-700 transition-colors">
+                                <i data-lucide="trending-up" class="w-4 h-4 mr-1"></i>
+                                Analyze
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" id="campaignIdInput" placeholder="Enter campaign ID (optional)" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent">
+                        </div>
+                        <div id="marketingCampaignResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Marketing campaign analysis results will appear here...</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">⚖️ Regulatory Compliance Monitor</h3>
+                            <button onclick="runComplianceMonitoring()" class="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors">
+                                <i data-lucide="scale" class="w-4 h-4 mr-1"></i>
+                                Monitor
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <select id="jurisdictionInput" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+                                <option value="all">All Jurisdictions</option>
+                                <option value="UK">UK</option>
+                                <option value="Malta">Malta</option>
+                                <option value="Curacao">Curacao</option>
+                            </select>
+                        </div>
+                        <div id="complianceResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Compliance monitoring results will appear here...</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="mt-8 bg-white rounded-lg shadow-md p-6">
-            <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
-                <i data-lucide="bar-chart-3" class="w-5 h-5 mr-2 text-indigo-600"></i>
-                iGaming CRM Dashboard
-            </h2>
-            
-            <div id="crmDashboard" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="text-center">
-                    <div class="text-3xl font-bold text-indigo-600" id="totalPlayers">-</div>
-                    <div class="text-sm text-gray-600">Total Players</div>
+        <!-- iGaming Professional Tools Tab -->
+        <div id="igaming-professional" class="tab-content">
+            <div class="tool-section">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">👑 iGaming Professional Tools (8 Tools)</h2>
+                <div class="feature-grid">
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">🎯 Risk Assessment Engine</h3>
+                            <button onclick="runRiskAssessment()" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+                                <i data-lucide="target" class="w-4 h-4 mr-1"></i>
+                                Assess
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" id="riskPlayerIdInput" placeholder="Enter player ID" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                        </div>
+                        <div id="riskAssessmentResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Risk assessment results will appear here...</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">📋 KYC Verification System</h3>
+                            <button onclick="runKYCVerification()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                                <i data-lucide="user-check" class="w-4 h-4 mr-1"></i>
+                                Verify
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" id="kycPlayerIdInput" placeholder="Enter player ID" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div id="kycResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">KYC verification results will appear here...</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">🛡️ AML Monitoring</h3>
+                            <button onclick="runAMLMonitoring()" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                                <i data-lucide="shield" class="w-4 h-4 mr-1"></i>
+                                Monitor
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" id="amlPlayerIdInput" placeholder="Enter player ID (optional)" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                        </div>
+                        <div id="amlResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">AML monitoring results will appear here...</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">💰 Transaction Monitoring</h3>
+                            <button onclick="runTransactionMonitoring()" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+                                <i data-lucide="credit-card" class="w-4 h-4 mr-1"></i>
+                                Monitor
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" id="transactionPlayerIdInput" placeholder="Enter player ID (optional)" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                        </div>
+                        <div id="transactionResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Transaction monitoring results will appear here...</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">🏆 Loyalty Programs Management</h3>
+                            <button onclick="runLoyaltyPrograms()" class="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors">
+                                <i data-lucide="award" class="w-4 h-4 mr-1"></i>
+                                Manage
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <select id="loyaltyActionInput" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                                <option value="list">List Programs</option>
+                                <option value="create">Create Program</option>
+                                <option value="update">Update Program</option>
+                            </select>
+                        </div>
+                        <div id="loyaltyResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Loyalty programs results will appear here...</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">💳 Chargeback Prevention</h3>
+                            <button onclick="runChargebackPrevention()" class="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors">
+                                <i data-lucide="shield-alert" class="w-4 h-4 mr-1"></i>
+                                Analyze
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <select id="chargebackTimeframeInput" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                                <option value="7d">Last 7 days</option>
+                                <option value="30d">Last 30 days</option>
+                                <option value="90d">Last 90 days</option>
+                            </select>
+                        </div>
+                        <div id="chargebackResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Chargeback prevention analysis results will appear here...</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">🎲 Game Fairness Verification</h3>
+                            <button onclick="runGameFairnessVerification()" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+                                <i data-lucide="dice-6" class="w-4 h-4 mr-1"></i>
+                                Verify
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" id="fairnessGameIdInput" placeholder="Enter game ID (optional)" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                        </div>
+                        <div id="fairnessResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Game fairness verification results will appear here...</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">👥 Player Segmentation</h3>
+                            <button onclick="runPlayerSegmentation()" class="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors">
+                                <i data-lucide="users" class="w-4 h-4 mr-1"></i>
+                                Segment
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <select id="segmentationCriteriaInput" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+                                <option value="value">By Value</option>
+                                <option value="frequency">By Frequency</option>
+                                <option value="behavior">By Behavior</option>
+                            </select>
+                        </div>
+                        <div id="segmentationResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Player segmentation results will appear here...</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="text-center">
-                    <div class="text-3xl font-bold text-green-600" id="activePlayers">-</div>
-                    <div class="text-sm text-gray-600">Active Players</div>
+            </div>
+        </div>
+
+        <!-- Reports & Analytics Tab -->
+        <div id="reports" class="tab-content">
+            <div class="tool-section">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">📊 Reports & Analytics</h2>
+                <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">📈 iGaming CRM Dashboard</h3>
+                    <div id="crmDashboard" class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        <div class="text-center p-4 bg-blue-50 rounded-lg">
+                            <div class="text-3xl font-bold text-blue-600" id="totalPlayers">-</div>
+                            <div class="text-sm text-gray-600">Total Players</div>
+                        </div>
+                        <div class="text-center p-4 bg-green-50 rounded-lg">
+                            <div class="text-3xl font-bold text-green-600" id="activePlayers">-</div>
+                            <div class="text-sm text-gray-600">Active Players</div>
+                        </div>
+                        <div class="text-center p-4 bg-purple-50 rounded-lg">
+                            <div class="text-3xl font-bold text-purple-600" id="totalRevenue">-</div>
+                            <div class="text-sm text-gray-600">Total Revenue</div>
+                        </div>
+                        <div class="text-center p-4 bg-orange-50 rounded-lg">
+                            <div class="text-3xl font-bold text-orange-600" id="newRegistrations">-</div>
+                            <div class="text-sm text-gray-600">New Registrations</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="text-center">
-                    <div class="text-3xl font-bold text-blue-600" id="totalRevenue">-</div>
-                    <div class="text-sm text-gray-600">Total Revenue</div>
+
+                <div class="feature-grid">
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">📄 Generate PDF Reports</h3>
+                            <button onclick="generatePDFReport()" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                                <i data-lucide="download" class="w-4 h-4 mr-1"></i>
+                                Generate
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <select id="reportTypeInput" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                                <option value="comprehensive">Comprehensive Report</option>
+                                <option value="affiliate">Affiliate Monitoring</option>
+                                <option value="license">License Verification</option>
+                                <option value="payment">Payment Analysis</option>
+                                <option value="responsible">Responsible Gaming</option>
+                                <option value="security">Security Analysis</option>
+                            </select>
+                        </div>
+                        <div id="pdfReportResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">PDF report generation results will appear here...</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">📊 Website Comparison</h3>
+                            <button onclick="runWebsiteComparison()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                                <i data-lucide="git-compare" class="w-4 h-4 mr-1"></i>
+                                Compare
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <input type="url" id="website1Input" placeholder="Enter first URL" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-2">
+                            <input type="url" id="website2Input" placeholder="Enter second URL" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div id="websiteComparisonResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Website comparison results will appear here...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Advanced Monitoring Tab -->
+        <div id="monitoring" class="tab-content">
+            <div class="tool-section">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">🔍 Advanced Monitoring</h2>
+                <div class="feature-grid">
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">₿ Crypto Monitoring</h3>
+                            <button onclick="runCryptoMonitoring()" class="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors">
+                                <i data-lucide="bitcoin" class="w-4 h-4 mr-1"></i>
+                                Monitor
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" id="cryptoBrandInput" placeholder="Enter brand name" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                        </div>
+                        <div id="cryptoResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Crypto monitoring results will appear here...</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">🌑 Dark Web Monitoring</h3>
+                            <button onclick="runDarkWebMonitoring()" class="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition-colors">
+                                <i data-lucide="eye-off" class="w-4 h-4 mr-1"></i>
+                                Monitor
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" id="darkwebBrandInput" placeholder="Enter brand name" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent">
+                        </div>
+                        <div id="darkwebResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Dark web monitoring results will appear here...</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">📱 Social Media Monitoring</h3>
+                            <button onclick="runSocialMonitoring()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                                <i data-lucide="share-2" class="w-4 h-4 mr-1"></i>
+                                Monitor
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" id="socialBrandInput" placeholder="Enter brand name" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div id="socialResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Social media monitoring results will appear here...</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">📱 Mobile App Monitoring</h3>
+                            <button onclick="runMobileMonitoring()" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+                                <i data-lucide="smartphone" class="w-4 h-4 mr-1"></i>
+                                Monitor
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" id="mobileBrandInput" placeholder="Enter brand name" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                        </div>
+                        <div id="mobileResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Mobile app monitoring results will appear here...</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">🔍 Visual Comparison</h3>
+                            <button onclick="runVisualComparison()" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                                <i data-lucide="image" class="w-4 h-4 mr-1"></i>
+                                Compare
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <input type="url" id="visualUrl1Input" placeholder="Enter first URL" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent mb-2">
+                            <input type="url" id="visualUrl2Input" placeholder="Enter second URL" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                        </div>
+                        <div id="visualResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Visual comparison results will appear here...</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">🛡️ Threat Intelligence</h3>
+                            <button onclick="runThreatIntelligence()" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+                                <i data-lucide="shield-alert" class="w-4 h-4 mr-1"></i>
+                                Analyze
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" id="threatBrandInput" placeholder="Enter brand name" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                        </div>
+                        <div id="threatResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Threat intelligence results will appear here...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Automation Tab -->
+        <div id="automation" class="tab-content">
+            <div class="tool-section">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">⚡ Automation & Scheduling</h2>
+                <div class="feature-grid">
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">⏰ Scheduled Monitoring</h3>
+                            <button onclick="runScheduledMonitoring()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                                <i data-lucide="clock" class="w-4 h-4 mr-1"></i>
+                                Schedule
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <select id="scheduleFrequencyInput" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="daily">Daily</option>
+                                <option value="weekly">Weekly</option>
+                                <option value="monthly">Monthly</option>
+                            </select>
+                        </div>
+                        <div id="scheduleResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Scheduled monitoring results will appear here...</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">🔄 Automated Alerts</h3>
+                            <button onclick="runAutomatedAlerts()" class="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors">
+                                <i data-lucide="bell" class="w-4 h-4 mr-1"></i>
+                                Setup
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <select id="alertTypeInput" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                                <option value="email">Email Alerts</option>
+                                <option value="telegram">Telegram Alerts</option>
+                                <option value="webhook">Webhook Alerts</option>
+                            </select>
+                        </div>
+                        <div id="alertResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Automated alert setup results will appear here...</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">📊 Automated Reports</h3>
+                            <button onclick="runAutomatedReports()" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                                <i data-lucide="file-text" class="w-4 h-4 mr-1"></i>
+                                Setup
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <select id="reportFrequencyInput" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                                <option value="daily">Daily Reports</option>
+                                <option value="weekly">Weekly Reports</option>
+                                <option value="monthly">Monthly Reports</option>
+                            </select>
+                        </div>
+                        <div id="reportResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Automated report setup results will appear here...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Integrations Tab -->
+        <div id="integrations" class="tab-content">
+            <div class="tool-section">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">🔗 Integrations</h2>
+                <div class="feature-grid">
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">📱 Telegram Integration</h3>
+                            <button onclick="runTelegramIntegration()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                                <i data-lucide="message-circle" class="w-4 h-4 mr-1"></i>
+                                Setup
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" id="telegramBotTokenInput" placeholder="Enter bot token" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div id="telegramResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Telegram integration results will appear here...</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">📊 Google Sheets Integration</h3>
+                            <button onclick="runGoogleSheetsIntegration()" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                                <i data-lucide="file-spreadsheet" class="w-4 h-4 mr-1"></i>
+                                Connect
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" id="sheetsCredentialsInput" placeholder="Enter credentials JSON" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                        </div>
+                        <div id="sheetsResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Google Sheets integration results will appear here...</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -265,6 +1046,25 @@
     <script>
         lucide.createIcons();
 
+        // Tab Management
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
         function showLoading() {
             document.getElementById('loadingOverlay').classList.remove('hidden');
         }
@@ -277,26 +1077,106 @@
             const container = document.getElementById(containerId);
             container.classList.remove('hidden');
             
-            let html = '<div class="space-y-2">';
+            let html = '<div class="space-y-4">';
+            
+            // Show summary if available
+            if (data.summary) {
+                html += `<div class="bg-blue-50 p-4 rounded-lg mb-4">
+                    <h3 class="font-semibold text-blue-900 mb-2">📊 Analysis Summary</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                        ${data.totalChecked ? `<div><span class="font-medium">Total Checked:</span> ${data.totalChecked}</div>` : ''}
+                        ${data.activeDomains ? `<div><span class="font-medium">Active Domains:</span> ${data.activeDomains}</div>` : ''}
+                        ${data.clonesDetected ? `<div><span class="font-medium">Clones Detected:</span> ${data.clonesDetected}</div>` : ''}
+                        ${data.fakeDomains ? `<div><span class="font-medium">Fake Domains:</span> ${data.fakeDomains}</div>` : ''}
+                        ${data.summary.highRisk ? `<div><span class="font-medium text-red-600">High Risk:</span> ${data.summary.highRisk}</div>` : ''}
+                        ${data.summary.mediumRisk ? `<div><span class="font-medium text-yellow-600">Medium Risk:</span> ${data.summary.mediumRisk}</div>` : ''}
+                        ${data.summary.lowRisk ? `<div><span class="font-medium text-green-600">Low Risk:</span> ${data.summary.lowRisk}</div>` : ''}
+                        ${data.summary.averageSimilarity ? `<div><span class="font-medium">Avg Similarity:</span> ${data.summary.averageSimilarity}%</div>` : ''}
+                    </div>
+                </div>`;
+            }
+            
             if (data.results && data.results.length > 0) {
-                data.results.forEach(item => {
-                    const riskClass = item.riskLevel === 'high' ? 'risk-high' : 
-                                    item.riskLevel === 'medium' ? 'risk-medium' : 'risk-low';
-                    html += `<div class="p-3 rounded-lg ${riskClass}">
-                        <div class="font-medium">${item.domain || item.url || 'Unknown'}</div>
-                        <div class="text-sm text-gray-600">Risk: ${item.riskLevel || 'Unknown'}</div>
-                        ${item.similarity ? `<div class="text-sm">Similarity: ${item.similarity}%</div>` : ''}
-                        ${item.indicators ? `<div class="text-sm">Indicators: ${item.indicators.join(', ')}</div>` : ''}
+                data.results.forEach((item, index) => {
+                    const riskClass = item.riskLevel === 'high' ? 'border-l-red-500 bg-red-50' : 
+                                    item.riskLevel === 'medium' ? 'border-l-yellow-500 bg-yellow-50' : 'border-l-green-500 bg-green-50';
+                    
+                    const riskIcon = item.riskLevel === 'high' ? '🔴' : 
+                                   item.riskLevel === 'medium' ? '🟡' : '🟢';
+                    
+                    html += `<div class="p-4 rounded-lg border-l-4 ${riskClass} mb-3">
+                        <div class="flex items-start justify-between mb-2">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-lg">${riskIcon}</span>
+                                <div>
+                                    <div class="font-semibold text-gray-900">${item.domain || item.url || item.name || 'Unknown'}</div>
+                                    ${item.url ? `<div class="text-sm text-blue-600"><a href="${item.url}" target="_blank" class="hover:underline">${item.url}</a></div>` : ''}
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-medium text-gray-600">Risk: ${item.riskLevel || 'Unknown'}</div>
+                                ${item.similarity ? `<div class="text-sm text-gray-600">Similarity: ${item.similarity}%</div>` : ''}
+                            </div>
+                        </div>
+                        
+                        ${item.indicators && item.indicators.length > 0 ? `
+                            <div class="mb-2">
+                                <div class="text-sm font-medium text-gray-700 mb-1">🚨 Indicators:</div>
+                                <div class="flex flex-wrap gap-1">
+                                    ${item.indicators.map(indicator => `<span class="px-2 py-1 bg-gray-200 text-xs rounded-full">${indicator}</span>`).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
+                        
+                        ${item.analysisDetails ? `
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs text-gray-600 mb-2">
+                                ${item.analysisDetails.visualSimilarity ? `<div>Visual: ${item.analysisDetails.visualSimilarity}%</div>` : ''}
+                                ${item.analysisDetails.contentSimilarity ? `<div>Content: ${item.analysisDetails.contentSimilarity}%</div>` : ''}
+                                ${item.analysisDetails.layoutSimilarity ? `<div>Layout: ${item.analysisDetails.layoutSimilarity}%</div>` : ''}
+                                ${item.analysisDetails.colorSimilarity ? `<div>Color: ${item.analysisDetails.colorSimilarity}%</div>` : ''}
+                            </div>
+                        ` : ''}
+                        
+                        ${item.whoisData ? `
+                            <div class="text-xs text-gray-500 mb-2">
+                                <div>Registrar: ${item.whoisData.registrar || item.registrar || 'Unknown'}</div>
+                                <div>Registered: ${item.registrationDate ? new Date(item.registrationDate).toLocaleDateString() : 'Unknown'}</div>
+                                <div>SSL: ${item.hasSSL ? '✅ Yes' : '❌ No'}</div>
+                            </div>
+                        ` : ''}
+                        
+                        ${item.description ? `<div class="text-sm text-gray-600">${item.description}</div>` : ''}
                     </div>`;
                 });
+            } else if (data.success !== false) {
+                html += '<div class="text-center py-8 text-gray-600">' +
+                    '<div class="text-4xl mb-2">🔍</div>' +
+                    '<div class="text-lg font-medium">No suspicious domains found</div>' +
+                    '<div class="text-sm">All checked domains appear to be legitimate</div>' +
+                '</div>';
             } else {
-                html += '<div class="text-sm text-gray-600">No results found</div>';
+                html += '<div class="text-center py-8 text-red-600">' +
+                    '<div class="text-4xl mb-2">❌</div>' +
+                    '<div class="text-lg font-medium">Analysis Error</div>' +
+                    '<div class="text-sm">' + (data.error || 'Unknown error occurred') + '</div>' +
+                '</div>';
             }
-            html += '</div>';
             
+            // Add PDF download if available
+            if (data.pdfReport) {
+                html += `<div class="mt-4 text-center">
+                    <a href="${data.pdfReport}" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                        <span class="mr-2">📄</span>
+                        Download Detailed PDF Report
+                    </a>
+                </div>`;
+            }
+            
+            html += '</div>';
             container.innerHTML = html;
         }
 
+        // Brand Protection Functions
         async function runFakeDomainCheck() {
             const brand = document.getElementById('brandInput').value;
             if (!brand) {
@@ -495,6 +1375,710 @@
             } catch (error) {
                 console.error('Error:', error);
                 alert('Error loading CRM dashboard');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // iGaming Advanced Tools Functions
+        async function runPlayerBehaviorAnalysis() {
+            const url = document.getElementById('playerBehaviorUrlInput').value;
+            if (!url) {
+                alert('Please enter a URL');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/analyze-player-behavior', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                });
+                const data = await response.json();
+                showResult('playerBehaviorResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error running player behavior analysis');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runTournamentManagement() {
+            const url = document.getElementById('tournamentUrlInput').value;
+            if (!url) {
+                alert('Please enter a URL');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/manage-tournaments', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                });
+                const data = await response.json();
+                showResult('tournamentResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error running tournament management');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runLiveDealerManagement() {
+            const url = document.getElementById('liveDealerUrlInput').value;
+            if (!url) {
+                alert('Please enter a URL');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/manage-live-dealers', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                });
+                const data = await response.json();
+                showResult('liveDealerResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error running live dealer management');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runVipPlayerManagement() {
+            const url = document.getElementById('vipPlayerUrlInput').value;
+            if (!url) {
+                alert('Please enter a URL');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/manage-vip-players', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                });
+                const data = await response.json();
+                showResult('vipPlayerResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error running VIP player management');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runGamePerformanceAnalysis() {
+            const url = document.getElementById('gamePerformanceUrlInput').value;
+            if (!url) {
+                alert('Please enter a URL');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/analyze-game-performance', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                });
+                const data = await response.json();
+                showResult('gamePerformanceResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error running game performance analysis');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runFraudDetection() {
+            const url = document.getElementById('fraudDetectionUrlInput').value;
+            if (!url) {
+                alert('Please enter a URL');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/detect-fraud', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                });
+                const data = await response.json();
+                showResult('fraudDetectionResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error running fraud detection');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runMarketingCampaignAnalysis() {
+            const url = document.getElementById('marketingCampaignUrlInput').value;
+            if (!url) {
+                alert('Please enter a URL');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/analyze-marketing-campaigns', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                });
+                const data = await response.json();
+                showResult('marketingCampaignResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error running marketing campaign analysis');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runComplianceMonitoring() {
+            const url = document.getElementById('complianceUrlInput').value;
+            if (!url) {
+                alert('Please enter a URL');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/monitor-compliance', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                });
+                const data = await response.json();
+                showResult('complianceResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error running compliance monitoring');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // iGaming Professional Tools Functions
+        async function runRiskAssessment() {
+            const url = document.getElementById('riskAssessmentUrlInput').value;
+            if (!url) {
+                alert('Please enter a URL');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/perform-risk-assessment', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                });
+                const data = await response.json();
+                showResult('riskAssessmentResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error running risk assessment');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runKYCVerification() {
+            const url = document.getElementById('kycVerificationUrlInput').value;
+            if (!url) {
+                alert('Please enter a URL');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/perform-kyc-verification', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                });
+                const data = await response.json();
+                showResult('kycVerificationResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error running KYC verification');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runAMLMonitoring() {
+            const url = document.getElementById('amlMonitoringUrlInput').value;
+            if (!url) {
+                alert('Please enter a URL');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/perform-aml-monitoring', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                });
+                const data = await response.json();
+                showResult('amlMonitoringResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error running AML monitoring');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runTransactionMonitoring() {
+            const url = document.getElementById('transactionMonitoringUrlInput').value;
+            if (!url) {
+                alert('Please enter a URL');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/monitor-transactions', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                });
+                const data = await response.json();
+                showResult('transactionMonitoringResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error running transaction monitoring');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runLoyaltyPrograms() {
+            const url = document.getElementById('loyaltyProgramsUrlInput').value;
+            if (!url) {
+                alert('Please enter a URL');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/manage-loyalty-programs', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                });
+                const data = await response.json();
+                showResult('loyaltyProgramsResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error running loyalty programs management');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runChargebackPrevention() {
+            const url = document.getElementById('chargebackPreventionUrlInput').value;
+            if (!url) {
+                alert('Please enter a URL');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/analyze-chargeback-prevention', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                });
+                const data = await response.json();
+                showResult('chargebackPreventionResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error running chargeback prevention');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runGameFairnessVerification() {
+            const url = document.getElementById('gameFairnessUrlInput').value;
+            if (!url) {
+                alert('Please enter a URL');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/verify-game-fairness', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                });
+                const data = await response.json();
+                showResult('gameFairnessResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error running game fairness verification');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runPlayerSegmentation() {
+            const url = document.getElementById('playerSegmentationUrlInput').value;
+            if (!url) {
+                alert('Please enter a URL');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/perform-player-segmentation', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                });
+                const data = await response.json();
+                showResult('playerSegmentationResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error running player segmentation');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Reports & Analytics Functions
+        async function generatePDFReport() {
+            const url = document.getElementById('pdfReportUrlInput').value;
+            if (!url) {
+                alert('Please enter a URL');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/generate-comprehensive-pdf-report', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                });
+                const data = await response.json();
+                showResult('pdfReportResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error generating PDF report');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runWebsiteComparison() {
+            const url1 = document.getElementById('websiteComparisonUrl1Input').value;
+            const url2 = document.getElementById('websiteComparisonUrl2Input').value;
+            if (!url1 || !url2) {
+                alert('Please enter both URLs');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/brand-protection/clone-detection', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ baseUrl: url1, compareUrl: url2 })
+                });
+                const data = await response.json();
+                showResult('websiteComparisonResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error running website comparison');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Integration Functions
+        async function runTelegramIntegration() {
+            const message = document.getElementById('telegramMessageInput').value;
+            if (!message) {
+                alert('Please enter a message');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/integrations/telegram', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message })
+                });
+                const data = await response.json();
+                showResult('telegramResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error sending Telegram message');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runGoogleSheetsIntegration() {
+            const data = document.getElementById('googleSheetsDataInput').value;
+            if (!data) {
+                alert('Please enter data');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/integrations/google-sheets', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ data: JSON.parse(data) })
+                });
+                const result = await response.json();
+                showResult('googleSheetsResults', result);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error sending data to Google Sheets');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Advanced Monitoring Functions
+        async function runCryptoMonitoring() {
+            const brand = document.getElementById('cryptoBrandInput').value;
+            if (!brand) {
+                alert('Please enter a brand name');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/crypto-monitoring', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ brand })
+                });
+                const data = await response.json();
+                showResult('cryptoResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error running crypto monitoring');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runDarkWebMonitoring() {
+            const brand = document.getElementById('darkwebBrandInput').value;
+            if (!brand) {
+                alert('Please enter a brand name');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/darkweb-monitoring', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ brand })
+                });
+                const data = await response.json();
+                showResult('darkwebResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error running dark web monitoring');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runSocialMonitoring() {
+            const brand = document.getElementById('socialBrandInput').value;
+            if (!brand) {
+                alert('Please enter a brand name');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/social-monitoring', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ brand })
+                });
+                const data = await response.json();
+                showResult('socialResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error running social media monitoring');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runMobileMonitoring() {
+            const brand = document.getElementById('mobileBrandInput').value;
+            if (!brand) {
+                alert('Please enter a brand name');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/mobile-monitoring', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ brand })
+                });
+                const data = await response.json();
+                showResult('mobileResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error running mobile app monitoring');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runVisualComparison() {
+            const url1 = document.getElementById('visualUrl1Input').value;
+            const url2 = document.getElementById('visualUrl2Input').value;
+            if (!url1 || !url2) {
+                alert('Please enter both URLs');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/visual-comparison', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url1, url2 })
+                });
+                const data = await response.json();
+                showResult('visualResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error running visual comparison');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runThreatIntelligence() {
+            const brand = document.getElementById('threatBrandInput').value;
+            if (!brand) {
+                alert('Please enter a brand name');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/threat-intelligence', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ brand })
+                });
+                const data = await response.json();
+                showResult('threatResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error running threat intelligence analysis');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Automation Functions
+        async function runScheduledMonitoring() {
+            const frequency = document.getElementById('scheduleFrequencyInput').value;
+            if (!frequency) {
+                alert('Please select a frequency');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/automation/schedule-monitoring', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ frequency })
+                });
+                const data = await response.json();
+                showResult('scheduleResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error setting up scheduled monitoring');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runAutomatedAlerts() {
+            const alertType = document.getElementById('alertTypeInput').value;
+            if (!alertType) {
+                alert('Please select an alert type');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/automation/setup-alerts', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ alertType })
+                });
+                const data = await response.json();
+                showResult('alertResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error setting up automated alerts');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runAutomatedReports() {
+            const frequency = document.getElementById('reportFrequencyInput').value;
+            if (!frequency) {
+                alert('Please select a report frequency');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/automation/setup-reports', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ frequency })
+                });
+                const data = await response.json();
+                showResult('reportResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error setting up automated reports');
             } finally {
                 hideLoading();
             }
