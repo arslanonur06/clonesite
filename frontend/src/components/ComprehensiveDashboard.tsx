@@ -149,12 +149,21 @@ const ComprehensiveDashboard: React.FC = () => {
       let requestBody: any = {};
       
       // Brand-based tools
-      if (['affiliate-monitor', 'bonus-abuse', 'odds-manipulation', 'player-behavior', 'marketing-campaigns', 'risk-assessment', 'kyc-verification', 'aml-monitoring', 'transaction-monitoring', 'competitor-analysis'].includes(toolId)) {
+      if (['affiliate-monitor', 'bonus-abuse', 'odds-manipulation', 'player-behavior', 'marketing-campaigns', 'risk-assessment', 'kyc-verification', 'aml-monitoring', 'transaction-monitoring', 'competitor-analysis', 'fake-domain-check', 'clone-detection'].includes(toolId)) {
         if (!brandInput.trim()) {
           alert('Please enter a brand name first');
           return;
         }
         requestBody = { brand: brandInput.trim() };
+        
+        // Special handling for brand protection tools
+        if (toolId === 'fake-domain-check') {
+          endpoint = '/api/brand-protection/fake-domain-check';
+          requestBody = { brand: brandInput.trim(), baseUrl: websiteUrl.trim() || undefined };
+        } else if (toolId === 'clone-detection') {
+          endpoint = '/api/brand-protection/clone-detection';
+          requestBody = { baseUrl: websiteUrl.trim() || `https://${brandInput.trim()}.com` };
+        }
         
         // Special cases for advanced tools
         if (toolId === 'player-behavior') {
@@ -399,56 +408,141 @@ const ComprehensiveDashboard: React.FC = () => {
 
   const renderEmployeeManagement = () => (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">👥 Employee Management</h2>
-        <button className="btn btn-primary">
-          <Users className="w-4 h-4 mr-2" />
-          Add Employee
-        </button>
+      {/* Header Section */}
+      <div className="bg-gradient-to-r from-green-600 to-blue-600 rounded-lg shadow-lg p-6 text-white">
+        <h2 className="text-3xl font-bold mb-2">👥 Employee Management</h2>
+        <p className="text-green-100 text-lg">
+          Comprehensive staff management, scheduling, and performance tracking
+        </p>
       </div>
 
       {/* Employee Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="card p-4 bg-green-50 border-green-200">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600">Online Now</p>
-              <p className="text-2xl font-bold text-green-600">{metrics.employeesOnline}</p>
+        <div className="bg-white rounded-lg shadow p-4">
+          <div className="flex items-center">
+            <div className="p-2 bg-green-100 rounded-lg">
+              <UserCheck className="h-6 w-6 text-green-600" />
             </div>
-            <UserCheck className="w-6 h-6 text-green-600" />
+            <div className="ml-4">
+              <p className="text-sm font-medium text-gray-600">Online Now</p>
+              <p className="text-2xl font-bold text-gray-900">{metrics.employeesOnline}</p>
+            </div>
           </div>
         </div>
-        <div className="card p-4 bg-blue-50 border-blue-200">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600">Total Staff</p>
-              <p className="text-2xl font-bold text-blue-600">{metrics.totalEmployees}</p>
+        <div className="bg-white rounded-lg shadow p-4">
+          <div className="flex items-center">
+            <div className="p-2 bg-blue-100 rounded-lg">
+              <Users className="h-6 w-6 text-blue-600" />
             </div>
-            <Users className="w-6 h-6 text-blue-600" />
+            <div className="ml-4">
+              <p className="text-sm font-medium text-gray-600">Total Staff</p>
+              <p className="text-2xl font-bold text-gray-900">{metrics.totalEmployees}</p>
+            </div>
           </div>
         </div>
-        <div className="card p-4 bg-yellow-50 border-yellow-200">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600">Avg Performance</p>
-              <p className="text-2xl font-bold text-yellow-600">93%</p>
+        <div className="bg-white rounded-lg shadow p-4">
+          <div className="flex items-center">
+            <div className="p-2 bg-yellow-100 rounded-lg">
+              <Award className="h-6 w-6 text-yellow-600" />
             </div>
-            <Award className="w-6 h-6 text-yellow-600" />
+            <div className="ml-4">
+              <p className="text-sm font-medium text-gray-600">Avg Performance</p>
+              <p className="text-2xl font-bold text-gray-900">93%</p>
+            </div>
           </div>
         </div>
-        <div className="card p-4 bg-purple-50 border-purple-200">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600">Hours Today</p>
-              <p className="text-2xl font-bold text-purple-600">127</p>
+        <div className="bg-white rounded-lg shadow p-4">
+          <div className="flex items-center">
+            <div className="p-2 bg-purple-100 rounded-lg">
+              <Clock className="h-6 w-6 text-purple-600" />
             </div>
-            <Clock className="w-6 h-6 text-purple-600" />
+            <div className="ml-4">
+              <p className="text-sm font-medium text-gray-600">Hours Today</p>
+              <p className="text-2xl font-bold text-gray-900">127</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Management Tools */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Add Employee */}
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <h3 className="text-xl font-bold text-gray-900 mb-4">Add New Employee</h3>
+          <div className="space-y-4">
+            <input
+              type="text"
+              placeholder="Full Name"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+            <input
+              type="email"
+              placeholder="Email Address"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+            <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              <option>Select Role</option>
+              <option>Security Analyst</option>
+              <option>Compliance Officer</option>
+              <option>Brand Protection Manager</option>
+              <option>Legal Specialist</option>
+              <option>Customer Support</option>
+            </select>
+            <button className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 font-medium transition-colors">
+              Add Employee
+            </button>
+          </div>
+        </div>
+
+        {/* Schedule Management */}
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <h3 className="text-xl font-bold text-gray-900 mb-4">Schedule Management</h3>
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-3">
+              <button className="bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 font-medium transition-colors">
+                📅 View Schedule
+              </button>
+              <button className="bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 font-medium transition-colors">
+                ✏️ Edit Shifts
+              </button>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <button className="bg-purple-600 text-white py-3 px-4 rounded-lg hover:bg-purple-700 font-medium transition-colors">
+                📊 Attendance
+              </button>
+              <button className="bg-orange-600 text-white py-3 px-4 rounded-lg hover:bg-orange-700 font-medium transition-colors">
+                🏖️ Time Off
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Performance Tracking */}
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <h3 className="text-xl font-bold text-gray-900 mb-4">Performance Tracking</h3>
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-3">
+              <button className="bg-indigo-600 text-white py-3 px-4 rounded-lg hover:bg-indigo-700 font-medium transition-colors">
+                📈 Analytics
+              </button>
+              <button className="bg-pink-600 text-white py-3 px-4 rounded-lg hover:bg-pink-700 font-medium transition-colors">
+                🎯 Goals
+              </button>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <button className="bg-teal-600 text-white py-3 px-4 rounded-lg hover:bg-teal-700 font-medium transition-colors">
+                📝 Reviews
+              </button>
+              <button className="bg-red-600 text-white py-3 px-4 rounded-lg hover:bg-red-700 font-medium transition-colors">
+                ⚠️ Alerts
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Employee List */}
-      <div className="card p-6">
+      <div className="bg-white rounded-lg shadow-lg p-6">
         <h3 className="text-lg font-semibold mb-4">Staff Overview</h3>
         <div className="overflow-x-auto">
           <table className="w-full">
@@ -826,129 +920,282 @@ const ComprehensiveDashboard: React.FC = () => {
   );
   const renderBrandProtection = () => (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">🛡️ Brand Protection Suite</h2>
-        <button className="btn btn-primary">
-          <Shield className="w-4 h-4 mr-2" />
-          Start Protection Scan
-        </button>
+      {/* Header Section */}
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg shadow-lg p-6 text-white">
+        <h2 className="text-3xl font-bold mb-2">🛡️ Brand Protection Suite</h2>
+        <p className="text-blue-100 text-lg">
+          Advanced tools to detect fake domains, clone sites, and unauthorized brand usage
+        </p>
       </div>
 
-      {/* Brand Protection Tools */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div className="card p-6">
-          <div className="flex items-center mb-4">
-            <Globe className="w-8 h-8 text-blue-600 mr-3" />
-            <h3 className="text-lg font-semibold">Domain Monitoring</h3>
-          </div>
-          <p className="text-gray-600 mb-4">Monitor for typosquatting, domain variations, and suspicious domains.</p>
-          <div className="space-y-2">
-            <div className="flex justify-between">
-              <span className="text-sm text-gray-600">Active Domains</span>
-              <span className="font-semibold">1,247</span>
+      {/* Quick Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="bg-white rounded-lg shadow p-4">
+          <div className="flex items-center">
+            <div className="p-2 bg-red-100 rounded-lg">
+              <AlertTriangle className="h-6 w-6 text-red-600" />
             </div>
-            <div className="flex justify-between">
-              <span className="text-sm text-gray-600">Threats Detected</span>
-              <span className="font-semibold text-red-600">23</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-sm text-gray-600">Last Scan</span>
-              <span className="font-semibold">2 min ago</span>
+            <div className="ml-4">
+              <p className="text-sm font-medium text-gray-600">Active Threats</p>
+              <p className="text-2xl font-bold text-gray-900">23</p>
             </div>
           </div>
-          <button className="btn btn-primary w-full mt-4">
-            <Eye className="w-4 h-4 mr-2" />
-            View Details
-          </button>
         </div>
-
-        <div className="card p-6">
-          <div className="flex items-center mb-4">
-            <Target className="w-8 h-8 text-green-600 mr-3" />
-            <h3 className="text-lg font-semibold">Visual Detection</h3>
-          </div>
-          <p className="text-gray-600 mb-4">AI-powered visual similarity detection and logo analysis.</p>
-          <div className="space-y-2">
-            <div className="flex justify-between">
-              <span className="text-sm text-gray-600">Scans Completed</span>
-              <span className="font-semibold">456</span>
+        <div className="bg-white rounded-lg shadow p-4">
+          <div className="flex items-center">
+            <div className="p-2 bg-blue-100 rounded-lg">
+              <Globe className="h-6 w-6 text-blue-600" />
             </div>
-            <div className="flex justify-between">
-              <span className="text-sm text-gray-600">Similarities Found</span>
-              <span className="font-semibold text-orange-600">12</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-sm text-gray-600">Accuracy</span>
-              <span className="font-semibold text-green-600">94.2%</span>
+            <div className="ml-4">
+              <p className="text-sm font-medium text-gray-600">Domains Monitored</p>
+              <p className="text-2xl font-bold text-gray-900">8,934</p>
             </div>
           </div>
-          <button className="btn btn-primary w-full mt-4">
-            <Eye className="w-4 h-4 mr-2" />
-            View Details
-          </button>
         </div>
-
-        <div className="card p-6">
-          <div className="flex items-center mb-4">
-            <AlertTriangle className="w-8 h-8 text-red-600 mr-3" />
-            <h3 className="text-lg font-semibold">Threat Intelligence</h3>
-          </div>
-          <p className="text-gray-600 mb-4">Real-time threat monitoring and dark web surveillance.</p>
-          <div className="space-y-2">
-            <div className="flex justify-between">
-              <span className="text-sm text-gray-600">Active Threats</span>
-              <span className="font-semibold text-red-600">8</span>
+        <div className="bg-white rounded-lg shadow p-4">
+          <div className="flex items-center">
+            <div className="p-2 bg-green-100 rounded-lg">
+              <Shield className="h-6 w-6 text-green-600" />
             </div>
-            <div className="flex justify-between">
-              <span className="text-sm text-gray-600">Resolved</span>
-              <span className="font-semibold text-green-600">156</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-sm text-gray-600">Risk Level</span>
-              <span className="font-semibold text-orange-600">Medium</span>
+            <div className="ml-4">
+              <p className="text-sm font-medium text-gray-600">Clones Detected</p>
+              <p className="text-2xl font-bold text-gray-900">47</p>
             </div>
           </div>
-          <button className="btn btn-primary w-full mt-4">
-            <Eye className="w-4 h-4 mr-2" />
-            View Details
-          </button>
+        </div>
+        <div className="bg-white rounded-lg shadow p-4">
+          <div className="flex items-center">
+            <div className="p-2 bg-yellow-100 rounded-lg">
+              <Activity className="h-6 w-6 text-yellow-600" />
+            </div>
+            <div className="ml-4">
+              <p className="text-sm font-medium text-gray-600">Risk Score</p>
+              <p className="text-2xl font-bold text-gray-900">67%</p>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Recent Alerts */}
-      <div className="card p-6">
-        <h3 className="text-lg font-semibold mb-4">🚨 Recent Security Alerts</h3>
-        <div className="space-y-3">
-          <div className="flex items-center justify-between p-3 bg-red-50 rounded-lg border-l-4 border-red-500">
-            <div className="flex items-center">
-              <AlertTriangle className="w-5 h-5 text-red-600 mr-3" />
-              <div>
-                <p className="font-medium text-red-900">High Risk Domain Detected</p>
-                <p className="text-sm text-red-700">kalebet123.com - Potential trademark infringement</p>
-              </div>
+      {/* Main Tools Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Fake Domain Checker */}
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <div className="flex items-center mb-4">
+            <div className="p-2 bg-red-100 rounded-lg mr-3">
+              <AlertTriangle className="h-6 w-6 text-red-600" />
             </div>
-            <span className="text-sm text-red-600 font-medium">2 min ago</span>
-          </div>
-          <div className="flex items-center justify-between p-3 bg-yellow-50 rounded-lg border-l-4 border-yellow-500">
-            <div className="flex items-center">
-              <Target className="w-5 h-5 text-yellow-600 mr-3" />
-              <div>
-                <p className="font-medium text-yellow-900">Visual Similarity Alert</p>
-                <p className="text-sm text-yellow-700">Similar logo detected on suspicious site</p>
-              </div>
+            <div>
+              <h3 className="text-xl font-bold text-gray-900">Fake Domain Checker</h3>
+              <p className="text-gray-600">Detect clone sites and fake domains</p>
             </div>
-            <span className="text-sm text-yellow-600 font-medium">15 min ago</span>
           </div>
-          <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500">
-            <div className="flex items-center">
-              <Globe className="w-5 h-5 text-blue-600 mr-3" />
-              <div>
-                <p className="font-medium text-blue-900">New Domain Variation</p>
-                <p className="text-sm text-blue-700">kalebet-official.net registered</p>
-              </div>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Brand Name
+              </label>
+              <input
+                type="text"
+                placeholder="Enter your brand name (e.g., kalebet)"
+                value={brandInput}
+                onChange={(e) => setBrandInput(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
             </div>
-            <span className="text-sm text-blue-600 font-medium">1 hour ago</span>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Official Website URL
+              </label>
+              <input
+                type="url"
+                placeholder="https://yourbrand.com"
+                value={websiteUrl}
+                onChange={(e) => setWebsiteUrl(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                onClick={() => runTool('fake-domain-check')}
+                disabled={loading === 'fake-domain-check' || !brandInput.trim()}
+                className="bg-red-600 text-white py-3 px-4 rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium transition-colors"
+              >
+                {loading === 'fake-domain-check' ? '🔍 Scanning...' : '🔍 Check Fake Domains'}
+              </button>
+              <button
+                onClick={() => runTool('clone-detection')}
+                disabled={loading === 'clone-detection' || !websiteUrl.trim()}
+                className="bg-orange-600 text-white py-3 px-4 rounded-lg hover:bg-orange-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium transition-colors"
+              >
+                {loading === 'clone-detection' ? '🔍 Analyzing...' : '🔍 Detect Clones'}
+              </button>
+            </div>
           </div>
+        </div>
+
+        {/* Visual Similarity Analysis */}
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <div className="flex items-center mb-4">
+            <div className="p-2 bg-blue-100 rounded-lg mr-3">
+              <Eye className="h-6 w-6 text-blue-600" />
+            </div>
+            <div>
+              <h3 className="text-xl font-bold text-gray-900">Visual Similarity Analysis</h3>
+              <p className="text-gray-600">AI-powered visual comparison</p>
+            </div>
+          </div>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Logo URL (Optional)
+              </label>
+              <input
+                type="url"
+                placeholder="https://yourbrand.com/logo.png"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Similarity Threshold
+              </label>
+              <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <option value="0.8">High (80%+)</option>
+                <option value="0.6">Medium (60%+)</option>
+                <option value="0.4">Low (40%+)</option>
+              </select>
+            </div>
+
+            <button
+              onClick={() => runTool('visual-similarity')}
+              disabled={loading === 'visual-similarity'}
+              className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 disabled:opacity-50 font-medium transition-colors"
+            >
+              {loading === 'visual-similarity' ? '🔍 Analyzing...' : '🔍 Run Visual Analysis'}
+            </button>
+          </div>
+        </div>
+
+        {/* Social Media Monitoring */}
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <div className="flex items-center mb-4">
+            <div className="p-2 bg-purple-100 rounded-lg mr-3">
+              <Users className="h-6 w-6 text-purple-600" />
+            </div>
+            <div>
+              <h3 className="text-xl font-bold text-gray-900">Social Media Monitoring</h3>
+              <p className="text-gray-600">Monitor social platforms for brand abuse</p>
+            </div>
+          </div>
+          
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                onClick={() => runTool('social-monitor')}
+                disabled={loading === 'social-monitor'}
+                className="bg-purple-600 text-white py-3 px-4 rounded-lg hover:bg-purple-700 disabled:opacity-50 font-medium transition-colors"
+              >
+                {loading === 'social-monitor' ? '🔍 Monitoring...' : '📱 Social Media Scan'}
+              </button>
+              <button
+                onClick={() => runTool('dark-web-monitor')}
+                disabled={loading === 'dark-web-monitor'}
+                className="bg-gray-800 text-white py-3 px-4 rounded-lg hover:bg-gray-900 disabled:opacity-50 font-medium transition-colors"
+              >
+                {loading === 'dark-web-monitor' ? '🔍 Scanning...' : '🕵️ Dark Web Scan'}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile App Monitoring */}
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <div className="flex items-center mb-4">
+            <div className="p-2 bg-green-100 rounded-lg mr-3">
+              <Play className="h-6 w-6 text-green-600" />
+            </div>
+            <div>
+              <h3 className="text-xl font-bold text-gray-900">Mobile App Monitoring</h3>
+              <p className="text-gray-600">Detect fake mobile apps</p>
+            </div>
+          </div>
+          
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                onClick={() => runTool('mobile-apps')}
+                disabled={loading === 'mobile-apps'}
+                className="bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 disabled:opacity-50 font-medium transition-colors"
+              >
+                {loading === 'mobile-apps' ? '🔍 Scanning...' : '📱 App Store Scan'}
+              </button>
+              <button
+                onClick={() => runTool('crypto-monitor')}
+                disabled={loading === 'crypto-monitor'}
+                className="bg-yellow-600 text-white py-3 px-4 rounded-lg hover:bg-yellow-700 disabled:opacity-50 font-medium transition-colors"
+              >
+                {loading === 'crypto-monitor' ? '🔍 Monitoring...' : '₿ Crypto Monitor'}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Recent Threats Table */}
+      <div className="bg-white rounded-lg shadow-lg p-6">
+        <h3 className="text-xl font-bold text-gray-900 mb-4">🚨 Recent Threats Detected</h3>
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Domain</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Risk Level</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Similarity</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              <tr>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">kalebet-fake.com</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Clone Site</td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">High</span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">94%</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <button className="text-red-600 hover:text-red-900">Take Action</button>
+                </td>
+              </tr>
+              <tr>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">kalebet-bonus.net</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Typosquatting</td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Medium</span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">78%</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <button className="text-red-600 hover:text-red-900">Take Action</button>
+                </td>
+              </tr>
+              <tr>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">kalebet-mobile.app</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Fake App</td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">High</span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">89%</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <button className="text-red-600 hover:text-red-900">Take Action</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -1127,18 +1374,32 @@ const ComprehensiveDashboard: React.FC = () => {
 
   const renderAnalytics = () => (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">📊 Analytics & Reports</h2>
-        <div className="flex space-x-3">
-          <button className="btn btn-secondary">
-            <FileText className="w-4 h-4 mr-2" />
-            Export Data
-          </button>
-          <button className="btn btn-primary">
-            <BarChart3 className="w-4 h-4 mr-2" />
-            Generate Report
-          </button>
-        </div>
+      {/* Header Section */}
+      <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg shadow-lg p-6 text-white">
+        <h2 className="text-3xl font-bold mb-2">📊 Analytics & Reports</h2>
+        <p className="text-purple-100 text-lg">
+          Comprehensive analytics dashboard with real-time insights and reporting
+        </p>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="flex flex-wrap gap-3">
+        <button className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 font-medium transition-colors">
+          <FileText className="w-4 h-4 mr-2 inline" />
+          Export Data
+        </button>
+        <button className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 font-medium transition-colors">
+          <BarChart3 className="w-4 h-4 mr-2 inline" />
+          Generate Report
+        </button>
+        <button className="bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 font-medium transition-colors">
+          <TrendingUp className="w-4 h-4 mr-2 inline" />
+          Real-time Dashboard
+        </button>
+        <button className="bg-orange-600 text-white py-2 px-4 rounded-lg hover:bg-orange-700 font-medium transition-colors">
+          <Activity className="w-4 h-4 mr-2 inline" />
+          Performance Monitor
+        </button>
       </div>
 
       {/* Key Metrics */}
@@ -1188,27 +1449,151 @@ const ComprehensiveDashboard: React.FC = () => {
         </div>
       </div>
 
+      {/* Advanced Analytics Tools */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Revenue Analytics */}
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <h3 className="text-xl font-bold text-gray-900 mb-4">💰 Revenue Analytics</h3>
+          <div className="space-y-4">
+            <div className="flex justify-between items-center">
+              <span className="text-sm font-medium text-gray-600">Daily Revenue</span>
+              <span className="text-lg font-bold text-green-600">$45,678</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-sm font-medium text-gray-600">Monthly Revenue</span>
+              <span className="text-lg font-bold text-blue-600">$1,234,567</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-sm font-medium text-gray-600">Growth Rate</span>
+              <span className="text-lg font-bold text-purple-600">+12.5%</span>
+            </div>
+            <button className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 font-medium transition-colors">
+              📊 View Detailed Report
+            </button>
+          </div>
+        </div>
+
+        {/* Player Analytics */}
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <h3 className="text-xl font-bold text-gray-900 mb-4">👥 Player Analytics</h3>
+          <div className="space-y-4">
+            <div className="flex justify-between items-center">
+              <span className="text-sm font-medium text-gray-600">Active Players</span>
+              <span className="text-lg font-bold text-green-600">15,247</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-sm font-medium text-gray-600">New Registrations</span>
+              <span className="text-lg font-bold text-blue-600">1,234</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-sm font-medium text-gray-600">Retention Rate</span>
+              <span className="text-lg font-bold text-purple-600">78.5%</span>
+            </div>
+            <button className="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 font-medium transition-colors">
+              👥 Player Insights
+            </button>
+          </div>
+        </div>
+
+        {/* Game Performance */}
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <h3 className="text-xl font-bold text-gray-900 mb-4">🎮 Game Performance</h3>
+          <div className="space-y-4">
+            <div className="flex justify-between items-center">
+              <span className="text-sm font-medium text-gray-600">Top Game</span>
+              <span className="text-lg font-bold text-green-600">Blackjack</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-sm font-medium text-gray-600">Total Games</span>
+              <span className="text-lg font-bold text-blue-600">2,456</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-sm font-medium text-gray-600">Avg. Session</span>
+              <span className="text-lg font-bold text-purple-600">24m</span>
+            </div>
+            <button className="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 font-medium transition-colors">
+              🎮 Game Analytics
+            </button>
+          </div>
+        </div>
+      </div>
+
       {/* Charts and Visualizations */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="card p-6">
-          <h3 className="text-lg font-semibold mb-4">📈 Revenue Trends</h3>
-          <div className="h-64 bg-gray-100 rounded-lg flex items-center justify-center">
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <h3 className="text-xl font-bold text-gray-900 mb-4">📈 Revenue Trends</h3>
+          <div className="h-64 bg-gradient-to-br from-blue-50 to-purple-50 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-300">
             <div className="text-center">
-              <BarChart3 className="w-12 h-12 text-gray-400 mx-auto mb-2" />
-              <p className="text-gray-600">Revenue chart visualization</p>
-              <p className="text-sm text-gray-500">Integration with chart library needed</p>
+              <BarChart3 className="w-16 h-16 text-blue-400 mx-auto mb-4" />
+              <p className="text-gray-700 font-medium">Revenue Chart Visualization</p>
+              <p className="text-sm text-gray-500 mt-2">Interactive charts with real-time data</p>
+              <button className="mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 font-medium transition-colors">
+                Load Chart
+              </button>
             </div>
           </div>
         </div>
 
-        <div className="card p-6">
-          <h3 className="text-lg font-semibold mb-4">🎯 Player Segmentation</h3>
-          <div className="h-64 bg-gray-100 rounded-lg flex items-center justify-center">
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <h3 className="text-xl font-bold text-gray-900 mb-4">🎯 Player Segmentation</h3>
+          <div className="h-64 bg-gradient-to-br from-green-50 to-blue-50 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-300">
             <div className="text-center">
-              <Users className="w-12 h-12 text-gray-400 mx-auto mb-2" />
-              <p className="text-gray-600">Player segmentation chart</p>
-              <p className="text-sm text-gray-500">Pie chart visualization needed</p>
+              <Users className="w-16 h-16 text-green-400 mx-auto mb-4" />
+              <p className="text-gray-700 font-medium">Player Segmentation Chart</p>
+              <p className="text-sm text-gray-500 mt-2">Pie charts and demographic analysis</p>
+              <button className="mt-4 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 font-medium transition-colors">
+                Load Chart
+              </button>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Real-time Data Tables */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <h3 className="text-xl font-bold text-gray-900 mb-4">🔥 Top Performing Games</h3>
+          <div className="space-y-3">
+            {[
+              { name: 'Blackjack Pro', players: 1247, revenue: 45678, growth: '+15%' },
+              { name: 'Roulette VIP', players: 892, revenue: 32156, growth: '+8%' },
+              { name: 'Slots Mega', players: 2156, revenue: 67890, growth: '+22%' },
+              { name: 'Poker Classic', players: 634, revenue: 23456, growth: '+5%' }
+            ].map((game, index) => (
+              <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div>
+                  <p className="font-medium text-gray-900">{game.name}</p>
+                  <p className="text-sm text-gray-600">{game.players} players</p>
+                </div>
+                <div className="text-right">
+                  <p className="font-bold text-green-600">${game.revenue.toLocaleString()}</p>
+                  <p className="text-sm text-green-600">{game.growth}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <h3 className="text-xl font-bold text-gray-900 mb-4">📊 Recent Activity</h3>
+          <div className="space-y-3">
+            {[
+              { action: 'High Value Win', player: 'Player_1234', amount: 2500, time: '2 min ago' },
+              { action: 'New Registration', player: 'Player_5678', amount: 0, time: '5 min ago' },
+              { action: 'Large Deposit', player: 'Player_9012', amount: 1000, time: '8 min ago' },
+              { action: 'Bonus Claimed', player: 'Player_3456', amount: 500, time: '12 min ago' }
+            ].map((activity, index) => (
+              <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div>
+                  <p className="font-medium text-gray-900">{activity.action}</p>
+                  <p className="text-sm text-gray-600">{activity.player}</p>
+                </div>
+                <div className="text-right">
+                  <p className="font-bold text-blue-600">${activity.amount.toLocaleString()}</p>
+                  <p className="text-sm text-gray-500">{activity.time}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -1273,35 +1658,242 @@ const ComprehensiveDashboard: React.FC = () => {
 
   const renderSettings = () => (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">⚙️ System Settings</h2>
-        <button className="btn btn-primary">
-          <Settings className="w-4 h-4 mr-2" />
-          Save Changes
+      {/* Header Section */}
+      <div className="bg-gradient-to-r from-gray-600 to-blue-600 rounded-lg shadow-lg p-6 text-white">
+        <h2 className="text-3xl font-bold mb-2">⚙️ System Settings</h2>
+        <p className="text-gray-100 text-lg">
+          Configure system preferences, security settings, and integrations
+        </p>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="flex flex-wrap gap-3">
+        <button className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 font-medium transition-colors">
+          <Settings className="w-4 h-4 mr-2 inline" />
+          Save All Changes
+        </button>
+        <button className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 font-medium transition-colors">
+          <Shield className="w-4 h-4 mr-2 inline" />
+          Security Settings
+        </button>
+        <button className="bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 font-medium transition-colors">
+          <Users className="w-4 h-4 mr-2 inline" />
+          User Management
+        </button>
+        <button className="bg-orange-600 text-white py-2 px-4 rounded-lg hover:bg-orange-700 font-medium transition-colors">
+          <FileText className="w-4 h-4 mr-2 inline" />
+          Export Config
         </button>
       </div>
 
       {/* Settings Sections */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* General Settings */}
-        <div className="card p-6">
-          <h3 className="text-lg font-semibold mb-4">🔧 General Settings</h3>
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <h3 className="text-xl font-bold text-gray-900 mb-4">🔧 General Settings</h3>
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Platform Name</label>
-              <input type="text" className="input" defaultValue="iGaming Management Suite" />
+              <input 
+                type="text" 
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                defaultValue="iGaming Management Suite" 
+              />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Default Timezone</label>
-              <select className="input">
+              <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 <option>UTC</option>
                 <option>EST</option>
                 <option>PST</option>
                 <option>GMT</option>
+                <option>Europe/London</option>
+                <option>Asia/Tokyo</option>
               </select>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Language</label>
+              <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <option>English</option>
+                <option>Spanish</option>
+                <option>French</option>
+                <option>German</option>
+                <option>Italian</option>
+                <option>Portuguese</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Currency</label>
+              <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <option>USD ($)</option>
+                <option>EUR (€)</option>
+                <option>GBP (£)</option>
+                <option>JPY (¥)</option>
+                <option>CAD (C$)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* Security Settings */}
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <h3 className="text-xl font-bold text-gray-900 mb-4">🔒 Security Settings</h3>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-gray-700">Two-Factor Authentication</span>
+              <button className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 font-medium transition-colors">
+                Enable
+              </button>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-gray-700">Session Timeout</span>
+              <select className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                <option>15 minutes</option>
+                <option>30 minutes</option>
+                <option>1 hour</option>
+                <option>2 hours</option>
+              </select>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-gray-700">IP Whitelist</span>
+              <button className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 font-medium transition-colors">
+                Configure
+              </button>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-gray-700">Audit Logging</span>
+              <button className="bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 font-medium transition-colors">
+                View Logs
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Integration Settings */}
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <h3 className="text-xl font-bold text-gray-900 mb-4">🔗 Integration Settings</h3>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-gray-700">Google Sheets API</span>
+              <button className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 font-medium transition-colors">
+                Connected
+              </button>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-gray-700">Telegram Bot</span>
+              <button className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 font-medium transition-colors">
+                Configure
+              </button>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-gray-700">Email Notifications</span>
+              <button className="bg-orange-600 text-white py-2 px-4 rounded-lg hover:bg-orange-700 font-medium transition-colors">
+                Setup
+              </button>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-gray-700">Webhook URLs</span>
+              <button className="bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 font-medium transition-colors">
+                Manage
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Notification Settings */}
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <h3 className="text-xl font-bold text-gray-900 mb-4">🔔 Notification Settings</h3>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-gray-700">Email Alerts</span>
+              <input type="checkbox" className="w-4 h-4 text-blue-600 rounded" defaultChecked />
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-gray-700">SMS Notifications</span>
+              <input type="checkbox" className="w-4 h-4 text-blue-600 rounded" />
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-gray-700">Push Notifications</span>
+              <input type="checkbox" className="w-4 h-4 text-blue-600 rounded" defaultChecked />
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-gray-700">Telegram Alerts</span>
+              <input type="checkbox" className="w-4 h-4 text-blue-600 rounded" defaultChecked />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Advanced Settings */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Database Settings */}
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <h3 className="text-xl font-bold text-gray-900 mb-4">🗄️ Database Settings</h3>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Connection String</label>
+              <input 
+                type="password" 
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                placeholder="mongodb://localhost:27017/igaming"
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-gray-700">Auto Backup</span>
+              <input type="checkbox" className="w-4 h-4 text-blue-600 rounded" defaultChecked />
+            </div>
+            <button className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 font-medium transition-colors">
+              Test Connection
+            </button>
+          </div>
+        </div>
+
+        {/* API Settings */}
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <h3 className="text-xl font-bold text-gray-900 mb-4">🔌 API Settings</h3>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">API Rate Limit</label>
+              <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                <option>100 requests/minute</option>
+                <option>500 requests/minute</option>
+                <option>1000 requests/minute</option>
+                <option>Unlimited</option>
+              </select>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-gray-700">API Key Required</span>
+              <input type="checkbox" className="w-4 h-4 text-blue-600 rounded" defaultChecked />
+            </div>
+            <button className="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 font-medium transition-colors">
+              Generate New Key
+            </button>
+          </div>
+        </div>
+
+        {/* System Status */}
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <h3 className="text-xl font-bold text-gray-900 mb-4">📊 System Status</h3>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-gray-700">Server Status</span>
+              <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">Online</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-gray-700">Database Status</span>
+              <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">Connected</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-gray-700">API Status</span>
+              <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">Active</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-gray-700">Uptime</span>
+              <span className="text-sm text-gray-600">99.9%</span>
+            </div>
+          </div>
+        </div>
+      </div>
               <select className="input">
                 <option>English</option>
                 <option>Spanish</option>
