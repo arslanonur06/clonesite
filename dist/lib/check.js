@@ -1,3 +1,4 @@
+// @ts-ignore
 import whoisCb from 'whois';
 import dns from 'node:dns/promises';
 import pLimit from 'p-limit';
@@ -29,7 +30,7 @@ export async function checkDomain(domain) {
         let nameServers = null;
         try {
             const raw = await new Promise((resolve, reject) => {
-                whoisCb.lookup(domain, (err, data) => {
+                whoisCb(domain, (err, data) => {
                     if (err)
                         return reject(err);
                     resolve(String(data ?? ''));

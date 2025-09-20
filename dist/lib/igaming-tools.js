@@ -539,7 +539,113 @@ export async function generateComprehensivePDFReport(data, outputPath) {
     console.log(`✅ PDF report generated: ${outputPath}`);
     return outputPath;
 }
-// Helper function to generate HTML for PDF report
+// Specific PDF generators for different features
+export async function generateAffiliatePDFReport(data, outputPath) {
+    console.log(`📄 Generating affiliate monitoring PDF report...`);
+    const browser = await chromium.launch({ headless: true });
+    const page = await browser.newPage();
+    const htmlContent = generateAffiliateReportHTML(data);
+    await page.setContent(htmlContent);
+    await page.pdf({
+        path: outputPath,
+        format: 'A4',
+        printBackground: true,
+        margin: {
+            top: '20mm',
+            bottom: '20mm',
+            left: '15mm',
+            right: '15mm'
+        }
+    });
+    await browser.close();
+    console.log(`✅ Affiliate PDF report generated: ${outputPath}`);
+    return outputPath;
+}
+export async function generateLicenseVerificationPDFReport(data, outputPath) {
+    console.log(`📄 Generating license verification PDF report...`);
+    const browser = await chromium.launch({ headless: true });
+    const page = await browser.newPage();
+    const htmlContent = generateLicenseReportHTML(data);
+    await page.setContent(htmlContent);
+    await page.pdf({
+        path: outputPath,
+        format: 'A4',
+        printBackground: true,
+        margin: {
+            top: '20mm',
+            bottom: '20mm',
+            left: '15mm',
+            right: '15mm'
+        }
+    });
+    await browser.close();
+    console.log(`✅ License verification PDF report generated: ${outputPath}`);
+    return outputPath;
+}
+export async function generatePaymentAnalysisPDFReport(data, outputPath) {
+    console.log(`📄 Generating payment analysis PDF report...`);
+    const browser = await chromium.launch({ headless: true });
+    const page = await browser.newPage();
+    const htmlContent = generatePaymentReportHTML(data);
+    await page.setContent(htmlContent);
+    await page.pdf({
+        path: outputPath,
+        format: 'A4',
+        printBackground: true,
+        margin: {
+            top: '20mm',
+            bottom: '20mm',
+            left: '15mm',
+            right: '15mm'
+        }
+    });
+    await browser.close();
+    console.log(`✅ Payment analysis PDF report generated: ${outputPath}`);
+    return outputPath;
+}
+export async function generateResponsibleGamingPDFReport(data, outputPath) {
+    console.log(`📄 Generating responsible gaming PDF report...`);
+    const browser = await chromium.launch({ headless: true });
+    const page = await browser.newPage();
+    const htmlContent = generateResponsibleGamingReportHTML(data);
+    await page.setContent(htmlContent);
+    await page.pdf({
+        path: outputPath,
+        format: 'A4',
+        printBackground: true,
+        margin: {
+            top: '20mm',
+            bottom: '20mm',
+            left: '15mm',
+            right: '15mm'
+        }
+    });
+    await browser.close();
+    console.log(`✅ Responsible gaming PDF report generated: ${outputPath}`);
+    return outputPath;
+}
+export async function generateSecurityAnalysisPDFReport(data, outputPath) {
+    console.log(`📄 Generating security analysis PDF report...`);
+    const browser = await chromium.launch({ headless: true });
+    const page = await browser.newPage();
+    const htmlContent = generateSecurityReportHTML(data);
+    await page.setContent(htmlContent);
+    await page.pdf({
+        path: outputPath,
+        format: 'A4',
+        printBackground: true,
+        margin: {
+            top: '20mm',
+            bottom: '20mm',
+            left: '15mm',
+            right: '15mm'
+        }
+    });
+    await browser.close();
+    console.log(`✅ Security analysis PDF report generated: ${outputPath}`);
+    return outputPath;
+}
+// Helper functions to generate HTML for different report types
 function generateReportHTML(data) {
     const { brand, affiliates, playerTracking, dmcaRequests, summary } = data;
     return `
@@ -565,6 +671,381 @@ function generateReportHTML(data) {
           <p>Total Affiliates Monitored: ${affiliates?.length || 0}</p>
           <p>DMCA Requests Generated: ${dmcaRequests?.totalRequests || 0}</p>
           <p>Player Tracking Issues: ${playerTracking?.totalIssues || 0}</p>
+        </div>
+      </body>
+    </html>
+  `;
+}
+function generateAffiliateReportHTML(data) {
+    const { brand, affiliates, playerTracking, summary } = data;
+    return `
+    <html>
+      <head>
+        <title>Affiliate Monitoring Report - ${brand}</title>
+        <style>
+          body { font-family: Arial, sans-serif; margin: 20px; }
+          .header { background: #dc2626; color: white; padding: 20px; text-align: center; }
+          .section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
+          .alert { background: #fee2e2; border: 1px solid #fca5a5; padding: 10px; margin: 10px 0; }
+          .success { background: #dcfce7; border: 1px solid #86efac; padding: 10px; margin: 10px 0; }
+          .table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+          .table th, .table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+          .table th { background-color: #f2f2f2; }
+          .high-risk { background-color: #fee2e2; }
+          .medium-risk { background-color: #fef3c7; }
+          .low-risk { background-color: #dcfce7; }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <h1>🔗 Affiliate Monitoring Report</h1>
+          <h2>Brand: ${brand}</h2>
+          <p>Generated on: ${new Date().toLocaleDateString()}</p>
+        </div>
+        
+        <div class="section">
+          <h3>📊 Executive Summary</h3>
+          <p><strong>Total Affiliates Monitored:</strong> ${affiliates?.length || 0}</p>
+          <p><strong>High Risk Affiliates:</strong> ${affiliates?.filter((a) => a.riskLevel === 'high').length || 0}</p>
+          <p><strong>Player Tracking Issues:</strong> ${playerTracking?.length || 0}</p>
+          <p><strong>Unauthorized Affiliate IDs:</strong> ${affiliates?.filter((a) => a.indicators?.includes('Unauthorized affiliate ID')).length || 0}</p>
+        </div>
+
+        <div class="section">
+          <h3>🚨 Suspicious Affiliates</h3>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>URL</th>
+                <th>Affiliate ID</th>
+                <th>Risk Level</th>
+                <th>Bonus Claimed</th>
+                <th>Indicators</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${affiliates?.map((affiliate) => `
+                <tr class="${affiliate.riskLevel}-risk">
+                  <td>${affiliate.url}</td>
+                  <td>${affiliate.affiliateId}</td>
+                  <td>${affiliate.riskLevel?.toUpperCase()}</td>
+                  <td>${affiliate.bonusClaimed}</td>
+                  <td>${affiliate.indicators?.join(', ')}</td>
+                </tr>
+              `).join('') || '<tr><td colspan="5">No suspicious affiliates found</td></tr>'}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="section">
+          <h3>👥 Player Tracking Analysis</h3>
+          ${playerTracking?.map((tracking) => `
+            <div class="alert">
+              <strong>Method:</strong> ${tracking.trackingMethod}<br>
+              <strong>Issues:</strong> ${tracking.issues?.join(', ')}<br>
+              <strong>Risk Level:</strong> ${tracking.riskLevel}
+            </div>
+          `).join('') || '<p>No player tracking issues detected</p>'}
+        </div>
+      </body>
+    </html>
+  `;
+}
+function generateLicenseReportHTML(data) {
+    const { brand, domains, results } = data;
+    return `
+    <html>
+      <head>
+        <title>Gaming License Verification Report - ${brand}</title>
+        <style>
+          body { font-family: Arial, sans-serif; margin: 20px; }
+          .header { background: #059669; color: white; padding: 20px; text-align: center; }
+          .section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
+          .alert { background: #fee2e2; border: 1px solid #fca5a5; padding: 10px; margin: 10px 0; }
+          .success { background: #dcfce7; border: 1px solid #86efac; padding: 10px; margin: 10px 0; }
+          .table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+          .table th, .table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+          .table th { background-color: #f2f2f2; }
+          .valid { background-color: #dcfce7; }
+          .invalid { background-color: #fee2e2; }
+          .unknown { background-color: #fef3c7; }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <h1>📜 Gaming License Verification Report</h1>
+          <h2>Brand: ${brand}</h2>
+          <p>Generated on: ${new Date().toLocaleDateString()}</p>
+        </div>
+        
+        <div class="section">
+          <h3>📊 License Verification Summary</h3>
+          <p><strong>Total Domains Checked:</strong> ${domains?.length || 0}</p>
+          <p><strong>Valid Licenses:</strong> ${results?.validLicenses || 0}</p>
+          <p><strong>Invalid Licenses:</strong> ${results?.invalidLicenses || 0}</p>
+          <p><strong>Unknown Status:</strong> ${results?.unknownLicenses || 0}</p>
+        </div>
+
+        <div class="section">
+          <h3>🏛️ License Details</h3>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Domain</th>
+                <th>License Status</th>
+                <th>Regulatory Authority</th>
+                <th>License Number</th>
+                <th>Expiry Date</th>
+                <th>Compliance Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${results?.licenseDetails?.map((license) => `
+                <tr class="${license.status === 'valid' ? 'valid' : license.status === 'invalid' ? 'invalid' : 'unknown'}">
+                  <td>${license.domain}</td>
+                  <td>${license.status?.toUpperCase()}</td>
+                  <td>${license.regulatoryAuthority}</td>
+                  <td>${license.licenseNumber}</td>
+                  <td>${license.expiryDate}</td>
+                  <td>${license.complianceStatus}</td>
+                </tr>
+              `).join('') || '<tr><td colspan="6">No license data available</td></tr>'}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="section">
+          <h3>⚠️ Compliance Issues</h3>
+          ${results?.complianceIssues?.map((issue) => `
+            <div class="alert">
+              <strong>Domain:</strong> ${issue.domain}<br>
+              <strong>Issue:</strong> ${issue.issue}<br>
+              <strong>Severity:</strong> ${issue.severity}
+            </div>
+          `).join('') || '<p>No compliance issues found</p>'}
+        </div>
+      </body>
+    </html>
+  `;
+}
+function generatePaymentReportHTML(data) {
+    const { brand, domains, results } = data;
+    return `
+    <html>
+      <head>
+        <title>Payment Methods Analysis Report - ${brand}</title>
+        <style>
+          body { font-family: Arial, sans-serif; margin: 20px; }
+          .header { background: #7c3aed; color: white; padding: 20px; text-align: center; }
+          .section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
+          .alert { background: #fee2e2; border: 1px solid #fca5a5; padding: 10px; margin: 10px 0; }
+          .success { background: #dcfce7; border: 1px solid #86efac; padding: 10px; margin: 10px 0; }
+          .table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+          .table th, .table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+          .table th { background-color: #f2f2f2; }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <h1>💳 Payment Methods Analysis Report</h1>
+          <h2>Brand: ${brand}</h2>
+          <p>Generated on: ${new Date().toLocaleDateString()}</p>
+        </div>
+        
+        <div class="section">
+          <h3>📊 Payment Analysis Summary</h3>
+          <p><strong>Total Domains Analyzed:</strong> ${domains?.length || 0}</p>
+          <p><strong>Payment Methods Found:</strong> ${results?.totalPaymentMethods || 0}</p>
+          <p><strong>High Risk Methods:</strong> ${results?.highRiskMethods || 0}</p>
+          <p><strong>Compliance Issues:</strong> ${results?.complianceIssues || 0}</p>
+        </div>
+
+        <div class="section">
+          <h3>💳 Payment Methods by Domain</h3>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Domain</th>
+                <th>Payment Methods</th>
+                <th>Risk Level</th>
+                <th>Compliance Status</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${results?.domainAnalysis?.map((domain) => `
+                <tr>
+                  <td>${domain.domain}</td>
+                  <td>${domain.paymentMethods?.join(', ')}</td>
+                  <td>${domain.riskLevel?.toUpperCase()}</td>
+                  <td>${domain.complianceStatus}</td>
+                  <td>${domain.notes}</td>
+                </tr>
+              `).join('') || '<tr><td colspan="5">No payment data available</td></tr>'}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="section">
+          <h3>⚠️ Risk Assessment</h3>
+          ${results?.riskFactors?.map((risk) => `
+            <div class="alert">
+              <strong>Factor:</strong> ${risk.factor}<br>
+              <strong>Impact:</strong> ${risk.impact}<br>
+              <strong>Recommendation:</strong> ${risk.recommendation}
+            </div>
+          `).join('') || '<p>No significant risks identified</p>'}
+        </div>
+      </body>
+    </html>
+  `;
+}
+function generateResponsibleGamingReportHTML(data) {
+    const { brand, domains, results } = data;
+    return `
+    <html>
+      <head>
+        <title>Responsible Gaming Compliance Report - ${brand}</title>
+        <style>
+          body { font-family: Arial, sans-serif; margin: 20px; }
+          .header { background: #ea580c; color: white; padding: 20px; text-align: center; }
+          .section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
+          .alert { background: #fee2e2; border: 1px solid #fca5a5; padding: 10px; margin: 10px 0; }
+          .success { background: #dcfce7; border: 1px solid #86efac; padding: 10px; margin: 10px 0; }
+          .table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+          .table th, .table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+          .table th { background-color: #f2f2f2; }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <h1>🛡️ Responsible Gaming Compliance Report</h1>
+          <h2>Brand: ${brand}</h2>
+          <p>Generated on: ${new Date().toLocaleDateString()}</p>
+        </div>
+        
+        <div class="section">
+          <h3>📊 Compliance Summary</h3>
+          <p><strong>Total Domains Checked:</strong> ${domains?.length || 0}</p>
+          <p><strong>Compliant Domains:</strong> ${results?.compliantDomains || 0}</p>
+          <p><strong>Non-Compliant Domains:</strong> ${results?.nonCompliantDomains || 0}</p>
+          <p><strong>Compliance Score:</strong> ${results?.complianceScore || 0}%</p>
+        </div>
+
+        <div class="section">
+          <h3>🛡️ Responsible Gaming Features</h3>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Domain</th>
+                <th>Self-Exclusion</th>
+                <th>Deposit Limits</th>
+                <th>Time Limits</th>
+                <th>Help Resources</th>
+                <th>Overall Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${results?.domainAnalysis?.map((domain) => `
+                <tr>
+                  <td>${domain.domain}</td>
+                  <td>${domain.selfExclusion ? '✅' : '❌'}</td>
+                  <td>${domain.depositLimits ? '✅' : '❌'}</td>
+                  <td>${domain.timeLimits ? '✅' : '❌'}</td>
+                  <td>${domain.helpResources ? '✅' : '❌'}</td>
+                  <td>${domain.overallScore}/10</td>
+                </tr>
+              `).join('') || '<tr><td colspan="6">No data available</td></tr>'}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="section">
+          <h3>⚠️ Compliance Issues</h3>
+          ${results?.issues?.map((issue) => `
+            <div class="alert">
+              <strong>Domain:</strong> ${issue.domain}<br>
+              <strong>Issue:</strong> ${issue.issue}<br>
+              <strong>Severity:</strong> ${issue.severity}<br>
+              <strong>Recommendation:</strong> ${issue.recommendation}
+            </div>
+          `).join('') || '<p>No compliance issues found</p>'}
+        </div>
+      </body>
+    </html>
+  `;
+}
+function generateSecurityReportHTML(data) {
+    const { brand, domains, results } = data;
+    return `
+    <html>
+      <head>
+        <title>Gaming Security Analysis Report - ${brand}</title>
+        <style>
+          body { font-family: Arial, sans-serif; margin: 20px; }
+          .header { background: #dc2626; color: white; padding: 20px; text-align: center; }
+          .section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
+          .alert { background: #fee2e2; border: 1px solid #fca5a5; padding: 10px; margin: 10px 0; }
+          .success { background: #dcfce7; border: 1px solid #86efac; padding: 10px; margin: 10px 0; }
+          .table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+          .table th, .table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+          .table th { background-color: #f2f2f2; }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <h1>🔒 Gaming Security Analysis Report</h1>
+          <h2>Brand: ${brand}</h2>
+          <p>Generated on: ${new Date().toLocaleDateString()}</p>
+        </div>
+        
+        <div class="section">
+          <h3>📊 Security Summary</h3>
+          <p><strong>Total Domains Analyzed:</strong> ${domains?.length || 0}</p>
+          <p><strong>Security Score:</strong> ${results?.overallSecurityScore || 0}/100</p>
+          <p><strong>Critical Issues:</strong> ${results?.criticalIssues || 0}</p>
+          <p><strong>High Risk Domains:</strong> ${results?.highRiskDomains || 0}</p>
+        </div>
+
+        <div class="section">
+          <h3>🔒 Security Analysis by Domain</h3>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Domain</th>
+                <th>SSL Status</th>
+                <th>Security Headers</th>
+                <th>Vulnerabilities</th>
+                <th>Risk Level</th>
+                <th>Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${results?.domainAnalysis?.map((domain) => `
+                <tr>
+                  <td>${domain.domain}</td>
+                  <td>${domain.sslStatus ? '✅' : '❌'}</td>
+                  <td>${domain.securityHeaders}/10</td>
+                  <td>${domain.vulnerabilities?.length || 0}</td>
+                  <td>${domain.riskLevel?.toUpperCase()}</td>
+                  <td>${domain.securityScore}/100</td>
+                </tr>
+              `).join('') || '<tr><td colspan="6">No security data available</td></tr>'}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="section">
+          <h3>⚠️ Security Vulnerabilities</h3>
+          ${results?.vulnerabilities?.map((vuln) => `
+            <div class="alert">
+              <strong>Domain:</strong> ${vuln.domain}<br>
+              <strong>Vulnerability:</strong> ${vuln.type}<br>
+              <strong>Severity:</strong> ${vuln.severity}<br>
+              <strong>Description:</strong> ${vuln.description}<br>
+              <strong>Recommendation:</strong> ${vuln.recommendation}
+            </div>
+          `).join('') || '<p>No security vulnerabilities found</p>'}
         </div>
       </body>
     </html>

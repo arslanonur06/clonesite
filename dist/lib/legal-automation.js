@@ -3,9 +3,10 @@ import path from 'node:path';
 // Extract abuse contact from WHOIS data
 export async function extractAbuseContacts(domain) {
     try {
+        // @ts-ignore
         const whois = await import('whois');
         const whoisData = await new Promise((resolve, reject) => {
-            whois.lookup(domain, (err, data) => {
+            whois.default(domain, (err, data) => {
                 if (err)
                     reject(err);
                 else

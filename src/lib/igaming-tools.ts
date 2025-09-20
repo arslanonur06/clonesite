@@ -825,9 +825,9 @@ function generateAffiliateReportHTML(data: any) {
         <div class="section">
           <h3>📊 Executive Summary</h3>
           <p><strong>Total Affiliates Monitored:</strong> ${affiliates?.length || 0}</p>
-          <p><strong>High Risk Affiliates:</strong> ${affiliates?.filter(a => a.riskLevel === 'high').length || 0}</p>
+          <p><strong>High Risk Affiliates:</strong> ${affiliates?.filter((a: any) => a.riskLevel === 'high').length || 0}</p>
           <p><strong>Player Tracking Issues:</strong> ${playerTracking?.length || 0}</p>
-          <p><strong>Unauthorized Affiliate IDs:</strong> ${affiliates?.filter(a => a.indicators?.includes('Unauthorized affiliate ID')).length || 0}</p>
+          <p><strong>Unauthorized Affiliate IDs:</strong> ${affiliates?.filter((a: any) => a.indicators?.includes('Unauthorized affiliate ID')).length || 0}</p>
         </div>
 
         <div class="section">
@@ -843,7 +843,7 @@ function generateAffiliateReportHTML(data: any) {
               </tr>
             </thead>
             <tbody>
-              ${affiliates?.map(affiliate => `
+              ${affiliates?.map((affiliate: any) => `
                 <tr class="${affiliate.riskLevel}-risk">
                   <td>${affiliate.url}</td>
                   <td>${affiliate.affiliateId}</td>
@@ -858,7 +858,7 @@ function generateAffiliateReportHTML(data: any) {
 
         <div class="section">
           <h3>👥 Player Tracking Analysis</h3>
-          ${playerTracking?.map(tracking => `
+          ${playerTracking?.map((tracking: any) => `
             <div class="alert">
               <strong>Method:</strong> ${tracking.trackingMethod}<br>
               <strong>Issues:</strong> ${tracking.issues?.join(', ')}<br>
@@ -921,7 +921,7 @@ function generateLicenseReportHTML(data: any) {
               </tr>
             </thead>
             <tbody>
-              ${results?.licenseDetails?.map(license => `
+              ${results?.licenseDetails?.map((license: any) => `
                 <tr class="${license.status === 'valid' ? 'valid' : license.status === 'invalid' ? 'invalid' : 'unknown'}">
                   <td>${license.domain}</td>
                   <td>${license.status?.toUpperCase()}</td>
@@ -937,7 +937,7 @@ function generateLicenseReportHTML(data: any) {
 
         <div class="section">
           <h3>⚠️ Compliance Issues</h3>
-          ${results?.complianceIssues?.map(issue => `
+          ${results?.complianceIssues?.map((issue: any) => `
             <div class="alert">
               <strong>Domain:</strong> ${issue.domain}<br>
               <strong>Issue:</strong> ${issue.issue}<br>
@@ -996,7 +996,7 @@ function generatePaymentReportHTML(data: any) {
               </tr>
             </thead>
             <tbody>
-              ${results?.domainAnalysis?.map(domain => `
+              ${results?.domainAnalysis?.map((domain: any) => `
                 <tr>
                   <td>${domain.domain}</td>
                   <td>${domain.paymentMethods?.join(', ')}</td>
@@ -1011,7 +1011,7 @@ function generatePaymentReportHTML(data: any) {
 
         <div class="section">
           <h3>⚠️ Risk Assessment</h3>
-          ${results?.riskFactors?.map(risk => `
+          ${results?.riskFactors?.map((risk: any) => `
             <div class="alert">
               <strong>Factor:</strong> ${risk.factor}<br>
               <strong>Impact:</strong> ${risk.impact}<br>
@@ -1071,7 +1071,7 @@ function generateResponsibleGamingReportHTML(data: any) {
               </tr>
             </thead>
             <tbody>
-              ${results?.domainAnalysis?.map(domain => `
+              ${results?.domainAnalysis?.map((domain: any) => `
                 <tr>
                   <td>${domain.domain}</td>
                   <td>${domain.selfExclusion ? '✅' : '❌'}</td>
@@ -1087,7 +1087,7 @@ function generateResponsibleGamingReportHTML(data: any) {
 
         <div class="section">
           <h3>⚠️ Compliance Issues</h3>
-          ${results?.issues?.map(issue => `
+          ${results?.issues?.map((issue: any) => `
             <div class="alert">
               <strong>Domain:</strong> ${issue.domain}<br>
               <strong>Issue:</strong> ${issue.issue}<br>
@@ -1148,7 +1148,7 @@ function generateSecurityReportHTML(data: any) {
               </tr>
             </thead>
             <tbody>
-              ${results?.domainAnalysis?.map(domain => `
+              ${results?.domainAnalysis?.map((domain: any) => `
                 <tr>
                   <td>${domain.domain}</td>
                   <td>${domain.sslStatus ? '✅' : '❌'}</td>
@@ -1164,7 +1164,7 @@ function generateSecurityReportHTML(data: any) {
 
         <div class="section">
           <h3>⚠️ Security Vulnerabilities</h3>
-          ${results?.vulnerabilities?.map(vuln => `
+          ${results?.vulnerabilities?.map((vuln: any) => `
             <div class="alert">
               <strong>Domain:</strong> ${vuln.domain}<br>
               <strong>Vulnerability:</strong> ${vuln.type}<br>

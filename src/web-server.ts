@@ -263,7 +263,7 @@ class BrandProtectionWebServer {
         const pdfPath = await generateAffiliatePDFReport(reportData, outputPath);
         
         // Add PDF path to response
-        result.pdfReport = pdfPath;
+        (result as any).pdfReport = pdfPath;
         
         res.json(result);
       } catch (error) {
@@ -293,7 +293,7 @@ class BrandProtectionWebServer {
         const pdfPath = await generateLicenseVerificationPDFReport(reportData, outputPath);
         
         // Add PDF path to response
-        result.pdfReport = pdfPath;
+        (result as any).pdfReport = pdfPath;
         
         res.json(result);
       } catch (error) {
@@ -323,7 +323,7 @@ class BrandProtectionWebServer {
         const pdfPath = await generatePaymentAnalysisPDFReport(reportData, outputPath);
         
         // Add PDF path to response
-        result.pdfReport = pdfPath;
+        (result as any).pdfReport = pdfPath;
         
         res.json(result);
       } catch (error) {
@@ -363,7 +363,7 @@ class BrandProtectionWebServer {
         const pdfPath = await generateResponsibleGamingPDFReport(reportData, outputPath);
         
         // Add PDF path to response
-        result.pdfReport = pdfPath;
+        (result as any).pdfReport = pdfPath;
         
         res.json(result);
       } catch (error) {
@@ -433,7 +433,7 @@ class BrandProtectionWebServer {
         const pdfPath = await generateSecurityAnalysisPDFReport(reportData, outputPath);
         
         // Add PDF path to response
-        result.pdfReport = pdfPath;
+        (result as any).pdfReport = pdfPath;
         
         res.json(result);
       } catch (error) {
@@ -847,8 +847,8 @@ class BrandProtectionWebServer {
         console.log(`🔍 Starting fake domain check for brand: ${brand}`);
         
         // Generate domain variants
-        const variants = generateDomainVariants(brand, ['com', 'net', 'org', 'bet', 'casino', 'poker', 'games', 'win', 'xyz']);
-        const domains = variants.slice(0, 50); // Limit for performance
+        const variants = generateDomainVariants(brand, { extensions: ['com', 'net', 'org', 'bet', 'casino', 'poker', 'games', 'win', 'xyz'] });
+        const domains = variants.slice(0, 50).map(v => v.domain); // Limit for performance
         
         // Check domain registration and activity
         const dnsResults = await checkDomains(domains, 10);
@@ -899,8 +899,8 @@ class BrandProtectionWebServer {
         
         // Generate potential clone domains
         const brand = new URL(baseUrl).hostname.split('.')[0];
-        const variants = generateDomainVariants(brand, ['com', 'net', 'org', 'bet', 'casino']);
-        const domains = variants.slice(0, 20);
+        const variants = generateDomainVariants(brand, { extensions: ['com', 'net', 'org', 'bet', 'casino'] });
+        const domains = variants.slice(0, 20).map(v => v.domain);
         
         // Check which domains are active
         const dnsResults = await checkDomains(domains, 5);

@@ -23,9 +23,10 @@ export type LegalEvidence = {
 // Extract abuse contact from WHOIS data
 export async function extractAbuseContacts(domain: string): Promise<string[]> {
   try {
+    // @ts-ignore
     const whois = await import('whois');
     const whoisData = await new Promise<string>((resolve, reject) => {
-      whois.lookup(domain, (err: any, data: string) => {
+      whois.default(domain, (err: any, data: string) => {
         if (err) reject(err);
         else resolve(data);
       });

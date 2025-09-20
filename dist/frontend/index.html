@@ -1,15 +1,506 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/shield.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Brand Protection Dashboard</title>
-    <script type="module" crossorigin src="/assets/index-ae2e4504.js"></script>
-    <link rel="stylesheet" href="/assets/index-ce15a74d.css">
-  </head>
-  <body>
-    <div id="root"></div>
-    
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Protection Dashboard - Advanced iGaming Tools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .feature-card { background: linear-gradient(145deg, #f8fafc, #e2e8f0); }
+        .risk-high { background: #fef2f2; border-left: 4px solid #ef4444; }
+        .risk-medium { background: #fffbeb; border-left: 4px solid #f59e0b; }
+        .risk-low { background: #f0fdf4; border-left: 4px solid #10b981; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <header class="gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
+                        <i data-lucide="shield" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold">Brand Protection Dashboard</h1>
+                        <p class="text-blue-100">Advanced iGaming Security & Monitoring</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-right">
+                        <div class="text-sm text-blue-100">Server Status</div>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+                            <span class="text-sm font-medium">Online</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Total Scans</p>
+                        <p class="text-3xl font-bold text-gray-900">1,247</p>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i data-lucide="activity" class="w-6 h-6 text-blue-600"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Active Threats</p>
+                        <p class="text-3xl font-bold text-red-600">23</p>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i data-lucide="alert-triangle" class="w-6 h-6 text-red-600"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Domains Monitored</p>
+                        <p class="text-3xl font-bold text-gray-900">8,934</p>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i data-lucide="globe" class="w-6 h-6 text-green-600"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-md p-6 card-hover">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Risk Score</p>
+                        <p class="text-3xl font-bold text-yellow-600">7.2</p>
+                    </div>
+                    <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                        <i data-lucide="trending-up" class="w-6 h-6 text-yellow-600"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
+                    <i data-lucide="shield" class="w-5 h-5 mr-2 text-blue-600"></i>
+                    Brand Protection Tools
+                </h2>
+                
+                <div class="space-y-4">
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">🔍 Fake Domain Checker</h3>
+                            <button onclick="runFakeDomainCheck()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                                <i data-lucide="play" class="w-4 h-4 mr-1"></i>
+                                Run Check
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" id="brandInput" placeholder="Enter brand name (e.g., kalebet)" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        </div>
+                        <div id="fakeDomainResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Results will appear here...</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">🎯 Clone Detection</h3>
+                            <button onclick="runCloneDetection()" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+                                <i data-lucide="search" class="w-4 h-4 mr-1"></i>
+                                Detect Clones
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <input type="url" id="baseUrlInput" placeholder="Enter base URL (e.g., https://kalebet.com)" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                        </div>
+                        <div id="cloneDetectionResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Clone analysis will appear here...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
+                    <i data-lucide="gamepad-2" class="w-5 h-5 mr-2 text-green-600"></i>
+                    iGaming Advanced Tools
+                </h2>
+                
+                <div class="space-y-4">
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">🔗 Affiliate Monitoring</h3>
+                            <button onclick="runAffiliateMonitoring()" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+                                <i data-lucide="users" class="w-4 h-4 mr-1"></i>
+                                Monitor
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" id="affiliateBrandInput" placeholder="Enter brand name" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                        </div>
+                        <div id="affiliateResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Affiliate monitoring results will appear here...</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">📜 License Verification</h3>
+                            <button onclick="runLicenseVerification()" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                                <i data-lucide="file-check" class="w-4 h-4 mr-1"></i>
+                                Verify
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" id="licenseDomainsInput" placeholder="Enter domains (comma separated)" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                        </div>
+                        <div id="licenseResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">License verification results will appear here...</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">💳 Payment Analysis</h3>
+                            <button onclick="runPaymentAnalysis()" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+                                <i data-lucide="credit-card" class="w-4 h-4 mr-1"></i>
+                                Analyze
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" id="paymentDomainsInput" placeholder="Enter domains to analyze" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                        </div>
+                        <div id="paymentResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Payment analysis results will appear here...</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">🛡️ Responsible Gaming</h3>
+                            <button onclick="runResponsibleGaming()" class="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors">
+                                <i data-lucide="shield-check" class="w-4 h-4 mr-1"></i>
+                                Check
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" id="responsibleGamingDomainsInput" placeholder="Enter domains to check" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                        </div>
+                        <div id="responsibleGamingResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Responsible gaming compliance results will appear here...</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card rounded-lg p-4 card-hover">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-semibold text-gray-900">🔒 Security Analysis</h3>
+                            <button onclick="runSecurityAnalysis()" class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+                                <i data-lucide="lock" class="w-4 h-4 mr-1"></i>
+                                Analyze
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" id="securityDomainsInput" placeholder="Enter domains to analyze" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent">
+                        </div>
+                        <div id="securityResults" class="hidden">
+                            <div class="text-sm text-gray-600 mb-2">Security analysis results will appear here...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8 bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
+                <i data-lucide="bar-chart-3" class="w-5 h-5 mr-2 text-indigo-600"></i>
+                iGaming CRM Dashboard
+            </h2>
+            
+            <div id="crmDashboard" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-indigo-600" id="totalPlayers">-</div>
+                    <div class="text-sm text-gray-600">Total Players</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-green-600" id="activePlayers">-</div>
+                    <div class="text-sm text-gray-600">Active Players</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-blue-600" id="totalRevenue">-</div>
+                    <div class="text-sm text-gray-600">Total Revenue</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="loadingOverlay" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 flex items-center space-x-3">
+            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+            <span class="text-gray-700">Processing...</span>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        function showLoading() {
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.add('hidden');
+        }
+
+        function showResult(containerId, data) {
+            const container = document.getElementById(containerId);
+            container.classList.remove('hidden');
+            
+            let html = '<div class="space-y-2">';
+            if (data.results && data.results.length > 0) {
+                data.results.forEach(item => {
+                    const riskClass = item.riskLevel === 'high' ? 'risk-high' : 
+                                    item.riskLevel === 'medium' ? 'risk-medium' : 'risk-low';
+                    html += `<div class="p-3 rounded-lg ${riskClass}">
+                        <div class="font-medium">${item.domain || item.url || 'Unknown'}</div>
+                        <div class="text-sm text-gray-600">Risk: ${item.riskLevel || 'Unknown'}</div>
+                        ${item.similarity ? `<div class="text-sm">Similarity: ${item.similarity}%</div>` : ''}
+                        ${item.indicators ? `<div class="text-sm">Indicators: ${item.indicators.join(', ')}</div>` : ''}
+                    </div>`;
+                });
+            } else {
+                html += '<div class="text-sm text-gray-600">No results found</div>';
+            }
+            html += '</div>';
+            
+            container.innerHTML = html;
+        }
+
+        async function runFakeDomainCheck() {
+            const brand = document.getElementById('brandInput').value;
+            if (!brand) {
+                alert('Please enter a brand name');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/brand-protection/fake-domain-check', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ brand })
+                });
+                const data = await response.json();
+                showResult('fakeDomainResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error running fake domain check');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runCloneDetection() {
+            const baseUrl = document.getElementById('baseUrlInput').value;
+            if (!baseUrl) {
+                alert('Please enter a base URL');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/brand-protection/clone-detection', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ baseUrl, threshold: 0.8 })
+                });
+                const data = await response.json();
+                showResult('cloneDetectionResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error running clone detection');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runAffiliateMonitoring() {
+            const brand = document.getElementById('affiliateBrandInput').value;
+            if (!brand) {
+                alert('Please enter a brand name');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/affiliate-monitor', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ brand, officialAffiliateIds: ['AFF001', 'AFF002'] })
+                });
+                const data = await response.json();
+                showResult('affiliateResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error running affiliate monitoring');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runLicenseVerification() {
+            const domains = document.getElementById('licenseDomainsInput').value;
+            if (!domains) {
+                alert('Please enter domains');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/license-verify', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        domains: domains.split(',').map(d => d.trim()),
+                        brand: 'kalebet'
+                    })
+                });
+                const data = await response.json();
+                showResult('licenseResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error running license verification');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runPaymentAnalysis() {
+            const domains = document.getElementById('paymentDomainsInput').value;
+            if (!domains) {
+                alert('Please enter domains');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/payment-analysis', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        domains: domains.split(',').map(d => d.trim()),
+                        brand: 'kalebet'
+                    })
+                });
+                const data = await response.json();
+                showResult('paymentResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error running payment analysis');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runResponsibleGaming() {
+            const domains = document.getElementById('responsibleGamingDomainsInput').value;
+            if (!domains) {
+                alert('Please enter domains');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/responsible-gaming', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        domains: domains.split(',').map(d => d.trim()),
+                        brand: 'kalebet'
+                    })
+                });
+                const data = await response.json();
+                showResult('responsibleGamingResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error running responsible gaming check');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runSecurityAnalysis() {
+            const domains = document.getElementById('securityDomainsInput').value;
+            if (!domains) {
+                alert('Please enter domains');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/security-analysis', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        domains: domains.split(',').map(d => d.trim()),
+                        brand: 'kalebet'
+                    })
+                });
+                const data = await response.json();
+                showResult('securityResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error running security analysis');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function loadCRMDashboard() {
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/crm-dashboard', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ brand: 'kalebet' })
+                });
+                const data = await response.json();
+                
+                if (data.success && data.data) {
+                    document.getElementById('totalPlayers').textContent = data.data.totalPlayers.toLocaleString();
+                    document.getElementById('activePlayers').textContent = data.data.activePlayers.toLocaleString();
+                    document.getElementById('totalRevenue').textContent = '$' + data.data.totalRevenue.toLocaleString();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error loading CRM dashboard');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        loadCRMDashboard();
+    </script>
+</body>
 </html>
