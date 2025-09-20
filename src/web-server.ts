@@ -29,6 +29,11 @@ import {
   analyzeGamingSecurity,
   generateDMCARequests,
   generateComprehensivePDFReport,
+  generateAffiliatePDFReport,
+  generateLicenseVerificationPDFReport,
+  generatePaymentAnalysisPDFReport,
+  generateResponsibleGamingPDFReport,
+  generateSecurityAnalysisPDFReport,
   analyzeWebsiteInDepth
 } from './lib/igaming-tools.js';
 import {
@@ -239,6 +244,27 @@ class BrandProtectionWebServer {
       try {
         const { brand, officialAffiliateIds } = req.body;
         const result = await monitorAffiliateLinks(brand, officialAffiliateIds);
+        
+        // Generate specific PDF report for affiliate monitoring
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        const filename = `${brand}-affiliate-monitoring-report-${timestamp}.pdf`;
+        const outputPath = path.join(__dirname, '../temp-reports', filename);
+        
+        // Ensure temp-reports directory exists
+        await fs.mkdir(path.dirname(outputPath), { recursive: true });
+        
+        const reportData = {
+          brand,
+          affiliates: result.affiliates || [],
+          playerTracking: result.playerTracking || [],
+          summary: result.summary || {}
+        };
+        
+        const pdfPath = await generateAffiliatePDFReport(reportData, outputPath);
+        
+        // Add PDF path to response
+        result.pdfReport = pdfPath;
+        
         res.json(result);
       } catch (error) {
         res.status(500).json({ error: 'Affiliate monitoring failed' });
@@ -247,8 +273,28 @@ class BrandProtectionWebServer {
 
     this.app.post('/api/igaming/license-verify', async (req, res) => {
       try {
-        const { domains } = req.body;
+        const { domains, brand } = req.body;
         const result = await verifyGamingLicenses(domains);
+        
+        // Generate specific PDF report for license verification
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        const filename = `${brand || 'gaming'}-license-verification-report-${timestamp}.pdf`;
+        const outputPath = path.join(__dirname, '../temp-reports', filename);
+        
+        // Ensure temp-reports directory exists
+        await fs.mkdir(path.dirname(outputPath), { recursive: true });
+        
+        const reportData = {
+          brand: brand || 'Gaming',
+          domains,
+          results: result
+        };
+        
+        const pdfPath = await generateLicenseVerificationPDFReport(reportData, outputPath);
+        
+        // Add PDF path to response
+        result.pdfReport = pdfPath;
+        
         res.json(result);
       } catch (error) {
         res.status(500).json({ error: 'License verification failed' });
@@ -257,8 +303,28 @@ class BrandProtectionWebServer {
 
     this.app.post('/api/igaming/payment-analysis', async (req, res) => {
       try {
-        const { domains } = req.body;
+        const { domains, brand } = req.body;
         const result = await analyzePaymentMethods(domains);
+        
+        // Generate specific PDF report for payment analysis
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        const filename = `${brand || 'gaming'}-payment-analysis-report-${timestamp}.pdf`;
+        const outputPath = path.join(__dirname, '../temp-reports', filename);
+        
+        // Ensure temp-reports directory exists
+        await fs.mkdir(path.dirname(outputPath), { recursive: true });
+        
+        const reportData = {
+          brand: brand || 'Gaming',
+          domains,
+          results: result
+        };
+        
+        const pdfPath = await generatePaymentAnalysisPDFReport(reportData, outputPath);
+        
+        // Add PDF path to response
+        result.pdfReport = pdfPath;
+        
         res.json(result);
       } catch (error) {
         res.status(500).json({ error: 'Payment analysis failed' });
@@ -277,8 +343,28 @@ class BrandProtectionWebServer {
 
     this.app.post('/api/igaming/responsible-gaming', async (req, res) => {
       try {
-        const { domains } = req.body;
+        const { domains, brand } = req.body;
         const result = await checkResponsibleGaming(domains);
+        
+        // Generate specific PDF report for responsible gaming
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        const filename = `${brand || 'gaming'}-responsible-gaming-report-${timestamp}.pdf`;
+        const outputPath = path.join(__dirname, '../temp-reports', filename);
+        
+        // Ensure temp-reports directory exists
+        await fs.mkdir(path.dirname(outputPath), { recursive: true });
+        
+        const reportData = {
+          brand: brand || 'Gaming',
+          domains,
+          results: result
+        };
+        
+        const pdfPath = await generateResponsibleGamingPDFReport(reportData, outputPath);
+        
+        // Add PDF path to response
+        result.pdfReport = pdfPath;
+        
         res.json(result);
       } catch (error) {
         res.status(500).json({ error: 'Responsible gaming check failed' });
@@ -327,8 +413,28 @@ class BrandProtectionWebServer {
 
     this.app.post('/api/igaming/security-analysis', async (req, res) => {
       try {
-        const { domains } = req.body;
+        const { domains, brand } = req.body;
         const result = await analyzeGamingSecurity(domains);
+        
+        // Generate specific PDF report for security analysis
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        const filename = `${brand || 'gaming'}-security-analysis-report-${timestamp}.pdf`;
+        const outputPath = path.join(__dirname, '../temp-reports', filename);
+        
+        // Ensure temp-reports directory exists
+        await fs.mkdir(path.dirname(outputPath), { recursive: true });
+        
+        const reportData = {
+          brand: brand || 'Gaming',
+          domains,
+          results: result
+        };
+        
+        const pdfPath = await generateSecurityAnalysisPDFReport(reportData, outputPath);
+        
+        // Add PDF path to response
+        result.pdfReport = pdfPath;
+        
         res.json(result);
       } catch (error) {
         res.status(500).json({ error: 'Security analysis failed' });
