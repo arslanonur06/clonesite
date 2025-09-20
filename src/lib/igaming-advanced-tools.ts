@@ -36,7 +36,7 @@ export async function analyzePlayerBehavior(playerId: string, timeframe: string 
     ].filter(() => Math.random() > 0.7),
     
     // Recommendations
-    recommendations: []
+    recommendations: [] as string[]
   };
   
   // Generate recommendations based on risk profile
@@ -378,7 +378,7 @@ export async function analyzeMarketingCampaigns(campaignId?: string) {
 
 // Helper functions
 function generateVipRecommendations(player: any) {
-  const recommendations = [];
+  const recommendations: string[] = [];
   
   if (player.monthlyWager > 400000) {
     recommendations.push('Upgrade to Diamond+ level');
@@ -402,7 +402,7 @@ function generateGameTrends(game: any) {
 }
 
 function generateGameRecommendations(game: any) {
-  const recommendations = [];
+  const recommendations: string[] = [];
   
   if (game.rtp < 95) {
     recommendations.push('Consider increasing RTP to improve player retention');
@@ -428,7 +428,7 @@ function analyzeCampaignPerformance(campaign: any) {
 }
 
 function generateCampaignRecommendations(campaign: any) {
-  const recommendations = [];
+  const recommendations: string[] = [];
   
   if (campaign.ctr < 3) {
     recommendations.push('Improve ad creative and targeting');

@@ -22,7 +22,7 @@ export async function performRiskAssessment(playerId: string, domains: string[] 
     overallRiskScore: Math.floor(Math.random() * 100),
     riskLevel: '',
     factors: riskFactors.filter(() => Math.random() > 0.6),
-    recommendations: [],
+    recommendations: [] as string[],
     financialRisk: {
       score: Math.floor(Math.random() * 100),
       indicators: ['Rapid deposit cycles', 'Large withdrawal requests'],

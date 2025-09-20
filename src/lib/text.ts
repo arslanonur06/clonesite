@@ -5,7 +5,7 @@ export function normalizeText(input: string): string {
   const lower = input.toLowerCase();
   const noAccents = removeAccents(lower);
   const tokens = noAccents.replace(/[^a-z0-9çğıöşü\s]/gi, ' ').split(/\s+/).filter(Boolean);
-  const filtered = stopword.removeStopwords(tokens, [...(stopword.tr ?? []), ...(stopword.en ?? [])]);
+  const filtered = stopword.removeStopwords(tokens, [...(stopword as any).tr ?? [], ...(stopword as any).eng ?? []]);
   return filtered.join(' ');
 }
 

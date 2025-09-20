@@ -51,6 +51,9 @@ import {
   verifyGameFairness,
   performPlayerSegmentation
 } from './lib/igaming-professional-tools.js';
+import { compareWebsites, compareMultipleWebsites } from './lib/website-comparison.js';
+import { telegramManager } from './lib/telegram-integration.js';
+import { GoogleSheetsManager } from './lib/google-sheets-integration.js';
 import 'dotenv/config';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -595,6 +598,211 @@ class BrandProtectionWebServer {
       } catch (error) {
         console.error('Player segmentation failed:', error);
         res.status(500).json({ error: 'Player segmentation failed' });
+      }
+    });
+
+    // Website Comparison API
+    this.app.post('/api/website-comparison/compare', async (req, res) => {
+      try {
+        const { url1, url2 } = req.body;
+        if (!url1 || !url2) {
+          return res.status(400).json({ error: 'Both URLs are required' });
+        }
+        
+        const result = await compareWebsites(url1, url2);
+        res.json(result);
+      } catch (error) {
+        console.error('Website comparison failed:', error);
+        res.status(500).json({ error: 'Website comparison failed' });
+      }
+    });
+
+    this.app.post('/api/website-comparison/compare-multiple', async (req, res) => {
+      try {
+        const { urls } = req.body;
+        if (!urls || !Array.isArray(urls) || urls.length < 2) {
+          return res.status(400).json({ error: 'At least 2 URLs are required' });
+        }
+        
+        const results = await compareMultipleWebsites(urls);
+        res.json(results);
+      } catch (error) {
+        console.error('Multiple website comparison failed:', error);
+        res.status(500).json({ error: 'Multiple website comparison failed' });
+      }
+    });
+
+    // Telegram Integration API
+    this.app.get('/api/telegram/bots', (req, res) => {
+      try {
+        const bots = telegramManager.getBots();
+        res.json(bots);
+      } catch (error) {
+        console.error('Failed to get bots:', error);
+        res.status(500).json({ error: 'Failed to get bots' });
+      }
+    });
+
+    this.app.post('/api/telegram/bots', async (req, res) => {
+      try {
+        const { name, username, token } = req.body;
+        if (!name || !username || !token) {
+          return res.status(400).json({ error: 'Name, username, and token are required' });
+        }
+        
+        const bot = await telegramManager.createBot(name, username, token);
+        res.json(bot);
+      } catch (error) {
+        console.error('Failed to create bot:', error);
+        res.status(500).json({ error: 'Failed to create bot' });
+      }
+    });
+
+    this.app.post('/api/telegram/send-message', async (req, res) => {
+      try {
+        const { botId, chatId, message, options } = req.body;
+        if (!botId || !chatId || !message) {
+          return res.status(400).json({ error: 'Bot ID, chat ID, and message are required' });
+        }
+        
+        const success = await telegramManager.sendMessage(botId, chatId, message, options);
+        res.json({ success });
+      } catch (error) {
+        console.error('Failed to send message:', error);
+        res.status(500).json({ error: 'Failed to send message' });
+      }
+    });
+
+    this.app.post('/api/telegram/send-notification', async (req, res) => {
+      try {
+        const { type, title, message, priority, recipients } = req.body;
+        if (!type || !title || !message || !priority) {
+          return res.status(400).json({ error: 'Type, title, message, and priority are required' });
+        }
+        
+        const notificationId = await telegramManager.sendNotification({
+          type,
+          title,
+          message,
+          priority,
+          recipients: recipients || ['default']
+        });
+        res.json({ notificationId });
+      } catch (error) {
+        console.error('Failed to send notification:', error);
+        res.status(500).json({ error: 'Failed to send notification' });
+      }
+    });
+
+    this.app.get('/api/telegram/notifications', (req, res) => {
+      try {
+        const limit = parseInt(req.query.limit as string) || 50;
+        const notifications = telegramManager.getNotifications(limit);
+        res.json(notifications);
+      } catch (error) {
+        console.error('Failed to get notifications:', error);
+        res.status(500).json({ error: 'Failed to get notifications' });
+      }
+    });
+
+    this.app.post('/api/telegram/channels', async (req, res) => {
+      try {
+        const { name, description, type } = req.body;
+        if (!name || !description) {
+          return res.status(400).json({ error: 'Name and description are required' });
+        }
+        
+        const channel = await telegramManager.createChannel(name, description, type);
+        res.json(channel);
+      } catch (error) {
+        console.error('Failed to create channel:', error);
+        res.status(500).json({ error: 'Failed to create channel' });
+      }
+    });
+
+    this.app.get('/api/telegram/channels', (req, res) => {
+      try {
+        const channels = telegramManager.getChannels();
+        res.json(channels);
+      } catch (error) {
+        console.error('Failed to get channels:', error);
+        res.status(500).json({ error: 'Failed to get channels' });
+      }
+    });
+
+    // Google Sheets Integration API
+    this.app.get('/api/google-sheets/templates', (req, res) => {
+      try {
+        const templates = GoogleSheetsManager.getTemplates();
+        res.json(templates);
+      } catch (error) {
+        console.error('Failed to get templates:', error);
+        res.status(500).json({ error: 'Failed to get templates' });
+      }
+    });
+
+    this.app.post('/api/google-sheets/create-form', async (req, res) => {
+      try {
+        const { template, credentials } = req.body;
+        if (!template || !credentials) {
+          return res.status(400).json({ error: 'Template and credentials are required' });
+        }
+        
+        const sheetsManager = new GoogleSheetsManager({
+          credentials,
+          spreadsheetId: '',
+          scopes: ['https://www.googleapis.com/auth/spreadsheets']
+        });
+        
+        const spreadsheetId = await sheetsManager.createFormFromTemplate(template);
+        res.json({ spreadsheetId });
+      } catch (error) {
+        console.error('Failed to create form:', error);
+        res.status(500).json({ error: 'Failed to create Google Sheets form' });
+      }
+    });
+
+    this.app.post('/api/google-sheets/import-data', async (req, res) => {
+      try {
+        const { data, template, credentials, spreadsheetId } = req.body;
+        if (!data || !template || !credentials || !spreadsheetId) {
+          return res.status(400).json({ error: 'Data, template, credentials, and spreadsheet ID are required' });
+        }
+        
+        const sheetsManager = new GoogleSheetsManager({
+          credentials,
+          spreadsheetId,
+          scopes: ['https://www.googleapis.com/auth/spreadsheets']
+        });
+        
+        const result = await sheetsManager.importData(data, template);
+        res.json(result);
+      } catch (error) {
+        console.error('Failed to import data:', error);
+        res.status(500).json({ error: 'Failed to import data to Google Sheets' });
+      }
+    });
+
+    this.app.post('/api/google-sheets/export-csv', async (req, res) => {
+      try {
+        const { range, credentials, spreadsheetId } = req.body;
+        if (!range || !credentials || !spreadsheetId) {
+          return res.status(400).json({ error: 'Range, credentials, and spreadsheet ID are required' });
+        }
+        
+        const sheetsManager = new GoogleSheetsManager({
+          credentials,
+          spreadsheetId,
+          scopes: ['https://www.googleapis.com/auth/spreadsheets']
+        });
+        
+        const csv = await sheetsManager.exportToCSV(range);
+        res.setHeader('Content-Type', 'text/csv');
+        res.setHeader('Content-Disposition', 'attachment; filename="export.csv"');
+        res.send(csv);
+      } catch (error) {
+        console.error('Failed to export CSV:', error);
+        res.status(500).json({ error: 'Failed to export CSV from Google Sheets' });
       }
     });
 

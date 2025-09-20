@@ -352,7 +352,7 @@ program
     await fs.writeFile(reportPath, JSON.stringify(result, null, 2), 'utf8');
     const threshold = parseFloat(options.threshold);
     const flagged = result.visual.diffRatio <= threshold
-      ? (result.dom.tagCosine > 0.8 || result.classCosine > 0.6 || result.text.hamming < 16)
+      ? (result.dom.tagCosine > 0.8 || (result as any).classCosine > 0.6 || result.text.hamming < 16)
       : false;
     console.log(chalk.cyan(`Report saved: ${reportPath}`));
     if (flagged) {

@@ -88,6 +88,10 @@ const ComprehensiveDashboard: React.FC = () => {
     { id: 'marketing-campaigns', name: 'Campaign Analytics', description: 'Analyze marketing campaign performance and ROI', icon: TrendingUp, category: 'Marketing', endpoint: 'marketing-campaigns' },
     { id: 'bonus-abuse', name: 'Bonus Abuse Detection', description: 'Detect and prevent bonus hunting patterns', icon: AlertTriangle, category: 'Fraud', endpoint: 'bonus-abuse' },
     
+    // Website Comparison & Analysis
+    { id: 'website-comparison', name: 'Website Comparison', description: 'Compare similar iGaming websites and detect similarities', icon: Globe, category: 'Analysis', endpoint: 'website-comparison' },
+    { id: 'competitor-analysis', name: 'Competitor Analysis', description: 'Analyze competitor websites and market positioning', icon: Target, category: 'Analysis', endpoint: 'competitor-analysis' },
+    
     // Compliance & Legal
     { id: 'license-verify', name: 'License Verification', description: 'Verify gaming licenses and regulatory compliance', icon: Award, category: 'Compliance', endpoint: 'license-verify' },
     { id: 'compliance-monitor', name: 'Compliance Monitor', description: 'Track regulatory compliance and audit trails', icon: FileText, category: 'Compliance', endpoint: 'compliance-monitor' },
@@ -122,6 +126,10 @@ const ComprehensiveDashboard: React.FC = () => {
     { id: 'chargeback-prevention', name: 'Chargeback Prevention', icon: Shield, category: 'Financial', endpoint: 'chargeback-prevention' },
     { id: 'game-fairness', name: 'Game Fairness', icon: BarChart3, category: 'Content', endpoint: 'game-fairness' },
     { id: 'player-segmentation', name: 'Player Segmentation', icon: Users, category: 'Analytics', endpoint: 'player-segmentation' },
+    
+    // Integration Tools
+    { id: 'telegram-integration', name: 'Telegram Bot', description: 'Manage Telegram bots and notifications', icon: Users, category: 'Integration', endpoint: 'telegram-integration' },
+    { id: 'google-sheets', name: 'Google Sheets', description: 'Import/export data with Google Sheets integration', icon: FileText, category: 'Integration', endpoint: 'google-sheets' },
   ];
 
   const runTool = async (toolId: string) => {
@@ -141,7 +149,7 @@ const ComprehensiveDashboard: React.FC = () => {
       let requestBody: any = {};
       
       // Brand-based tools
-      if (['affiliate-monitor', 'bonus-abuse', 'odds-manipulation', 'player-behavior', 'marketing-campaigns', 'risk-assessment', 'kyc-verification', 'aml-monitoring', 'transaction-monitoring'].includes(toolId)) {
+      if (['affiliate-monitor', 'bonus-abuse', 'odds-manipulation', 'player-behavior', 'marketing-campaigns', 'risk-assessment', 'kyc-verification', 'aml-monitoring', 'transaction-monitoring', 'competitor-analysis'].includes(toolId)) {
         if (!brandInput.trim()) {
           alert('Please enter a brand name first');
           return;
@@ -155,6 +163,9 @@ const ComprehensiveDashboard: React.FC = () => {
         }
         if (toolId === 'marketing-campaigns') {
           requestBody.campaignId = 'WELCOME_BONUS_2025';
+        }
+        if (toolId === 'competitor-analysis') {
+          requestBody.competitors = ['bet365', 'william hill', 'ladbrokes', 'paddy power'];
         }
       }
       // Domain-based tools
@@ -200,6 +211,25 @@ const ComprehensiveDashboard: React.FC = () => {
       }
       else if (toolId === 'player-segmentation') {
         requestBody = { criteria: 'value' };
+      }
+      // Website comparison tools
+      else if (toolId === 'website-comparison') {
+        const domains = domainsInput.split('\n').filter((d: string) => d.trim());
+        if (domains.length < 2) {
+          alert('Please enter at least 2 domains for comparison');
+          return;
+        }
+        requestBody = { url1: domains[0], url2: domains[1] };
+        endpoint = '/api/website-comparison/compare';
+      }
+      // Integration tools
+      else if (toolId === 'telegram-integration') {
+        requestBody = { action: 'list' };
+        endpoint = '/api/telegram/bots';
+      }
+      else if (toolId === 'google-sheets') {
+        requestBody = { action: 'templates' };
+        endpoint = '/api/google-sheets/templates';
       }
 
       const response = await fetch(endpoint, {
@@ -794,6 +824,602 @@ const ComprehensiveDashboard: React.FC = () => {
       </div>
     </div>
   );
+  const renderBrandProtection = () => (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold">🛡️ Brand Protection Suite</h2>
+        <button className="btn btn-primary">
+          <Shield className="w-4 h-4 mr-2" />
+          Start Protection Scan
+        </button>
+      </div>
+
+      {/* Brand Protection Tools */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="card p-6">
+          <div className="flex items-center mb-4">
+            <Globe className="w-8 h-8 text-blue-600 mr-3" />
+            <h3 className="text-lg font-semibold">Domain Monitoring</h3>
+          </div>
+          <p className="text-gray-600 mb-4">Monitor for typosquatting, domain variations, and suspicious domains.</p>
+          <div className="space-y-2">
+            <div className="flex justify-between">
+              <span className="text-sm text-gray-600">Active Domains</span>
+              <span className="font-semibold">1,247</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-sm text-gray-600">Threats Detected</span>
+              <span className="font-semibold text-red-600">23</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-sm text-gray-600">Last Scan</span>
+              <span className="font-semibold">2 min ago</span>
+            </div>
+          </div>
+          <button className="btn btn-primary w-full mt-4">
+            <Eye className="w-4 h-4 mr-2" />
+            View Details
+          </button>
+        </div>
+
+        <div className="card p-6">
+          <div className="flex items-center mb-4">
+            <Target className="w-8 h-8 text-green-600 mr-3" />
+            <h3 className="text-lg font-semibold">Visual Detection</h3>
+          </div>
+          <p className="text-gray-600 mb-4">AI-powered visual similarity detection and logo analysis.</p>
+          <div className="space-y-2">
+            <div className="flex justify-between">
+              <span className="text-sm text-gray-600">Scans Completed</span>
+              <span className="font-semibold">456</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-sm text-gray-600">Similarities Found</span>
+              <span className="font-semibold text-orange-600">12</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-sm text-gray-600">Accuracy</span>
+              <span className="font-semibold text-green-600">94.2%</span>
+            </div>
+          </div>
+          <button className="btn btn-primary w-full mt-4">
+            <Eye className="w-4 h-4 mr-2" />
+            View Details
+          </button>
+        </div>
+
+        <div className="card p-6">
+          <div className="flex items-center mb-4">
+            <AlertTriangle className="w-8 h-8 text-red-600 mr-3" />
+            <h3 className="text-lg font-semibold">Threat Intelligence</h3>
+          </div>
+          <p className="text-gray-600 mb-4">Real-time threat monitoring and dark web surveillance.</p>
+          <div className="space-y-2">
+            <div className="flex justify-between">
+              <span className="text-sm text-gray-600">Active Threats</span>
+              <span className="font-semibold text-red-600">8</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-sm text-gray-600">Resolved</span>
+              <span className="font-semibold text-green-600">156</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-sm text-gray-600">Risk Level</span>
+              <span className="font-semibold text-orange-600">Medium</span>
+            </div>
+          </div>
+          <button className="btn btn-primary w-full mt-4">
+            <Eye className="w-4 h-4 mr-2" />
+            View Details
+          </button>
+        </div>
+      </div>
+
+      {/* Recent Alerts */}
+      <div className="card p-6">
+        <h3 className="text-lg font-semibold mb-4">🚨 Recent Security Alerts</h3>
+        <div className="space-y-3">
+          <div className="flex items-center justify-between p-3 bg-red-50 rounded-lg border-l-4 border-red-500">
+            <div className="flex items-center">
+              <AlertTriangle className="w-5 h-5 text-red-600 mr-3" />
+              <div>
+                <p className="font-medium text-red-900">High Risk Domain Detected</p>
+                <p className="text-sm text-red-700">kalebet123.com - Potential trademark infringement</p>
+              </div>
+            </div>
+            <span className="text-sm text-red-600 font-medium">2 min ago</span>
+          </div>
+          <div className="flex items-center justify-between p-3 bg-yellow-50 rounded-lg border-l-4 border-yellow-500">
+            <div className="flex items-center">
+              <Target className="w-5 h-5 text-yellow-600 mr-3" />
+              <div>
+                <p className="font-medium text-yellow-900">Visual Similarity Alert</p>
+                <p className="text-sm text-yellow-700">Similar logo detected on suspicious site</p>
+              </div>
+            </div>
+            <span className="text-sm text-yellow-600 font-medium">15 min ago</span>
+          </div>
+          <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+            <div className="flex items-center">
+              <Globe className="w-5 h-5 text-blue-600 mr-3" />
+              <div>
+                <p className="font-medium text-blue-900">New Domain Variation</p>
+                <p className="text-sm text-blue-700">kalebet-official.net registered</p>
+              </div>
+            </div>
+            <span className="text-sm text-blue-600 font-medium">1 hour ago</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderCompliance = () => (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold">📋 Compliance & Legal Management</h2>
+        <button className="btn btn-primary">
+          <FileText className="w-4 h-4 mr-2" />
+          Generate Report
+        </button>
+      </div>
+
+      {/* Compliance Overview */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="card p-4 bg-green-50 border-green-200">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600">Active Licenses</p>
+              <p className="text-2xl font-bold text-green-600">12</p>
+            </div>
+            <Award className="w-6 h-6 text-green-600" />
+          </div>
+        </div>
+        <div className="card p-4 bg-blue-50 border-blue-200">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600">Compliance Score</p>
+              <p className="text-2xl font-bold text-blue-600">94%</p>
+            </div>
+            <BarChart3 className="w-6 h-6 text-blue-600" />
+          </div>
+        </div>
+        <div className="card p-4 bg-yellow-50 border-yellow-200">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600">Pending Reviews</p>
+              <p className="text-2xl font-bold text-yellow-600">3</p>
+            </div>
+            <Clock className="w-6 h-6 text-yellow-600" />
+          </div>
+        </div>
+        <div className="card p-4 bg-red-50 border-red-200">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600">Violations</p>
+              <p className="text-2xl font-bold text-red-600">1</p>
+            </div>
+            <AlertTriangle className="w-6 h-6 text-red-600" />
+          </div>
+        </div>
+      </div>
+
+      {/* License Management */}
+      <div className="card p-6">
+        <h3 className="text-lg font-semibold mb-4">🏛️ License Management</h3>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b">
+                <th className="text-left py-3 px-4">License</th>
+                <th className="text-left py-3 px-4">Jurisdiction</th>
+                <th className="text-left py-3 px-4">Status</th>
+                <th className="text-left py-3 px-4">Expiry</th>
+                <th className="text-left py-3 px-4">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b hover:bg-gray-50">
+                <td className="py-3 px-4 font-medium">MGA/B2C/123/2020</td>
+                <td className="py-3 px-4">Malta</td>
+                <td className="py-3 px-4">
+                  <span className="px-2 py-1 rounded-full text-xs bg-green-100 text-green-800">Active</span>
+                </td>
+                <td className="py-3 px-4">2025-12-31</td>
+                <td className="py-3 px-4">
+                  <button className="btn btn-secondary text-xs">View</button>
+                </td>
+              </tr>
+              <tr className="border-b hover:bg-gray-50">
+                <td className="py-3 px-4 font-medium">UKGC-456789</td>
+                <td className="py-3 px-4">United Kingdom</td>
+                <td className="py-3 px-4">
+                  <span className="px-2 py-1 rounded-full text-xs bg-green-100 text-green-800">Active</span>
+                </td>
+                <td className="py-3 px-4">2024-06-30</td>
+                <td className="py-3 px-4">
+                  <button className="btn btn-secondary text-xs">View</button>
+                </td>
+              </tr>
+              <tr className="border-b hover:bg-gray-50">
+                <td className="py-3 px-4 font-medium">CGA-789012</td>
+                <td className="py-3 px-4">Curacao</td>
+                <td className="py-3 px-4">
+                  <span className="px-2 py-1 rounded-full text-xs bg-yellow-100 text-yellow-800">Pending</span>
+                </td>
+                <td className="py-3 px-4">2024-03-15</td>
+                <td className="py-3 px-4">
+                  <button className="btn btn-secondary text-xs">Review</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Compliance Checklist */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="card p-6">
+          <h3 className="text-lg font-semibold mb-4">✅ Compliance Checklist</h3>
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-sm">KYC Procedures</span>
+              <span className="text-green-600">✓</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm">AML Monitoring</span>
+              <span className="text-green-600">✓</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm">Responsible Gaming</span>
+              <span className="text-green-600">✓</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm">Data Protection</span>
+              <span className="text-yellow-600">⚠</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm">Audit Trail</span>
+              <span className="text-green-600">✓</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm">Reporting</span>
+              <span className="text-red-600">✗</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="card p-6">
+          <h3 className="text-lg font-semibold mb-4">📊 Compliance Metrics</h3>
+          <div className="space-y-4">
+            <div>
+              <div className="flex justify-between mb-1">
+                <span className="text-sm text-gray-600">Overall Compliance</span>
+                <span className="text-sm font-medium">94%</span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="bg-green-600 h-2 rounded-full" style={{width: '94%'}}></div>
+              </div>
+            </div>
+            <div>
+              <div className="flex justify-between mb-1">
+                <span className="text-sm text-gray-600">Regulatory Updates</span>
+                <span className="text-sm font-medium">87%</span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="bg-blue-600 h-2 rounded-full" style={{width: '87%'}}></div>
+              </div>
+            </div>
+            <div>
+              <div className="flex justify-between mb-1">
+                <span className="text-sm text-gray-600">Documentation</span>
+                <span className="text-sm font-medium">91%</span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="bg-purple-600 h-2 rounded-full" style={{width: '91%'}}></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderAnalytics = () => (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold">📊 Analytics & Reports</h2>
+        <div className="flex space-x-3">
+          <button className="btn btn-secondary">
+            <FileText className="w-4 h-4 mr-2" />
+            Export Data
+          </button>
+          <button className="btn btn-primary">
+            <BarChart3 className="w-4 h-4 mr-2" />
+            Generate Report
+          </button>
+        </div>
+      </div>
+
+      {/* Key Metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="card p-6 bg-gradient-to-r from-blue-500 to-blue-600 text-white">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-blue-100">Total Revenue</p>
+              <p className="text-3xl font-bold">$2.4M</p>
+              <p className="text-blue-200 text-sm">+12.5% from last month</p>
+            </div>
+            <DollarSign className="w-8 h-8 text-blue-200" />
+          </div>
+        </div>
+        
+        <div className="card p-6 bg-gradient-to-r from-green-500 to-green-600 text-white">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-green-100">Active Players</p>
+              <p className="text-3xl font-bold">15,247</p>
+              <p className="text-green-200 text-sm">+8.2% from last month</p>
+            </div>
+            <Users className="w-8 h-8 text-green-200" />
+          </div>
+        </div>
+        
+        <div className="card p-6 bg-gradient-to-r from-purple-500 to-purple-600 text-white">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-purple-100">Conversion Rate</p>
+              <p className="text-3xl font-bold">3.2%</p>
+              <p className="text-purple-200 text-sm">+0.3% from last month</p>
+            </div>
+            <TrendingUp className="w-8 h-8 text-purple-200" />
+          </div>
+        </div>
+        
+        <div className="card p-6 bg-gradient-to-r from-orange-500 to-orange-600 text-white">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-orange-100">Avg. Session</p>
+              <p className="text-3xl font-bold">24m</p>
+              <p className="text-orange-200 text-sm">+2.1m from last month</p>
+            </div>
+            <Clock className="w-8 h-8 text-orange-200" />
+          </div>
+        </div>
+      </div>
+
+      {/* Charts and Visualizations */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="card p-6">
+          <h3 className="text-lg font-semibold mb-4">📈 Revenue Trends</h3>
+          <div className="h-64 bg-gray-100 rounded-lg flex items-center justify-center">
+            <div className="text-center">
+              <BarChart3 className="w-12 h-12 text-gray-400 mx-auto mb-2" />
+              <p className="text-gray-600">Revenue chart visualization</p>
+              <p className="text-sm text-gray-500">Integration with chart library needed</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="card p-6">
+          <h3 className="text-lg font-semibold mb-4">🎯 Player Segmentation</h3>
+          <div className="h-64 bg-gray-100 rounded-lg flex items-center justify-center">
+            <div className="text-center">
+              <Users className="w-12 h-12 text-gray-400 mx-auto mb-2" />
+              <p className="text-gray-600">Player segmentation chart</p>
+              <p className="text-sm text-gray-500">Pie chart visualization needed</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Performance Metrics */}
+      <div className="card p-6">
+        <h3 className="text-lg font-semibold mb-4">⚡ Performance Metrics</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="text-center">
+            <div className="text-3xl font-bold text-blue-600 mb-2">99.9%</div>
+            <div className="text-sm text-gray-600">Uptime</div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl font-bold text-green-600 mb-2">1.2s</div>
+            <div className="text-sm text-gray-600">Avg. Response Time</div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl font-bold text-purple-600 mb-2">4.8/5</div>
+            <div className="text-sm text-gray-600">User Satisfaction</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Recent Reports */}
+      <div className="card p-6">
+        <h3 className="text-lg font-semibold mb-4">📄 Recent Reports</h3>
+        <div className="space-y-3">
+          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+            <div className="flex items-center">
+              <FileText className="w-5 h-5 text-blue-600 mr-3" />
+              <div>
+                <p className="font-medium">Monthly Performance Report</p>
+                <p className="text-sm text-gray-600">Generated 2 hours ago</p>
+              </div>
+            </div>
+            <button className="btn btn-secondary text-xs">Download</button>
+          </div>
+          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+            <div className="flex items-center">
+              <BarChart3 className="w-5 h-5 text-green-600 mr-3" />
+              <div>
+                <p className="font-medium">Player Analytics Report</p>
+                <p className="text-sm text-gray-600">Generated 1 day ago</p>
+              </div>
+            </div>
+            <button className="btn btn-secondary text-xs">Download</button>
+          </div>
+          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+            <div className="flex items-center">
+              <Shield className="w-5 h-5 text-red-600 mr-3" />
+              <div>
+                <p className="font-medium">Security Audit Report</p>
+                <p className="text-sm text-gray-600">Generated 3 days ago</p>
+              </div>
+            </div>
+            <button className="btn btn-secondary text-xs">Download</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderSettings = () => (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold">⚙️ System Settings</h2>
+        <button className="btn btn-primary">
+          <Settings className="w-4 h-4 mr-2" />
+          Save Changes
+        </button>
+      </div>
+
+      {/* Settings Sections */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* General Settings */}
+        <div className="card p-6">
+          <h3 className="text-lg font-semibold mb-4">🔧 General Settings</h3>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Platform Name</label>
+              <input type="text" className="input" defaultValue="iGaming Management Suite" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Default Timezone</label>
+              <select className="input">
+                <option>UTC</option>
+                <option>EST</option>
+                <option>PST</option>
+                <option>GMT</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Language</label>
+              <select className="input">
+                <option>English</option>
+                <option>Spanish</option>
+                <option>French</option>
+                <option>German</option>
+              </select>
+            </div>
+            <div className="flex items-center">
+              <input type="checkbox" id="notifications" className="mr-2" defaultChecked />
+              <label htmlFor="notifications" className="text-sm text-gray-700">Enable notifications</label>
+            </div>
+          </div>
+        </div>
+
+        {/* Security Settings */}
+        <div className="card p-6">
+          <h3 className="text-lg font-semibold mb-4">🔒 Security Settings</h3>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Session Timeout (minutes)</label>
+              <input type="number" className="input" defaultValue="30" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Password Policy</label>
+              <select className="input">
+                <option>Standard</option>
+                <option>Strong</option>
+                <option>Enterprise</option>
+              </select>
+            </div>
+            <div className="flex items-center">
+              <input type="checkbox" id="2fa" className="mr-2" />
+              <label htmlFor="2fa" className="text-sm text-gray-700">Enable Two-Factor Authentication</label>
+            </div>
+            <div className="flex items-center">
+              <input type="checkbox" id="audit" className="mr-2" defaultChecked />
+              <label htmlFor="audit" className="text-sm text-gray-700">Enable audit logging</label>
+            </div>
+          </div>
+        </div>
+
+        {/* Integration Settings */}
+        <div className="card p-6">
+          <h3 className="text-lg font-semibold mb-4">🔗 Integration Settings</h3>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Telegram Bot Token</label>
+              <input type="password" className="input" placeholder="Enter bot token" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Google Sheets API Key</label>
+              <input type="password" className="input" placeholder="Enter API key" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Webhook URL</label>
+              <input type="url" className="input" placeholder="https://your-domain.com/webhook" />
+            </div>
+            <div className="flex items-center">
+              <input type="checkbox" id="auto-sync" className="mr-2" defaultChecked />
+              <label htmlFor="auto-sync" className="text-sm text-gray-700">Enable auto-sync</label>
+            </div>
+          </div>
+        </div>
+
+        {/* Notification Settings */}
+        <div className="card p-6">
+          <h3 className="text-lg font-semibold mb-4">📢 Notification Settings</h3>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-700">Email Notifications</span>
+              <input type="checkbox" className="mr-2" defaultChecked />
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-700">SMS Notifications</span>
+              <input type="checkbox" className="mr-2" />
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-700">Telegram Notifications</span>
+              <input type="checkbox" className="mr-2" defaultChecked />
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-700">Push Notifications</span>
+              <input type="checkbox" className="mr-2" defaultChecked />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Notification Frequency</label>
+              <select className="input">
+                <option>Immediate</option>
+                <option>Every 15 minutes</option>
+                <option>Every hour</option>
+                <option>Daily digest</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* System Information */}
+      <div className="card p-6">
+        <h3 className="text-lg font-semibold mb-4">ℹ️ System Information</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <p className="text-sm text-gray-600">Version</p>
+            <p className="font-semibold">v2.1.0</p>
+          </div>
+          <div>
+            <p className="text-sm text-gray-600">Last Updated</p>
+            <p className="font-semibold">2024-01-15</p>
+          </div>
+          <div>
+            <p className="text-sm text-gray-600">Database Size</p>
+            <p className="font-semibold">2.3 GB</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
   const renderContent = () => {
     switch (activeSection) {
       case 'overview':
@@ -803,37 +1429,13 @@ const ComprehensiveDashboard: React.FC = () => {
       case 'igaming-tools':
         return renderIGamingTools();
       case 'brand-protection':
-        return (
-          <div className="text-center py-12">
-            <Shield className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">Brand Protection Tools</h3>
-            <p className="text-gray-600">Advanced brand monitoring and protection features coming soon.</p>
-          </div>
-        );
+        return renderBrandProtection();
       case 'compliance':
-        return (
-          <div className="text-center py-12">
-            <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">Compliance & Legal</h3>
-            <p className="text-gray-600">Legal compliance tools and documentation management.</p>
-          </div>
-        );
+        return renderCompliance();
       case 'analytics':
-        return (
-          <div className="text-center py-12">
-            <BarChart3 className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">Analytics & Reports</h3>
-            <p className="text-gray-600">Comprehensive analytics and reporting dashboard.</p>
-          </div>
-        );
+        return renderAnalytics();
       case 'settings':
-        return (
-          <div className="text-center py-12">
-            <Settings className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">System Settings</h3>
-            <p className="text-gray-600">Configure system settings and preferences.</p>
-          </div>
-        );
+        return renderSettings();
       default:
         return renderOverview();
     }

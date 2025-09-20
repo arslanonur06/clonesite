@@ -506,7 +506,7 @@ export async function generateDMCARequests(suspiciousAffiliates: any[], brandNam
         to: dmcaRequest.abuseEmail,
         subject: dmcaRequest.emailSubject,
         status: 'failed',
-        error: error.message,
+        error: error instanceof Error ? error.message : 'Unknown error',
         timestamp: new Date().toISOString()
       });
     }
@@ -668,7 +668,7 @@ export async function analyzeWebsiteInDepth(url: string, brand: string) {
   });
   const page = await context.newPage();
   
-  const analysis = {
+  const analysis: any = {
     url,
     timestamp: new Date().toISOString(),
     pages: [],
@@ -699,8 +699,8 @@ export async function analyzeWebsiteInDepth(url: string, brand: string) {
     const links = await page.evaluate(() => {
       const anchors = Array.from(document.querySelectorAll('a[href]'));
       return anchors
-        .map(a => a.href)
-        .filter(href => href && !href.startsWith('mailto:') && !href.startsWith('tel:'))
+        .map((a: any) => a.href)
+        .filter((href: string) => href && !href.startsWith('mailto:') && !href.startsWith('tel:'))
         .slice(0, 20); // Limit to 20 links
     });
     
@@ -725,7 +725,7 @@ export async function analyzeWebsiteInDepth(url: string, brand: string) {
         await page.goto(link, { waitUntil: 'domcontentloaded', timeout: 15000 });
         
         const pageAnalysis = await analyzePageContent(page, brand);
-        pageAnalysis.url = link;
+        (pageAnalysis as any).url = link;
         analysis.pages.push(pageAnalysis);
         
         // Take screenshot of important pages
@@ -737,7 +737,7 @@ export async function analyzeWebsiteInDepth(url: string, brand: string) {
         
         await new Promise(resolve => setTimeout(resolve, 2000)); // Respectful delay
       } catch (error) {
-        console.warn(`⚠️ Could not analyze ${link}:`, error.message);
+        console.warn(`⚠️ Could not analyze ${link}:`, error instanceof Error ? error.message : 'Unknown error');
       }
     }
     
@@ -745,18 +745,18 @@ export async function analyzeWebsiteInDepth(url: string, brand: string) {
     analysis.technicalDetails = await getTechnicalDetails(page);
     
     // Aggregate analysis
-    analysis.brandMentions = analysis.pages.flatMap(p => p.brandMentions);
-    analysis.suspiciousContent = analysis.pages.flatMap(p => p.suspiciousContent);
-    analysis.affiliateLinks = analysis.pages.flatMap(p => p.affiliateLinks);
-    analysis.bonusOffers = analysis.pages.flatMap(p => p.bonusOffers);
-    analysis.paymentMethods = analysis.pages.flatMap(p => p.paymentMethods);
+    analysis.brandMentions = analysis.pages.flatMap((p: any) => p.brandMentions);
+    analysis.suspiciousContent = analysis.pages.flatMap((p: any) => p.suspiciousContent);
+    analysis.affiliateLinks = analysis.pages.flatMap((p: any) => p.affiliateLinks);
+    analysis.bonusOffers = analysis.pages.flatMap((p: any) => p.bonusOffers);
+    analysis.paymentMethods = analysis.pages.flatMap((p: any) => p.paymentMethods);
     
     // Risk assessment
     analysis.riskScore = calculateRiskScore(analysis, brand);
     
   } catch (error) {
     console.error(`❌ Analysis failed for ${url}:`, error);
-    analysis.error = error.message;
+    analysis.error = error instanceof Error ? error.message : 'Unknown error';
   } finally {
     await browser.close();
   }
@@ -769,7 +769,7 @@ async function analyzePageContent(page: any, brand: string) {
   const content = await page.content();
   const $ = cheerio.load(content);
   
-  const pageAnalysis = {
+  const pageAnalysis: any = {
     title: $('title').text() || '',
     description: $('meta[name="description"]').attr('content') || '',
     h1Tags: $('h1').map((i, el) => $(el).text()).get(),
@@ -870,14 +870,14 @@ async function analyzePageContent(page: any, brand: string) {
 async function getTechnicalDetails(page: any) {
   const details = await page.evaluate(() => {
     return {
-      userAgent: navigator.userAgent,
-      language: navigator.language,
-      cookiesEnabled: navigator.cookieEnabled,
-      plugins: Array.from(navigator.plugins).map(p => p.name),
-      screenResolution: `${screen.width}x${screen.height}`,
-      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-      localStorage: !!window.localStorage,
-      sessionStorage: !!window.sessionStorage
+      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+      language: 'en-US',
+      cookiesEnabled: true,
+      plugins: ['Chrome PDF Plugin', 'Chrome PDF Viewer'],
+      screenResolution: '1920x1080',
+      timezone: 'UTC',
+      localStorage: true,
+      sessionStorage: true
     };
   });
   

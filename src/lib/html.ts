@@ -14,7 +14,7 @@ export function extractDomFeatures(html: string): DomFeatures {
   const tagHistogram: Record<string, number> = {};
   const classHistogram: Record<string, number> = {};
   $('*').each((_, el) => {
-    const tag = el.tagName.toLowerCase();
+    const tag = (el as any).tagName?.toLowerCase() || 'unknown';
     tagHistogram[tag] = (tagHistogram[tag] ?? 0) + 1;
     const classes = ($(el).attr('class') ?? '').split(/\s+/).filter(Boolean);
     for (const c of classes) classHistogram[c] = (classHistogram[c] ?? 0) + 1;

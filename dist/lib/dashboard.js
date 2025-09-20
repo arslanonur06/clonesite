@@ -3,253 +3,210 @@ import { WebSocketServer } from 'ws';
 import http from 'node:http';
 import path from 'node:path';
 import fs from 'node:fs/promises';
-
-export type DashboardMetrics = {
-  totalDomains: number;
-  activeDomains: number;
-  cloneCount: number;
-  riskDistribution: { low: number; medium: number; high: number; critical: number };
-  recentAlerts: Array<{
-    domain: string;
-    type: string;
-    severity: string;
-    timestamp: string;
-  }>;
-  geographicDistribution: Record<string, number>;
-  trendData: Array<{
-    date: string;
-    newDomains: number;
-    clones: number;
-    threats: number;
-  }>;
-};
-
 export class BrandProtectionDashboard {
-  private app: express.Application;
-  private server: http.Server;
-  private wss: WebSocketServer;
-  private metrics: DashboardMetrics;
-  
-  constructor(private port: number = 3000) {
-    this.app = express();
-    this.server = http.createServer(this.app);
-    this.wss = new WebSocketServer({ server: this.server });
-    
-    this.metrics = {
-      totalDomains: 0,
-      activeDomains: 0,
-      cloneCount: 0,
-      riskDistribution: { low: 0, medium: 0, high: 0, critical: 0 },
-      recentAlerts: [],
-      geographicDistribution: {},
-      trendData: []
-    };
-    
-    this.setupRoutes();
-    this.setupWebSocket();
-  }
-  
-  private setupRoutes(): void {
-    // Serve static files
-    this.app.use(express.static('dashboard/public'));
-    this.app.use(express.json());
-    
-    // API endpoints
-    this.app.get('/api/metrics', (req, res) => {
-      res.json(this.metrics);
-    });
-    
-    this.app.get('/api/domains', async (req, res) => {
-      try {
-        // Load domain data from database
-        const domains = await this.loadDomainData();
-        res.json(domains);
-      } catch (error) {
-        res.status(500).json({ error: 'Failed to load domain data' });
-      }
-    });
-    
-    this.app.get('/api/threats', async (req, res) => {
-      try {
-        const threats = await this.loadThreatData();
-        res.json(threats);
-      } catch (error) {
-        res.status(500).json({ error: 'Failed to load threat data' });
-      }
-    });
-    
-    this.app.post('/api/takedown', async (req, res) => {
-      try {
-        const { domain, type } = req.body;
-        // Trigger takedown process
-        const result = await this.triggerTakedown(domain, type);
-        res.json(result);
-      } catch (error) {
-        res.status(500).json({ error: 'Takedown request failed' });
-      }
-    });
-    
-    // Main dashboard page
-    this.app.get('/', (req, res) => {
-      res.sendFile(path.join(__dirname, '../../dashboard/public/index.html'));
-    });
-  }
-  
-  private setupWebSocket(): void {
-    this.wss.on('connection', (ws) => {
-      console.log('Dashboard client connected');
-      
-      // Send initial metrics
-      ws.send(JSON.stringify({
-        type: 'metrics',
-        data: this.metrics
-      }));
-      
-      ws.on('message', (message) => {
-        try {
-          const data = JSON.parse(message.toString());
-          this.handleWebSocketMessage(ws, data);
-        } catch (error) {
-          console.error('Invalid WebSocket message:', error);
-        }
-      });
-      
-      ws.on('close', () => {
-        console.log('Dashboard client disconnected');
-      });
-    });
-  }
-  
-  private handleWebSocketMessage(ws: any, data: any): void {
-    switch (data.type) {
-      case 'subscribe':
-        // Subscribe to real-time updates
-        break;
-      case 'scan':
-        // Trigger new scan
-        this.triggerScan(data.brand);
-        break;
-      case 'takedown':
-        // Trigger takedown
-        this.triggerTakedown(data.domain, data.type);
-        break;
+    port;
+    app;
+    server;
+    wss;
+    metrics;
+    constructor(port = 3000) {
+        this.port = port;
+        this.app = express();
+        this.server = http.createServer(this.app);
+        this.wss = new WebSocketServer({ server: this.server });
+        this.metrics = {
+            totalDomains: 0,
+            activeDomains: 0,
+            cloneCount: 0,
+            riskDistribution: { low: 0, medium: 0, high: 0, critical: 0 },
+            recentAlerts: [],
+            geographicDistribution: {},
+            trendData: []
+        };
+        this.setupRoutes();
+        this.setupWebSocket();
     }
-  }
-  
-  private async loadDomainData(): Promise<any[]> {
-    try {
-      // Load from SQLite database
-      const { openDb } = await import('./db.js');
-      const db = openDb('data/monitor.db');
-      return db.prepare('SELECT * FROM variants ORDER BY lastChecked DESC LIMIT 100').all();
-    } catch (error) {
-      console.error('Failed to load domain data:', error);
-      return [];
-    }
-  }
-  
-  private async loadThreatData(): Promise<any[]> {
-    try {
-      // Load threat intelligence data
-      const threatFiles = await fs.readdir('data/threats', { withFileTypes: true });
-      const threats = [];
-      
-      for (const file of threatFiles.filter(f => f.isFile() && f.name.endsWith('.json'))) {
-        const threatData = JSON.parse(await fs.readFile(path.join('data/threats', file.name), 'utf8'));
-        threats.push(threatData);
-      }
-      
-      return threats;
-    } catch (error) {
-      console.error('Failed to load threat data:', error);
-      return [];
-    }
-  }
-  
-  private async triggerScan(brand: string): Promise<void> {
-    try {
-      // Trigger comprehensive scan
-      const { generateDomainVariants } = await import('./variants.js');
-      const { checkDomains } = await import('./check.js');
-      
-      const variants = generateDomainVariants(brand);
-      const results = await checkDomains(variants.map(v => v.domain), 10);
-      
-      // Update metrics
-      this.updateMetrics({
-        totalDomains: variants.length,
-        activeDomains: results.filter(r => r.isRegistered).length
-      });
-      
-      // Broadcast update to all connected clients
-      this.broadcastUpdate('scan_complete', { brand, results: results.length });
-    } catch (error) {
-      console.error('Scan trigger failed:', error);
-    }
-  }
-  
-  private async triggerTakedown(domain: string, type: string): Promise<any> {
-    try {
-      const { createTakedownRequest, sendTakedownRequest } = await import('./legal-automation.js');
-      
-      const request = await createTakedownRequest(domain, type as any, []);
-      const sent = await sendTakedownRequest(request, 'Brand');
-      
-      if (sent) {
-        this.addAlert({
-          domain,
-          type: 'takedown_sent',
-          severity: 'info',
-          timestamp: new Date().toISOString()
+    setupRoutes() {
+        // Serve static files
+        this.app.use(express.static('dashboard/public'));
+        this.app.use(express.json());
+        // API endpoints
+        this.app.get('/api/metrics', (req, res) => {
+            res.json(this.metrics);
         });
-      }
-      
-      return { success: sent, request };
-    } catch (error) {
-      console.error('Takedown trigger failed:', error);
-      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+        this.app.get('/api/domains', async (req, res) => {
+            try {
+                // Load domain data from database
+                const domains = await this.loadDomainData();
+                res.json(domains);
+            }
+            catch (error) {
+                res.status(500).json({ error: 'Failed to load domain data' });
+            }
+        });
+        this.app.get('/api/threats', async (req, res) => {
+            try {
+                const threats = await this.loadThreatData();
+                res.json(threats);
+            }
+            catch (error) {
+                res.status(500).json({ error: 'Failed to load threat data' });
+            }
+        });
+        this.app.post('/api/takedown', async (req, res) => {
+            try {
+                const { domain, type } = req.body;
+                // Trigger takedown process
+                const result = await this.triggerTakedown(domain, type);
+                res.json(result);
+            }
+            catch (error) {
+                res.status(500).json({ error: 'Takedown request failed' });
+            }
+        });
+        // Main dashboard page
+        this.app.get('/', (req, res) => {
+            res.sendFile(path.join(__dirname, '../../dashboard/public/index.html'));
+        });
     }
-  }
-  
-  public updateMetrics(updates: Partial<DashboardMetrics>): void {
-    this.metrics = { ...this.metrics, ...updates };
-    this.broadcastUpdate('metrics', this.metrics);
-  }
-  
-  public addAlert(alert: DashboardMetrics['recentAlerts'][0]): void {
-    this.metrics.recentAlerts.unshift(alert);
-    this.metrics.recentAlerts = this.metrics.recentAlerts.slice(0, 50); // Keep last 50
-    this.broadcastUpdate('alert', alert);
-  }
-  
-  private broadcastUpdate(type: string, data: any): void {
-    const message = JSON.stringify({ type, data });
-    this.wss.clients.forEach(client => {
-      if (client.readyState === 1) { // WebSocket.OPEN
-        client.send(message);
-      }
-    });
-  }
-  
-  public start(): Promise<void> {
-    return new Promise((resolve) => {
-      this.server.listen(this.port, () => {
-        console.log(`Dashboard server running on http://localhost:${this.port}`);
-        resolve();
-      });
-    });
-  }
-  
-  public stop(): Promise<void> {
-    return new Promise((resolve) => {
-      this.server.close(() => {
-        console.log('Dashboard server stopped');
-        resolve();
-      });
-    });
-  }
+    setupWebSocket() {
+        this.wss.on('connection', (ws) => {
+            console.log('Dashboard client connected');
+            // Send initial metrics
+            ws.send(JSON.stringify({
+                type: 'metrics',
+                data: this.metrics
+            }));
+            ws.on('message', (message) => {
+                try {
+                    const data = JSON.parse(message.toString());
+                    this.handleWebSocketMessage(ws, data);
+                }
+                catch (error) {
+                    console.error('Invalid WebSocket message:', error);
+                }
+            });
+            ws.on('close', () => {
+                console.log('Dashboard client disconnected');
+            });
+        });
+    }
+    handleWebSocketMessage(ws, data) {
+        switch (data.type) {
+            case 'subscribe':
+                // Subscribe to real-time updates
+                break;
+            case 'scan':
+                // Trigger new scan
+                this.triggerScan(data.brand);
+                break;
+            case 'takedown':
+                // Trigger takedown
+                this.triggerTakedown(data.domain, data.type);
+                break;
+        }
+    }
+    async loadDomainData() {
+        try {
+            // Load from SQLite database
+            const { openDb } = await import('./db.js');
+            const db = openDb('data/monitor.db');
+            return db.prepare('SELECT * FROM variants ORDER BY lastChecked DESC LIMIT 100').all();
+        }
+        catch (error) {
+            console.error('Failed to load domain data:', error);
+            return [];
+        }
+    }
+    async loadThreatData() {
+        try {
+            // Load threat intelligence data
+            const threatFiles = await fs.readdir('data/threats', { withFileTypes: true });
+            const threats = [];
+            for (const file of threatFiles.filter(f => f.isFile() && f.name.endsWith('.json'))) {
+                const threatData = JSON.parse(await fs.readFile(path.join('data/threats', file.name), 'utf8'));
+                threats.push(threatData);
+            }
+            return threats;
+        }
+        catch (error) {
+            console.error('Failed to load threat data:', error);
+            return [];
+        }
+    }
+    async triggerScan(brand) {
+        try {
+            // Trigger comprehensive scan
+            const { generateDomainVariants } = await import('./variants.js');
+            const { checkDomains } = await import('./check.js');
+            const variants = generateDomainVariants(brand);
+            const results = await checkDomains(variants.map(v => v.domain), 10);
+            // Update metrics
+            this.updateMetrics({
+                totalDomains: variants.length,
+                activeDomains: results.filter(r => r.isRegistered).length
+            });
+            // Broadcast update to all connected clients
+            this.broadcastUpdate('scan_complete', { brand, results: results.length });
+        }
+        catch (error) {
+            console.error('Scan trigger failed:', error);
+        }
+    }
+    async triggerTakedown(domain, type) {
+        try {
+            const { createTakedownRequest, sendTakedownRequest } = await import('./legal-automation.js');
+            const request = await createTakedownRequest(domain, type, []);
+            const sent = await sendTakedownRequest(request, 'Brand');
+            if (sent) {
+                this.addAlert({
+                    domain,
+                    type: 'takedown_sent',
+                    severity: 'info',
+                    timestamp: new Date().toISOString()
+                });
+            }
+            return { success: sent, request };
+        }
+        catch (error) {
+            console.error('Takedown trigger failed:', error);
+            return { success: false, error: error.message };
+        }
+    }
+    updateMetrics(updates) {
+        this.metrics = { ...this.metrics, ...updates };
+        this.broadcastUpdate('metrics', this.metrics);
+    }
+    addAlert(alert) {
+        this.metrics.recentAlerts.unshift(alert);
+        this.metrics.recentAlerts = this.metrics.recentAlerts.slice(0, 50); // Keep last 50
+        this.broadcastUpdate('alert', alert);
+    }
+    broadcastUpdate(type, data) {
+        const message = JSON.stringify({ type, data });
+        this.wss.clients.forEach(client => {
+            if (client.readyState === 1) { // WebSocket.OPEN
+                client.send(message);
+            }
+        });
+    }
+    start() {
+        return new Promise((resolve) => {
+            this.server.listen(this.port, () => {
+                console.log(`Dashboard server running on http://localhost:${this.port}`);
+                resolve();
+            });
+        });
+    }
+    stop() {
+        return new Promise((resolve) => {
+            this.server.close(() => {
+                console.log('Dashboard server stopped');
+                resolve();
+            });
+        });
+    }
 }
-
 // Dashboard HTML template
 export const dashboardHtml = `
 <!DOCTYPE html>
@@ -413,13 +370,12 @@ export const dashboardHtml = `
 </body>
 </html>
 `;
-
-export async function startDashboard(port = 3000): Promise<BrandProtectionDashboard> {
-  // Create dashboard directory
-  await fs.mkdir('dashboard/public', { recursive: true });
-  await fs.writeFile('dashboard/public/index.html', dashboardHtml);
-  
-  const dashboard = new BrandProtectionDashboard(port);
-  await dashboard.start();
-  return dashboard;
+export async function startDashboard(port = 3000) {
+    // Create dashboard directory
+    await fs.mkdir('dashboard/public', { recursive: true });
+    await fs.writeFile('dashboard/public/index.html', dashboardHtml);
+    const dashboard = new BrandProtectionDashboard(port);
+    await dashboard.start();
+    return dashboard;
 }
+

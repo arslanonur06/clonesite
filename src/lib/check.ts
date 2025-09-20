@@ -44,7 +44,7 @@ export async function checkDomain(domain: string): Promise<DomainCheckResult> {
     let nameServers: string[] | null = null;
     try {
       const raw = await new Promise<string>((resolve, reject) => {
-        whoisCb.lookup(domain, { follow: 2, timeout: 10000 }, (err, data) => {
+        whoisCb.lookup(domain, (err: any, data: any) => {
           if (err) return reject(err);
           resolve(String(data ?? ''));
         });
