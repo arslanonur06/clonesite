@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -2079,6 +2078,176 @@
             } catch (error) {
                 console.error('Error:', error);
                 alert('Error setting up automated reports');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Missing iGaming Basic Tools Functions
+        async function runGameProviderVerification() {
+            const domains = document.getElementById('gameProviderDomainsInput').value;
+            if (!domains) {
+                alert('Please enter domains to check');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/game-providers', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ domains: domains.split(',').map(d => d.trim()) })
+                });
+                const data = await response.json();
+                showResult('gameProviderResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error verifying game providers');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runBonusAbuseDetection() {
+            const brand = document.getElementById('bonusAbuseBrandInput').value;
+            if (!brand) {
+                alert('Please enter a brand name');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/bonus-abuse', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ brand })
+                });
+                const data = await response.json();
+                showResult('bonusAbuseResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error detecting bonus abuse');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runGeoCompliance() {
+            const domains = document.getElementById('geoComplianceDomainsInput').value;
+            if (!domains) {
+                alert('Please enter domains to check');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/geo-compliance', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ domains: domains.split(',').map(d => d.trim()) })
+                });
+                const data = await response.json();
+                showResult('geoComplianceResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error checking geo-compliance');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runOddsManipulationDetection() {
+            const brand = document.getElementById('oddsManipulationBrandInput').value;
+            if (!brand) {
+                alert('Please enter a brand name');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/odds-manipulation', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ brand })
+                });
+                const data = await response.json();
+                showResult('oddsManipulationResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error detecting odds manipulation');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runCustomerSupportAnalysis() {
+            const domains = document.getElementById('customerSupportDomainsInput').value;
+            if (!domains) {
+                alert('Please enter domains to analyze');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/customer-support', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ domains: domains.split(',').map(d => d.trim()) })
+                });
+                const data = await response.json();
+                showResult('customerSupportResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error analyzing customer support');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runDMCATakedown() {
+            const brand = document.getElementById('dmcaBrandInput').value;
+            if (!brand) {
+                alert('Please enter a brand name');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/dmca-takedown', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ brand })
+                });
+                const data = await response.json();
+                showResult('dmcaResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error generating DMCA takedown');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runDeepWebsiteAnalysis() {
+            const url = document.getElementById('deepAnalysisUrlInput').value;
+            const brand = document.getElementById('deepAnalysisBrandInput').value;
+            if (!url || !brand) {
+                alert('Please enter both URL and brand name');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/deep-website-analysis', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url, brand })
+                });
+                const data = await response.json();
+                showResult('deepAnalysisResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error performing deep website analysis');
             } finally {
                 hideLoading();
             }
