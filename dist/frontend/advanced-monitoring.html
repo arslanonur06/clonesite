@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Monitoring - Security Suite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .feature-card { background: linear-gradient(145deg, #f8fafc, #e2e8f0); }
+        .risk-high { background: #fef2f2; border-left: 4px solid #ef4444; }
+        .risk-medium { background: #fffbeb; border-left: 4px solid #f59e0b; }
+        .risk-low { background: #f0fdf4; border-left: 4px solid #10b981; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; }
+        .tool-section { margin-bottom: 2rem; }
+        .pdf-download { background: #10b981; color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; text-decoration: none; display: inline-block; margin-top: 0.5rem; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="gradient-bg text-white py-6">
+        <div class="container mx-auto px-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <i data-lucide="monitor" class="w-8 h-8"></i>
+                    <div>
+                        <h1 class="text-3xl font-bold">Advanced Monitoring</h1>
+                        <p class="text-blue-100">6 Professional Monitoring & Intelligence Tools</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <div class="text-sm text-blue-100">Server Status</div>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+                        <span class="text-sm font-medium">Online</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm border-b">
+        <div class="container mx-auto px-6">
+            <div class="flex space-x-1">
+                <a href="index.html" class="px-4 py-3 text-sm font-medium text-gray-600 hover:text-blue-600">← Back to Main Dashboard</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-8">
+        <div class="tool-section">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">📊 Advanced Monitoring (6 Tools)</h2>
+            <div class="feature-grid">
+                <div class="feature-card rounded-lg p-4 card-hover">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-semibold text-gray-900">₿ Crypto Monitoring</h3>
+                        <button onclick="runCryptoMonitoring()" class="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors">
+                            <i data-lucide="bitcoin" class="w-4 h-4 mr-1"></i>
+                            Monitor
+                        </button>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" id="cryptoBrandInput" placeholder="Enter brand name" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                    </div>
+                    <div id="cryptoMonitoringResults" class="hidden">
+                        <div class="text-sm text-gray-600 mb-2">Crypto monitoring results will appear here...</div>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-lg p-4 card-hover">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-semibold text-gray-900">🌑 Dark Web Monitoring</h3>
+                        <button onclick="runDarkWebMonitoring()" class="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition-colors">
+                            <i data-lucide="moon" class="w-4 h-4 mr-1"></i>
+                            Monitor
+                        </button>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" id="darkwebBrandInput" placeholder="Enter brand name" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent">
+                    </div>
+                    <div id="darkwebMonitoringResults" class="hidden">
+                        <div class="text-sm text-gray-600 mb-2">Dark web monitoring results will appear here...</div>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-lg p-4 card-hover">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-semibold text-gray-900">📱 Social Media Monitoring</h3>
+                        <button onclick="runSocialMonitoring()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                            <i data-lucide="share-2" class="w-4 h-4 mr-1"></i>
+                            Monitor
+                        </button>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" id="socialBrandInput" placeholder="Enter brand name" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                    <div id="socialMonitoringResults" class="hidden">
+                        <div class="text-sm text-gray-600 mb-2">Social media monitoring results will appear here...</div>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-lg p-4 card-hover">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-semibold text-gray-900">📱 Mobile App Monitoring</h3>
+                        <button onclick="runMobileMonitoring()" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+                            <i data-lucide="smartphone" class="w-4 h-4 mr-1"></i>
+                            Monitor
+                        </button>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" id="mobileBrandInput" placeholder="Enter brand name" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                    </div>
+                    <div id="mobileMonitoringResults" class="hidden">
+                        <div class="text-sm text-gray-600 mb-2">Mobile app monitoring results will appear here...</div>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-lg p-4 card-hover">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-semibold text-gray-900">👁️ Visual Comparison</h3>
+                        <button onclick="runVisualComparison()" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                            <i data-lucide="eye" class="w-4 h-4 mr-1"></i>
+                            Compare
+                        </button>
+                    </div>
+                    <div class="mb-3 space-y-2">
+                        <input type="url" id="visualUrl1Input" placeholder="Enter first URL" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                        <input type="url" id="visualUrl2Input" placeholder="Enter second URL" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                    </div>
+                    <div id="visualComparisonResults" class="hidden">
+                        <div class="text-sm text-gray-600 mb-2">Visual comparison results will appear here...</div>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-lg p-4 card-hover">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-semibold text-gray-900">🛡️ Threat Intelligence</h3>
+                        <button onclick="runThreatIntelligence()" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+                            <i data-lucide="shield-alert" class="w-4 h-4 mr-1"></i>
+                            Analyze
+                        </button>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" id="threatBrandInput" placeholder="Enter brand name" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                    </div>
+                    <div id="threatIntelligenceResults" class="hidden">
+                        <div class="text-sm text-gray-600 mb-2">Threat intelligence results will appear here...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg p-6 flex items-center space-x-3">
+            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+            <span class="text-gray-700">Processing...</span>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        function showLoading() {
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.add('hidden');
+        }
+
+        function showResult(containerId, data) {
+            const container = document.getElementById(containerId);
+            container.classList.remove('hidden');
+            
+            let html = '<div class="space-y-2">';
+            if (data.results && data.results.length > 0) {
+                data.results.forEach(item => {
+                    const riskClass = item.riskLevel === 'high' ? 'risk-high' : 
+                                    item.riskLevel === 'medium' ? 'risk-medium' : 'risk-low';
+                    html += `<div class="p-3 rounded-lg ${riskClass}">
+                        <div class="font-medium">${item.domain || item.url || item.name || 'Unknown'}</div>
+                        <div class="text-sm text-gray-600">Risk: ${item.riskLevel || 'Unknown'}</div>
+                        ${item.similarity ? `<div class="text-sm">Similarity: ${item.similarity}%</div>` : ''}
+                        ${item.indicators ? `<div class="text-sm">Indicators: ${item.indicators.join(', ')}</div>` : ''}
+                        ${item.description ? `<div class="text-sm">Description: ${item.description}</div>` : ''}
+                        ${data.pdfReport ? `<a href="${data.pdfReport}" class="pdf-download">📄 Download PDF Report</a>` : ''}
+                    </div>`;
+                });
+            } else if (data.success !== false) {
+                html += '<div class="text-sm text-gray-600">No results found</div>';
+            } else {
+                html += '<div class="text-sm text-red-600">Error: ' + (data.error || 'Unknown error') + '</div>';
+            }
+            html += '</div>';
+            
+            container.innerHTML = html;
+        }
+
+        // Advanced Monitoring Functions
+        async function runCryptoMonitoring() {
+            const brand = document.getElementById('cryptoBrandInput').value;
+            if (!brand) {
+                alert('Please enter a brand name');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/crypto-monitoring', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ brand, cryptocurrencies: ['bitcoin', 'ethereum'] })
+                });
+                const data = await response.json();
+                showResult('cryptoMonitoringResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error monitoring crypto');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runDarkWebMonitoring() {
+            const brand = document.getElementById('darkwebBrandInput').value;
+            if (!brand) {
+                alert('Please enter a brand name');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/darkweb-monitoring', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ brand })
+                });
+                const data = await response.json();
+                showResult('darkwebMonitoringResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error monitoring dark web');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runSocialMonitoring() {
+            const brand = document.getElementById('socialBrandInput').value;
+            if (!brand) {
+                alert('Please enter a brand name');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/social-monitoring', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ brand })
+                });
+                const data = await response.json();
+                showResult('socialMonitoringResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error monitoring social media');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runMobileMonitoring() {
+            const brand = document.getElementById('mobileBrandInput').value;
+            if (!brand) {
+                alert('Please enter a brand name');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/mobile-monitoring', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ brand })
+                });
+                const data = await response.json();
+                showResult('mobileMonitoringResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error monitoring mobile apps');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runVisualComparison() {
+            const url1 = document.getElementById('visualUrl1Input').value;
+            const url2 = document.getElementById('visualUrl2Input').value;
+            if (!url1 || !url2) {
+                alert('Please enter both URLs');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/visual-comparison', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url1, url2 })
+                });
+                const data = await response.json();
+                showResult('visualComparisonResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error comparing visuals');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runThreatIntelligence() {
+            const brand = document.getElementById('threatBrandInput').value;
+            if (!brand) {
+                alert('Please enter a brand name');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/threat-intelligence', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ brand })
+                });
+                const data = await response.json();
+                showResult('threatIntelligenceResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error analyzing threat intelligence');
+            } finally {
+                hideLoading();
+            }
+        }
+    </script>
+</body>
+</html>

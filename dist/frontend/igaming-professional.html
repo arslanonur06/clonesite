@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iGaming Professional Tools - Security Suite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .feature-card { background: linear-gradient(145deg, #f8fafc, #e2e8f0); }
+        .risk-high { background: #fef2f2; border-left: 4px solid #ef4444; }
+        .risk-medium { background: #fffbeb; border-left: 4px solid #f59e0b; }
+        .risk-low { background: #f0fdf4; border-left: 4px solid #10b981; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; }
+        .tool-section { margin-bottom: 2rem; }
+        .pdf-download { background: #10b981; color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; text-decoration: none; display: inline-block; margin-top: 0.5rem; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="gradient-bg text-white py-6">
+        <div class="container mx-auto px-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <i data-lucide="crown" class="w-8 h-8"></i>
+                    <div>
+                        <h1 class="text-3xl font-bold">iGaming Professional Tools</h1>
+                        <p class="text-blue-100">8 Enterprise-Grade Security & Compliance Tools</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <div class="text-sm text-blue-100">Server Status</div>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+                        <span class="text-sm font-medium">Online</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm border-b">
+        <div class="container mx-auto px-6">
+            <div class="flex space-x-1">
+                <a href="index.html" class="px-4 py-3 text-sm font-medium text-gray-600 hover:text-blue-600">← Back to Main Dashboard</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-8">
+        <div class="tool-section">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">👑 iGaming Professional Tools (8 Tools)</h2>
+            <div class="feature-grid">
+                <div class="feature-card rounded-lg p-4 card-hover">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-semibold text-gray-900">⚖️ Risk Assessment Engine</h3>
+                        <button onclick="runRiskAssessment()" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+                            <i data-lucide="alert-triangle" class="w-4 h-4 mr-1"></i>
+                            Assess
+                        </button>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" id="riskBrandInput" placeholder="Enter brand name" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                    </div>
+                    <div id="riskAssessmentResults" class="hidden">
+                        <div class="text-sm text-gray-600 mb-2">Risk assessment results will appear here...</div>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-lg p-4 card-hover">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-semibold text-gray-900">🆔 KYC Verification System</h3>
+                        <button onclick="runKYCVerification()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                            <i data-lucide="user-check" class="w-4 h-4 mr-1"></i>
+                            Verify
+                        </button>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" id="kycPlayerIdInput" placeholder="Enter player ID" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                    <div id="kycVerificationResults" class="hidden">
+                        <div class="text-sm text-gray-600 mb-2">KYC verification results will appear here...</div>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-lg p-4 card-hover">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-semibold text-gray-900">💰 AML Monitoring</h3>
+                        <button onclick="runAMLMonitoring()" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                            <i data-lucide="shield-check" class="w-4 h-4 mr-1"></i>
+                            Monitor
+                        </button>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" id="amlBrandInput" placeholder="Enter brand name" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                    </div>
+                    <div id="amlMonitoringResults" class="hidden">
+                        <div class="text-sm text-gray-600 mb-2">AML monitoring results will appear here...</div>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-lg p-4 card-hover">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-semibold text-gray-900">💳 Transaction Monitoring</h3>
+                        <button onclick="runTransactionMonitoring()" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+                            <i data-lucide="credit-card" class="w-4 h-4 mr-1"></i>
+                            Monitor
+                        </button>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" id="transactionPlayerIdInput" placeholder="Enter player ID (optional)" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                    </div>
+                    <div id="transactionMonitoringResults" class="hidden">
+                        <div class="text-sm text-gray-600 mb-2">Transaction monitoring results will appear here...</div>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-lg p-4 card-hover">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-semibold text-gray-900">🎁 Loyalty Programs Management</h3>
+                        <button onclick="runLoyaltyPrograms()" class="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors">
+                            <i data-lucide="gift" class="w-4 h-4 mr-1"></i>
+                            Manage
+                        </button>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" id="loyaltyBrandInput" placeholder="Enter brand name" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                    </div>
+                    <div id="loyaltyProgramsResults" class="hidden">
+                        <div class="text-sm text-gray-600 mb-2">Loyalty programs management results will appear here...</div>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-lg p-4 card-hover">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-semibold text-gray-900">🛡️ Chargeback Prevention</h3>
+                        <button onclick="runChargebackPrevention()" class="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors">
+                            <i data-lucide="shield-x" class="w-4 h-4 mr-1"></i>
+                            Prevent
+                        </button>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" id="chargebackBrandInput" placeholder="Enter brand name" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                    </div>
+                    <div id="chargebackPreventionResults" class="hidden">
+                        <div class="text-sm text-gray-600 mb-2">Chargeback prevention results will appear here...</div>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-lg p-4 card-hover">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-semibold text-gray-900">🎲 Game Fairness Verification</h3>
+                        <button onclick="runGameFairnessVerification()" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+                            <i data-lucide="dice-6" class="w-4 h-4 mr-1"></i>
+                            Verify
+                        </button>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" id="fairnessGameIdInput" placeholder="Enter game ID (optional)" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                    </div>
+                    <div id="gameFairnessResults" class="hidden">
+                        <div class="text-sm text-gray-600 mb-2">Game fairness verification results will appear here...</div>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-lg p-4 card-hover">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-semibold text-gray-900">👥 Player Segmentation Engine</h3>
+                        <button onclick="runPlayerSegmentation()" class="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors">
+                            <i data-lucide="users" class="w-4 h-4 mr-1"></i>
+                            Segment
+                        </button>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" id="segmentationBrandInput" placeholder="Enter brand name" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+                    </div>
+                    <div id="playerSegmentationResults" class="hidden">
+                        <div class="text-sm text-gray-600 mb-2">Player segmentation results will appear here...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg p-6 flex items-center space-x-3">
+            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+            <span class="text-gray-700">Processing...</span>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        function showLoading() {
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.add('hidden');
+        }
+
+        function showResult(containerId, data) {
+            const container = document.getElementById(containerId);
+            container.classList.remove('hidden');
+            
+            let html = '<div class="space-y-2">';
+            if (data.results && data.results.length > 0) {
+                data.results.forEach(item => {
+                    const riskClass = item.riskLevel === 'high' ? 'risk-high' : 
+                                    item.riskLevel === 'medium' ? 'risk-medium' : 'risk-low';
+                    html += `<div class="p-3 rounded-lg ${riskClass}">
+                        <div class="font-medium">${item.domain || item.url || item.name || 'Unknown'}</div>
+                        <div class="text-sm text-gray-600">Risk: ${item.riskLevel || 'Unknown'}</div>
+                        ${item.similarity ? `<div class="text-sm">Similarity: ${item.similarity}%</div>` : ''}
+                        ${item.indicators ? `<div class="text-sm">Indicators: ${item.indicators.join(', ')}</div>` : ''}
+                        ${item.description ? `<div class="text-sm">Description: ${item.description}</div>` : ''}
+                        ${data.pdfReport ? `<a href="${data.pdfReport}" class="pdf-download">📄 Download PDF Report</a>` : ''}
+                    </div>`;
+                });
+            } else if (data.success !== false) {
+                html += '<div class="text-sm text-gray-600">No results found</div>';
+            } else {
+                html += '<div class="text-sm text-red-600">Error: ' + (data.error || 'Unknown error') + '</div>';
+            }
+            html += '</div>';
+            
+            container.innerHTML = html;
+        }
+
+        // iGaming Professional Tools Functions
+        async function runRiskAssessment() {
+            const brand = document.getElementById('riskBrandInput').value;
+            if (!brand) {
+                alert('Please enter a brand name');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/risk-assessment', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ brand })
+                });
+                const data = await response.json();
+                showResult('riskAssessmentResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error performing risk assessment');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runKYCVerification() {
+            const playerId = document.getElementById('kycPlayerIdInput').value;
+            if (!playerId) {
+                alert('Please enter a player ID');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/kyc-verification', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ playerId })
+                });
+                const data = await response.json();
+                showResult('kycVerificationResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error verifying KYC');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runAMLMonitoring() {
+            const brand = document.getElementById('amlBrandInput').value;
+            if (!brand) {
+                alert('Please enter a brand name');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/aml-monitoring', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ brand })
+                });
+                const data = await response.json();
+                showResult('amlMonitoringResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error monitoring AML');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runTransactionMonitoring() {
+            const playerId = document.getElementById('transactionPlayerIdInput').value;
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/transaction-monitoring', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ playerId: playerId || null })
+                });
+                const data = await response.json();
+                showResult('transactionMonitoringResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error monitoring transactions');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runLoyaltyPrograms() {
+            const brand = document.getElementById('loyaltyBrandInput').value;
+            if (!brand) {
+                alert('Please enter a brand name');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/loyalty-programs', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ brand })
+                });
+                const data = await response.json();
+                showResult('loyaltyProgramsResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error managing loyalty programs');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runChargebackPrevention() {
+            const brand = document.getElementById('chargebackBrandInput').value;
+            if (!brand) {
+                alert('Please enter a brand name');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/chargeback-prevention', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ brand })
+                });
+                const data = await response.json();
+                showResult('chargebackPreventionResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error preventing chargebacks');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runGameFairnessVerification() {
+            const gameId = document.getElementById('fairnessGameIdInput').value;
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/game-fairness', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ gameId: gameId || null })
+                });
+                const data = await response.json();
+                showResult('gameFairnessResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error verifying game fairness');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function runPlayerSegmentation() {
+            const brand = document.getElementById('segmentationBrandInput').value;
+            if (!brand) {
+                alert('Please enter a brand name');
+                return;
+            }
+
+            showLoading();
+            try {
+                const response = await fetch('/api/igaming/player-segmentation', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ brand })
+                });
+                const data = await response.json();
+                showResult('playerSegmentationResults', data);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error segmenting players');
+            } finally {
+                hideLoading();
+            }
+        }
+    </script>
+</body>
+</html>
