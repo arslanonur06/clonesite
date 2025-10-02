@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bonus Comparison - Security Suite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .feature-card { background: linear-gradient(145deg, #f8fafc, #e2e8f0); }
+        .pdf-download { background: #10b981; color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; text-decoration: none; display: inline-block; margin-top: 0.5rem; }
+        .pdf-download:hover { background: #059669; }
+        .csv-download { background: #3b82f6; color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; text-decoration: none; display: inline-block; margin-top: 0.5rem; }
+        .csv-download:hover { background: #2563eb; }
+    </style>
+    <script>
+        function addRow() {
+            const container = document.getElementById('competitors');
+            const idx = container.children.length + 1;
+            const div = document.createElement('div');
+            div.className = 'grid grid-cols-1 md:grid-cols-2 gap-3';
+            div.innerHTML = `
+                <input type="text" placeholder="Competitor ${idx} Name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                <input type="url" placeholder="Competitor ${idx} URL" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+            `;
+            container.appendChild(div);
+        }
+    </script>
+    
+</head>
+<body class="bg-gray-50">
+    <header class="gradient-bg text-white py-6">
+        <div class="container mx-auto px-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <i data-lucide="percent" class="w-8 h-8"></i>
+                    <div>
+                        <h1 class="text-3xl font-bold">Bonus Comparison</h1>
+                        <p class="text-blue-100">Compare competitors' bonus systems</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <a href="index.html" class="underline">← Back to Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-8">
+        <div class="feature-card rounded-lg p-6">
+            <h2 class="text-xl font-semibold mb-4">Enter competitors to compare</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+                <input id="brandInput" type="text" placeholder="Your brand name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                <input id="baseUrlInput" type="url" placeholder="Your base url (optional)" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div id="competitors" class="space-y-3 mb-4"></div>
+            <div class="flex items-center space-x-3 mb-6">
+                <button onclick="addRow()" class="px-4 py-2 bg-gray-200 rounded">Add competitor</button>
+                <button onclick="runBonusComparison()" class="px-4 py-2 bg-blue-600 text-white rounded">Compare Bonuses</button>
+            </div>
+            <div id="results" class="hidden"></div>
+        </div>
+    </main>
+
+    <div id="loadingOverlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg p-6 flex items-center space-x-3">
+            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+            <span class="text-gray-700">Processing...</span>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        function showLoading() {
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+        }
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.add('hidden');
+        }
+
+        function renderResults(data) {
+            const el = document.getElementById('results');
+            el.classList.remove('hidden');
+            const rows = (data.results || []).map(r => `
+                <tr>
+                    <td class="px-3 py-2 border">${r.name}</td>
+                    <td class="px-3 py-2 border">${r.url}</td>
+                    <td class="px-3 py-2 border">${r.welcomeBonus}</td>
+                    <td class="px-3 py-2 border">${r.wagering}</td>
+                    <td class="px-3 py-2 border">${r.maxCashout}</td>
+                    <td class="px-3 py-2 border">${r.rating}</td>
+                </tr>
+            `).join('');
+            el.innerHTML = `
+                <div class="flex items-center space-x-3 mb-3">
+                    ${data.csvPath ? `<a class="csv-download" href="${data.csvPath}" download>⬇️ Download CSV</a>` : ''}
+                    ${data.pdfPath ? `<a class="pdf-download" href="${data.pdfPath}" download>⬇️ Download PDF</a>` : ''}
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="px-3 py-2 text-left">Name</th>
+                                <th class="px-3 py-2 text-left">URL</th>
+                                <th class="px-3 py-2 text-left">Welcome Bonus</th>
+                                <th class="px-3 py-2 text-left">Wagering</th>
+                                <th class="px-3 py-2 text-left">Max Cashout</th>
+                                <th class="px-3 py-2 text-left">Rating</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rows || '<tr><td class="px-3 py-2" colspan="6">No data</td></tr>'}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        async function runBonusComparison() {
+            const brand = document.getElementById('brandInput').value.trim();
+            const baseUrl = document.getElementById('baseUrlInput').value;
+            const competitors = Array.from(document.querySelectorAll('#competitors .grid'))
+                .map(g => {
+                    const inputs = g.querySelectorAll('input');
+                    const nameEl = inputs[0];
+                    const urlEl = inputs[1];
+                    return { name: (nameEl?.value || '').trim(), url: (urlEl?.value || '').trim() };
+                })
+                .filter(x => x.name && x.url);
+
+            if (competitors.length === 0) {
+                alert('Please enter at least one competitor (name and URL).');
+                return;
+            }
+
+            showLoading();
+            try {
+                const res = await fetch('/api/igaming/bonus-comparison', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ brand: brand || null, baseUrl: baseUrl || null, competitors })
+                });
+                const data = await res.json();
+                renderResults(data);
+            } catch (e) {
+                alert('Bonus comparison failed');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Initialize one row
+        addRow();
+    </script>
+</body>
+</html>
+
+

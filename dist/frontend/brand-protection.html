@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Protection - Security Suite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .risk-high { background: #fef2f2; border-left: 4px solid #ef4444; }
+        .risk-medium { background: #fffbeb; border-left: 4px solid #f59e0b; }
+        .risk-low { background: #f0fdf4; border-left: 4px solid #10b981; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <header class="gradient-bg text-white py-6">
+        <div class="container mx-auto px-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <i data-lucide="shield" class="w-8 h-8"></i>
+                    <div>
+                        <h1 class="text-3xl font-bold">Brand Protection</h1>
+                        <p class="text-blue-100">Fake domains, clone detection, visual comparison</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <a href="index.html" class="underline">← Back to Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-8 space-y-6">
+        <section class="bg-white rounded-lg shadow p-6 card-hover">
+            <h2 class="text-xl font-semibold mb-4">Full Brand Scan</h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-3 mb-4">
+                <input id="scanBrand" type="text" placeholder="Brand (e.g., kalebet)" class="px-3 py-2 border rounded">
+                <input id="scanBaseUrl" type="url" placeholder="Official URL (optional)" class="px-3 py-2 border rounded">
+                <select id="scanCtDays" class="px-3 py-2 border rounded">
+                    <option value="30">CT Logs: 30 days</option>
+                    <option value="60">CT Logs: 60 days</option>
+                    <option value="90">CT Logs: 90 days</option>
+                </select>
+                <button id="scanBtn" onclick="startScan()" class="px-4 py-2 bg-indigo-600 text-white rounded">Start Scan</button>
+            </div>
+            <div class="flex items-center gap-3 mb-3">
+                <label class="inline-flex items-center gap-2 text-sm"><input id="f_typos" type="checkbox" class="accent-indigo-600" checked> Typosquatting</label>
+                <label class="inline-flex items-center gap-2 text-sm"><input id="f_visual" type="checkbox" class="accent-indigo-600" checked> Visual AI</label>
+                <label class="inline-flex items-center gap-2 text-sm"><input id="f_dark" type="checkbox" class="accent-indigo-600"> Dark Web</label>
+                <label class="inline-flex items-center gap-2 text-sm"><input id="f_crypto" type="checkbox" class="accent-indigo-600"> Crypto</label>
+                <label class="inline-flex items-center gap-2 text-sm"><input id="f_threat" type="checkbox" class="accent-indigo-600"> Threat Intel</label>
+            </div>
+            <div class="w-full bg-gray-200 h-3 rounded overflow-hidden mb-3">
+                <div id="scanProgressBar" class="h-3 bg-indigo-600" style="width: 0%"></div>
+            </div>
+            <div class="text-sm text-gray-600 mb-3" id="scanStatus"></div>
+            <div class="flex items-center gap-3 mb-3">
+                <a id="scanPdfLink" class="hidden px-3 py-1 rounded bg-emerald-600 text-white" href="#" download>Download PDF</a>
+                <a id="scanCsvLink" class="hidden px-3 py-1 rounded bg-blue-600 text-white" href="#" download>Download CSV</a>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-lg shadow p-6 card-hover">
+            <h2 class="text-xl font-semibold mb-4">Fake Domain Checker</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+                <input id="fakeBrand" type="text" placeholder="Brand (e.g., kalebet)" class="px-3 py-2 border rounded">
+                <input id="fakeBaseUrl" type="url" placeholder="Official URL (optional)" class="px-3 py-2 border rounded">
+                <button id="fakeBtn" onclick="runFakeDomainCheck()" class="px-4 py-2 bg-blue-600 text-white rounded">Check</button>
+            </div>
+            <div id="fakeSummary" class="text-sm text-gray-600 mb-2 hidden"></div>
+            <div id="fakeResults" class="space-y-2 text-sm text-gray-700"></div>
+        </section>
+
+        <section class="bg-white rounded-lg shadow p-6 card-hover">
+            <h2 class="text-xl font-semibold mb-4">Clone Detection</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+                <input id="cloneBaseUrl" type="url" placeholder="Official URL (required)" class="px-3 py-2 border rounded">
+                <input id="cloneLogoUrl" type="url" placeholder="Logo URL (optional)" class="px-3 py-2 border rounded">
+                <button onclick="runCloneDetection()" class="px-4 py-2 bg-purple-600 text-white rounded">Detect</button>
+            </div>
+            <div id="cloneResults" class="space-y-2 text-sm text-gray-700"></div>
+        </section>
+
+        <section class="bg-white rounded-lg shadow p-6 card-hover">
+            <h2 class="text-xl font-semibold mb-4">Visual & Content Comparison</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+                <input id="cmpUrl1" type="url" placeholder="Official URL" class="px-3 py-2 border rounded">
+                <input id="cmpUrl2" type="url" placeholder="Suspicious URL" class="px-3 py-2 border rounded">
+                <button onclick="runVisualComparison()" class="px-4 py-2 bg-green-600 text-white rounded">Compare</button>
+            </div>
+            <div id="cmpResults" class="space-y-2 text-sm text-gray-700"></div>
+        </section>
+    </main>
+
+    <div id="loadingOverlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg p-6 flex items-center space-x-3">
+            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+            <span class="text-gray-700">Processing...</span>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+        function showLoading(){document.getElementById('loadingOverlay').classList.remove('hidden');}
+        function hideLoading(){document.getElementById('loadingOverlay').classList.add('hidden');}
+        function updateProgress(pct, status){
+            const bar = document.getElementById('scanProgressBar');
+            const s = document.getElementById('scanStatus');
+            bar.style.width = `${Math.max(0, Math.min(100, Math.round(pct || 0)))}%`;
+            s.textContent = status || '';
+        }
+        function toCsv(rows){
+            const headers = Object.keys(rows[0] || { domain: '', riskLevel: '' });
+            const esc = v => String(v ?? '').replace(/"/g,'""');
+            const line = arr => arr.map(v => /[",\n]/.test(String(v)) ? `"${esc(v)}"` : String(v)).join(',');
+            return [line(headers), ...rows.map(r => line(headers.map(h => r[h])))].join('\n');
+        }
+
+        async function startScan(){
+            const brand = document.getElementById('scanBrand').value.trim();
+            const baseUrl = document.getElementById('scanBaseUrl').value.trim();
+            const ctDays = document.getElementById('scanCtDays').value;
+            const features = [];
+            if (document.getElementById('f_typos').checked) features.push('typosquatting');
+            if (document.getElementById('f_visual').checked) features.push('visual-ai');
+            if (document.getElementById('f_dark').checked) features.push('dark-web');
+            if (document.getElementById('f_crypto').checked) features.push('crypto');
+            if (document.getElementById('f_threat').checked) features.push('threat-intel');
+            if (!brand || features.length === 0) { alert('Enter brand and select at least one feature'); return; }
+
+            const btn = document.getElementById('scanBtn');
+            btn.disabled = true; btn.textContent = 'Starting...';
+            updateProgress(0, 'Starting scan...');
+            document.getElementById('scanPdfLink').classList.add('hidden');
+            document.getElementById('scanCsvLink').classList.add('hidden');
+            try {
+                const res = await fetch('/api/scan/start', { method: 'POST', headers: { 'Content-Type':'application/json' }, body: JSON.stringify({ brand, baseUrl: baseUrl || null, features, ctDays })});
+                const data = await res.json();
+                if (!data.scanId) throw new Error('Scan not started');
+                pollScan(data.scanId);
+                btn.textContent = 'Running...';
+            } catch (e) {
+                alert('Failed to start scan');
+                btn.disabled = false; btn.textContent = 'Start Scan';
+            }
+        }
+
+        let pollTimer = null;
+        async function pollScan(scanId){
+            if (pollTimer) clearInterval(pollTimer);
+            pollTimer = setInterval(async () => {
+                try{
+                    const r = await fetch(`/api/scan/${scanId}`);
+                    const scan = await r.json();
+                    updateProgress(scan.progress || 0, `Status: ${scan.status} • Progress: ${Math.round(scan.progress||0)}%`);
+                    if (scan.status === 'completed'){
+                        clearInterval(pollTimer); pollTimer = null;
+                        const pdfLink = document.getElementById('scanPdfLink');
+                        pdfLink.href = `/api/scan/${scanId}/export`;
+                        pdfLink.classList.remove('hidden');
+                        // Build CSV from domains+threats
+                        const rows = (scan.results?.domains || []).map(d => ({
+                            domain: d.domain,
+                            isRegistered: d.isRegistered,
+                            hasARecord: d.hasARecord,
+                            hasMxRecord: d.hasMxRecord,
+                            riskLevel: d.riskLevel
+                        }));
+                        const csvBlob = new Blob([toCsv(rows)], { type: 'text/csv' });
+                        const url = URL.createObjectURL(csvBlob);
+                        const csvLink = document.getElementById('scanCsvLink');
+                        csvLink.href = url; csvLink.download = `${scan.brand || 'scan'}-domains.csv`;
+                        csvLink.classList.remove('hidden');
+                        const btn = document.getElementById('scanBtn');
+                        btn.disabled = false; btn.textContent = 'Start Scan';
+                    }
+                }catch(e){ /* ignore transient errors */ }
+            }, 1200);
+        }
+        function asHtml(items){
+            if (!items || items.length === 0) {
+                return '<div class="text-gray-500">No results found.</div>';
+            }
+            return `<div class=\"space-y-2\">${items.map(i=>`<div class=\"p-3 rounded border ${i.riskLevel==='high'?'border-red-300 bg-red-50':i.riskLevel==='medium'?'border-yellow-300 bg-yellow-50':'border-green-300 bg-green-50'}\">\n                <div class=\"font-medium\">${i.domain || i.url || i.name || 'Unknown'}</div>\n                ${i.riskLevel?`<div>Risk: ${i.riskLevel}</div>`:''}\n                ${i.similarity?`<div>Similarity: ${i.similarity}%</div>`:''}\n                ${Array.isArray(i.indicators)&&i.indicators.length?`<div>Indicators: ${i.indicators.join(', ')}</div>`:''}\n            </div>`).join('')}</div>`
+        }
+
+        async function runFakeDomainCheck(){
+            const brand = document.getElementById('fakeBrand').value.trim();
+            const baseUrl = document.getElementById('fakeBaseUrl').value.trim();
+            const btn = document.getElementById('fakeBtn');
+            if(!brand){ alert('Enter brand'); return; }
+            showLoading(); btn.disabled = true; btn.textContent = 'Checking...';
+            try{
+                const r = await fetch('/api/brand-protection/fake-domain-check',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({brand, baseUrl: baseUrl || null })});
+                const data = await r.json();
+                const results = data.results || [];
+                const summary = data.summary || {};
+                const summaryEl = document.getElementById('fakeSummary');
+                summaryEl.classList.remove('hidden');
+                summaryEl.textContent = `Checked: ${data.totalChecked ?? 0}, Active: ${data.activeDomains ?? 0}, High risk: ${summary.highRisk ?? 0}, Medium: ${summary.mediumRisk ?? 0}, Low: ${summary.lowRisk ?? 0}`;
+                document.getElementById('fakeResults').innerHTML = asHtml(results);
+            }catch(e){
+                document.getElementById('fakeResults').innerHTML = '<div class="text-red-600">Fake domain check failed.</div>';
+            } finally{ hideLoading(); btn.disabled = false; btn.textContent = 'Check'; }
+        }
+
+        async function runCloneDetection(){
+            const baseUrl = document.getElementById('cloneBaseUrl').value.trim();
+            const logoUrl = document.getElementById('cloneLogoUrl').value.trim();
+            if(!baseUrl){ alert('Enter official URL'); return; }
+            showLoading();
+            try{
+                const r = await fetch('/api/brand-protection/clone-detection',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({baseUrl, logoUrl: logoUrl || null})});
+                const data = await r.json();
+                document.getElementById('cloneResults').innerHTML = asHtml(data.results || []);
+            }catch(e){ alert('Clone detection failed'); } finally{ hideLoading(); }
+        }
+
+        async function runVisualComparison(){
+            const url1 = document.getElementById('cmpUrl1').value.trim();
+            const url2 = document.getElementById('cmpUrl2').value.trim();
+            if(!url1 || !url2){ alert('Enter both URLs'); return; }
+            showLoading();
+            try{
+                const r = await fetch('/api/visual-comparison',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url1,url2})});
+                const data = await r.json();
+                document.getElementById('cmpResults').innerHTML = `<div class="p-3 border rounded">
+                    <div>Visual diff ratio: ${data.visual?.diffRatio ?? '-'}</div>
+                    <div>DOM cosine: ${data.dom?.tagCosine ?? '-'}</div>
+                    <div>Text hamming: ${data.text?.hamming ?? '-'}</div>
+                </div>`;
+            }catch(e){ alert('Comparison failed'); } finally{ hideLoading(); }
+        }
+    </script>
+</body>
+</html>
+
+
