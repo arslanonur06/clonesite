@@ -59,6 +59,10 @@ import {
 import { compareWebsites, compareMultipleWebsites } from './lib/website-comparison.js';
 import { telegramManager } from './lib/telegram-integration.js';
 import { GoogleSheetsManager } from './lib/google-sheets-integration.js';
+import { createAhrefsIntegration } from './lib/ahrefs-integration.js';
+import { createEnhancedWhoisChecker } from './lib/enhanced-whois.js';
+import { createEnhancedReportGenerator } from './lib/enhanced-reports.js';
+import { createAutomationManager } from './lib/automation.js';
 import 'dotenv/config';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -87,13 +91,35 @@ class BrandProtectionWebServer {
   private wss: WebSocketServer;
   private scans: Map<string, ScanJob> = new Map();
   private port: number;
+  private ahrefsIntegration: any;
+  private whoisChecker: any;
+  private reportGenerator: any;
+  private automationManager: any;
 
   constructor(port = 3000) {
     this.port = port;
     this.app = express();
     this.server = http.createServer(this.app);
     this.wss = new WebSocketServer({ server: this.server });
-    
+
+    // Initialize integrations
+    this.ahrefsIntegration = createAhrefsIntegration();
+    this.whoisChecker = createEnhancedWhoisChecker();
+    this.reportGenerator = createEnhancedReportGenerator();
+    this.automationManager = createAutomationManager();
+
+    // Start automation system
+    this.automationManager.startAutomation();
+
+    // Listen for automation events
+    this.automationManager.on('scan-completed', (data: any) => {
+      this.broadcastUpdate('automation-scan-completed', data);
+    });
+
+    this.automationManager.on('alert-triggered', (data: any) => {
+      this.broadcastUpdate('automation-alert-triggered', data);
+    });
+
     this.setupMiddleware();
     this.setupRoutes();
     this.setupWebSocket();
@@ -1021,6 +1047,413 @@ class BrandProtectionWebServer {
       } catch (error) {
         console.error('Advanced export failed:', error);
         res.status(500).json({ error: 'Advanced export failed' });
+      }
+    });
+
+    // Automation API
+    this.app.get('/api/automation/status', (req, res) => {
+      try {
+        const status = this.automationManager.getSystemHealth();
+        const stats = this.automationManager.getAutomationStats();
+
+        res.json({
+          success: true,
+          status,
+          stats,
+          timestamp: new Date().toISOString()
+        });
+      } catch (error) {
+        console.error('Failed to get automation status:', error);
+        res.status(500).json({ error: 'Failed to get automation status' });
+      }
+    });
+
+    this.app.post('/api/automation/scheduled-scans', async (req, res) => {
+      try {
+        const { scan } = req.body;
+        if (!scan || !scan.brand || !scan.features) {
+          return res.status(400).json({ error: 'Brand and features are required' });
+        }
+
+        const scanId = await this.automationManager.createScheduledScan(scan);
+
+        res.json({
+          success: true,
+          scanId,
+          message: 'Scheduled scan created successfully',
+          timestamp: new Date().toISOString()
+        });
+      } catch (error) {
+        console.error('Failed to create scheduled scan:', error);
+        res.status(500).json({ error: 'Failed to create scheduled scan' });
+      }
+    });
+
+    this.app.get('/api/automation/scheduled-scans', (req, res) => {
+      try {
+        const scans = this.automationManager.getScheduledScans();
+        res.json({ success: true, scans });
+      } catch (error) {
+        console.error('Failed to get scheduled scans:', error);
+        res.status(500).json({ error: 'Failed to get scheduled scans' });
+      }
+    });
+
+    this.app.put('/api/automation/scheduled-scans/:scanId', async (req, res) => {
+      try {
+        const { scanId } = req.params;
+        const updates = req.body;
+
+        const success = await this.automationManager.updateScheduledScan(scanId, updates);
+
+        if (success) {
+          res.json({
+            success: true,
+            message: 'Scheduled scan updated successfully',
+            timestamp: new Date().toISOString()
+          });
+        } else {
+          res.status(404).json({ error: 'Scheduled scan not found' });
+        }
+      } catch (error) {
+        console.error('Failed to update scheduled scan:', error);
+        res.status(500).json({ error: 'Failed to update scheduled scan' });
+      }
+    });
+
+    this.app.delete('/api/automation/scheduled-scans/:scanId', async (req, res) => {
+      try {
+        const { scanId } = req.params;
+        const success = await this.automationManager.deleteScheduledScan(scanId);
+
+        if (success) {
+          res.json({
+            success: true,
+            message: 'Scheduled scan deleted successfully',
+            timestamp: new Date().toISOString()
+          });
+        } else {
+          res.status(404).json({ error: 'Scheduled scan not found' });
+        }
+      } catch (error) {
+        console.error('Failed to delete scheduled scan:', error);
+        res.status(500).json({ error: 'Failed to delete scheduled scan' });
+      }
+    });
+
+    this.app.post('/api/automation/alert-rules', async (req, res) => {
+      try {
+        const { rule } = req.body;
+        if (!rule || !rule.name || !rule.conditions) {
+          return res.status(400).json({ error: 'Rule name and conditions are required' });
+        }
+
+        const ruleId = await this.automationManager.createAlertRule(rule);
+
+        res.json({
+          success: true,
+          ruleId,
+          message: 'Alert rule created successfully',
+          timestamp: new Date().toISOString()
+        });
+      } catch (error) {
+        console.error('Failed to create alert rule:', error);
+        res.status(500).json({ error: 'Failed to create alert rule' });
+      }
+    });
+
+    this.app.get('/api/automation/alert-rules', (req, res) => {
+      try {
+        const rules = this.automationManager.getAlertRules();
+        res.json({ success: true, rules });
+      } catch (error) {
+        console.error('Failed to get alert rules:', error);
+        res.status(500).json({ error: 'Failed to get alert rules' });
+      }
+    });
+
+    this.app.post('/api/automation/batch-scans', async (req, res) => {
+      try {
+        const { scans } = req.body;
+        if (!scans || !Array.isArray(scans)) {
+          return res.status(400).json({ error: 'Scans array is required' });
+        }
+
+        const scanIds = await this.automationManager.executeBatchScans(scans);
+
+        res.json({
+          success: true,
+          scanIds,
+          message: `${scanIds.length} scans initiated`,
+          timestamp: new Date().toISOString()
+        });
+      } catch (error) {
+        console.error('Failed to execute batch scans:', error);
+        res.status(500).json({ error: 'Failed to execute batch scans' });
+      }
+    });
+
+    this.app.post('/api/automation/execute-scan/:scanId', async (req, res) => {
+      try {
+        const { scanId } = req.params;
+        const result = await this.automationManager.executeScheduledScan(scanId);
+
+        if (result) {
+          res.json({
+            success: true,
+            result,
+            message: 'Scan executed successfully',
+            timestamp: new Date().toISOString()
+          });
+        } else {
+          res.status(404).json({ error: 'Scheduled scan not found or disabled' });
+        }
+      } catch (error) {
+        console.error('Failed to execute scan:', error);
+        res.status(500).json({ error: 'Failed to execute scan' });
+      }
+    });
+
+    // Enhanced Report Generation API
+    this.app.post('/api/reports/generate', async (req, res) => {
+      try {
+        const { scanId, template = 'executive-summary', format = 'pdf' } = req.body;
+        if (!scanId) {
+          return res.status(400).json({ error: 'Scan ID is required' });
+        }
+
+        const scan = this.scans.get(scanId);
+        if (!scan) {
+          return res.status(404).json({ error: 'Scan not found' });
+        }
+
+        console.log(`📄 Generating ${format.toUpperCase()} report for scan: ${scanId}`);
+
+        const reportData = {
+          brand: scan.brand,
+          baseUrl: scan.baseUrl,
+          scanId: scan.id,
+          timestamp: new Date().toISOString(),
+          summary: scan.summary,
+          domains: scan.results.domains || [],
+          threats: scan.results.threats || [],
+          mobile: scan.results.mobile || [],
+          crypto: scan.results.crypto || [],
+          darkweb: scan.results.darkweb || [],
+          social: scan.results.social || []
+        };
+
+        const reportPath = await this.reportGenerator.generateReport(reportData, template, format);
+
+        res.json({
+          success: true,
+          reportPath,
+          downloadUrl: `/api/reports/download/${path.basename(reportPath)}`,
+          template,
+          format,
+          timestamp: new Date().toISOString()
+        });
+      } catch (error) {
+        console.error('Report generation failed:', error);
+        res.status(500).json({ error: 'Report generation failed' });
+      }
+    });
+
+    this.app.get('/api/reports/templates', (req, res) => {
+      try {
+        const templates = Array.from(this.reportGenerator.templates.values()).map((template: any) => ({
+          id: template.id,
+          name: template.name,
+          description: template.description,
+          sections: template.sections
+        }));
+
+        res.json({
+          success: true,
+          templates,
+          timestamp: new Date().toISOString()
+        });
+      } catch (error) {
+        console.error('Failed to get templates:', error);
+        res.status(500).json({ error: 'Failed to get templates' });
+      }
+    });
+
+    this.app.get('/api/reports/download/:filename', async (req, res) => {
+      try {
+        const { filename } = req.params;
+        const reportPath = path.join(__dirname, '../temp-reports', filename);
+
+        if (!await fs.access(reportPath).then(() => true).catch(() => false)) {
+          return res.status(404).json({ error: 'Report not found' });
+        }
+
+        const ext = path.extname(filename).toLowerCase();
+        const contentType = ext === '.pdf' ? 'application/pdf' :
+                           ext === '.csv' ? 'text/csv' :
+                           ext === '.html' ? 'text/html' : 'application/octet-stream';
+
+        res.setHeader('Content-Type', contentType);
+        res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+        res.sendFile(reportPath);
+
+        // Clean up file after sending
+        setTimeout(() => {
+          fs.unlink(reportPath).catch(() => {});
+        }, 5000);
+
+      } catch (error) {
+        console.error('Report download failed:', error);
+        res.status(500).json({ error: 'Report download failed' });
+      }
+    });
+
+    // Enhanced WHOIS API
+    this.app.post('/api/whois/enhanced-check', async (req, res) => {
+      try {
+        const { domain } = req.body;
+        if (!domain) {
+          return res.status(400).json({ error: 'Domain is required' });
+        }
+
+        console.log(`🔍 Starting enhanced WHOIS check for: ${domain}`);
+        const whoisData = await this.whoisChecker.checkDomain(domain);
+
+        res.json({
+          success: true,
+          domain,
+          whois: whoisData,
+          timestamp: new Date().toISOString()
+        });
+      } catch (error) {
+        console.error('Enhanced WHOIS check failed:', error);
+        res.status(500).json({ error: 'WHOIS check failed' });
+      }
+    });
+
+    this.app.post('/api/whois/batch-check', async (req, res) => {
+      try {
+        const { domains } = req.body;
+        if (!domains || !Array.isArray(domains)) {
+          return res.status(400).json({ error: 'Domains array is required' });
+        }
+
+        console.log(`🔍 Starting batch WHOIS check for ${domains.length} domains`);
+        const whoisResults = await this.whoisChecker.checkDomains(domains);
+
+        res.json({
+          success: true,
+          domains: whoisResults,
+          timestamp: new Date().toISOString()
+        });
+      } catch (error) {
+        console.error('Batch WHOIS check failed:', error);
+        res.status(500).json({ error: 'Batch WHOIS check failed' });
+      }
+    });
+
+    // Ahrefs Integration API
+    this.app.post('/api/ahrefs/domain-analysis', async (req, res) => {
+      try {
+        const { domain } = req.body;
+        if (!domain) {
+          return res.status(400).json({ error: 'Domain is required' });
+        }
+
+        if (!this.ahrefsIntegration) {
+          return res.status(503).json({ error: 'Ahrefs integration not available' });
+        }
+
+        console.log(`🔍 Starting Ahrefs analysis for: ${domain}`);
+        const analysis = await this.ahrefsIntegration.analyzeDomain(domain);
+
+        res.json({
+          success: true,
+          domain,
+          analysis,
+          timestamp: new Date().toISOString()
+        });
+      } catch (error) {
+        console.error('Ahrefs domain analysis failed:', error);
+        res.status(500).json({ error: 'Domain analysis failed' });
+      }
+    });
+
+    this.app.post('/api/ahrefs/backlinks', async (req, res) => {
+      try {
+        const { domain, limit = 100 } = req.body;
+        if (!domain) {
+          return res.status(400).json({ error: 'Domain is required' });
+        }
+
+        if (!this.ahrefsIntegration) {
+          return res.status(503).json({ error: 'Ahrefs integration not available' });
+        }
+
+        console.log(`🔗 Getting backlinks for: ${domain}`);
+        const backlinks = await this.ahrefsIntegration.getBacklinks(domain, limit);
+
+        res.json({
+          success: true,
+          domain,
+          backlinks,
+          timestamp: new Date().toISOString()
+        });
+      } catch (error) {
+        console.error('Ahrefs backlinks fetch failed:', error);
+        res.status(500).json({ error: 'Backlinks fetch failed' });
+      }
+    });
+
+    this.app.post('/api/ahrefs/organic-keywords', async (req, res) => {
+      try {
+        const { domain, limit = 100 } = req.body;
+        if (!domain) {
+          return res.status(400).json({ error: 'Domain is required' });
+        }
+
+        if (!this.ahrefsIntegration) {
+          return res.status(503).json({ error: 'Ahrefs integration not available' });
+        }
+
+        console.log(`🎯 Getting organic keywords for: ${domain}`);
+        const keywords = await this.ahrefsIntegration.getOrganicKeywords(domain, limit);
+
+        res.json({
+          success: true,
+          domain,
+          keywords,
+          timestamp: new Date().toISOString()
+        });
+      } catch (error) {
+        console.error('Ahrefs organic keywords fetch failed:', error);
+        res.status(500).json({ error: 'Organic keywords fetch failed' });
+      }
+    });
+
+    this.app.get('/api/ahrefs/domain-info/:domain', async (req, res) => {
+      try {
+        const { domain } = req.params;
+        if (!domain) {
+          return res.status(400).json({ error: 'Domain is required' });
+        }
+
+        if (!this.ahrefsIntegration) {
+          return res.status(503).json({ error: 'Ahrefs integration not available' });
+        }
+
+        console.log(`📊 Getting domain info for: ${domain}`);
+        const domainInfo = await this.ahrefsIntegration.getDomainInfo(domain);
+
+        res.json({
+          success: true,
+          domain,
+          info: domainInfo,
+          timestamp: new Date().toISOString()
+        });
+      } catch (error) {
+        console.error('Ahrefs domain info fetch failed:', error);
+        res.status(500).json({ error: 'Domain info fetch failed' });
       }
     });
 
