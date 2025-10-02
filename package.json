@@ -5,8 +5,7 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "build": "tsc -p tsconfig.json && npm run build:frontend",
-    "build:frontend": "cd frontend && npm run build",
+    "build": "tsc -p tsconfig.json && echo 'Build completed - Frontend files are static HTML in dist/'",
     "start": "node dist/cli.js",
     "dev": "tsx src/cli.ts",
     "dev:frontend": "cd frontend && npm run dev",

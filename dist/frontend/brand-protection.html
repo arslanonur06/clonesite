@@ -6,6 +6,7 @@
     <title>Brand Protection - Security Suite</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
         .card-hover { transition: all 0.3s ease; }
@@ -13,85 +14,550 @@
         .risk-high { background: #fef2f2; border-left: 4px solid #ef4444; }
         .risk-medium { background: #fffbeb; border-left: 4px solid #f59e0b; }
         .risk-low { background: #f0fdf4; border-left: 4px solid #10b981; }
+
+        /* Level bars and indicators */
+        .level-bar {
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            background: #e5e7eb;
+        }
+        .level-fill {
+            height: 100%;
+            transition: width 0.3s ease;
+            border-radius: 4px;
+        }
+        .level-high { background: linear-gradient(90deg, #ef4444, #dc2626); }
+        .level-medium { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .level-low { background: linear-gradient(90deg, #10b981, #059669); }
+
+        /* Enhanced cards */
+        .enhanced-card {
+            background: linear-gradient(145deg, #ffffff, #f8fafc);
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .enhanced-card:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Status indicators */
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        .status-online { background: #10b981; }
+        .status-warning { background: #f59e0b; }
+        .status-error { background: #ef4444; }
+        .status-info { background: #3b82f6; }
+
+        /* Progress bars */
+        .progress-ring {
+            transition: stroke-dasharray 0.3s ease;
+        }
+
+        /* Enhanced buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        /* Risk level badges */
+        .risk-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .risk-high-badge {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+        .risk-medium-badge {
+            background: #fffbeb;
+            color: #d97706;
+            border: 1px solid #fed7aa;
+        }
+        .risk-low-badge {
+            background: #f0fdf4;
+            color: #059669;
+            border: 1px solid #bbf7d0;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
-    <header class="gradient-bg text-white py-6">
+    <header class="gradient-bg text-white py-8 shadow-lg">
         <div class="container mx-auto px-6">
             <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-4">
-                    <i data-lucide="shield" class="w-8 h-8"></i>
+                <div class="flex items-center space-x-6">
+                    <div class="w-16 h-16 bg-white bg-opacity-20 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                        <i data-lucide="shield-check" class="w-10 h-10"></i>
+                    </div>
                     <div>
-                        <h1 class="text-3xl font-bold">Brand Protection</h1>
-                        <p class="text-blue-100">Fake domains, clone detection, visual comparison</p>
+                        <h1 class="text-4xl font-bold tracking-tight">Brand Protection Suite</h1>
+                        <p class="text-blue-100 text-lg mt-1">Advanced domain monitoring, clone detection & threat analysis</p>
                     </div>
                 </div>
-                <div class="text-right">
-                    <a href="index.html" class="underline">← Back to Dashboard</a>
+                <div class="flex items-center space-x-6">
+                    <div class="text-right">
+                        <div class="flex items-center space-x-2 mb-2">
+                            <span class="status-indicator status-online"></span>
+                            <span class="text-sm font-medium">System Online</span>
+                        </div>
+                        <div class="text-xs text-blue-200">Last updated: <span id="lastUpdate">Just now</span></div>
+                    </div>
+                    <a href="index.html" class="btn-secondary px-6 py-3 rounded-lg font-medium inline-flex items-center space-x-2">
+                        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                        <span>Dashboard</span>
+                    </a>
                 </div>
             </div>
         </div>
     </header>
 
-    <main class="container mx-auto px-6 py-8 space-y-6">
-        <section class="bg-white rounded-lg shadow p-6 card-hover">
-            <h2 class="text-xl font-semibold mb-4">Full Brand Scan</h2>
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-3 mb-4">
-                <input id="scanBrand" type="text" placeholder="Brand (e.g., kalebet)" class="px-3 py-2 border rounded">
-                <input id="scanBaseUrl" type="url" placeholder="Official URL (optional)" class="px-3 py-2 border rounded">
-                <select id="scanCtDays" class="px-3 py-2 border rounded">
-                    <option value="30">CT Logs: 30 days</option>
-                    <option value="60">CT Logs: 60 days</option>
-                    <option value="90">CT Logs: 90 days</option>
-                </select>
-                <button id="scanBtn" onclick="startScan()" class="px-4 py-2 bg-indigo-600 text-white rounded">Start Scan</button>
+    <main class="container mx-auto px-6 py-8 space-y-8">
+        <!-- Statistics Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div class="enhanced-card rounded-xl p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600 mb-1">Total Scans Today</p>
+                        <p class="text-3xl font-bold text-blue-600" id="totalScans">0</p>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                        <i data-lucide="activity" class="w-6 h-6 text-blue-600"></i>
+                    </div>
+                </div>
             </div>
-            <div class="flex items-center gap-3 mb-3">
-                <label class="inline-flex items-center gap-2 text-sm"><input id="f_typos" type="checkbox" class="accent-indigo-600" checked> Typosquatting</label>
-                <label class="inline-flex items-center gap-2 text-sm"><input id="f_visual" type="checkbox" class="accent-indigo-600" checked> Visual AI</label>
-                <label class="inline-flex items-center gap-2 text-sm"><input id="f_dark" type="checkbox" class="accent-indigo-600"> Dark Web</label>
-                <label class="inline-flex items-center gap-2 text-sm"><input id="f_crypto" type="checkbox" class="accent-indigo-600"> Crypto</label>
-                <label class="inline-flex items-center gap-2 text-sm"><input id="f_threat" type="checkbox" class="accent-indigo-600"> Threat Intel</label>
+            <div class="enhanced-card rounded-xl p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600 mb-1">Threats Detected</p>
+                        <p class="text-3xl font-bold text-red-600" id="threatsDetected">0</p>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                        <i data-lucide="alert-triangle" class="w-6 h-6 text-red-600"></i>
+                    </div>
+                </div>
             </div>
-            <div class="w-full bg-gray-200 h-3 rounded overflow-hidden mb-3">
-                <div id="scanProgressBar" class="h-3 bg-indigo-600" style="width: 0%"></div>
+            <div class="enhanced-card rounded-xl p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600 mb-1">Domains Monitored</p>
+                        <p class="text-3xl font-bold text-green-600" id="domainsMonitored">0</p>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                        <i data-lucide="globe" class="w-6 h-6 text-green-600"></i>
+                    </div>
+                </div>
             </div>
-            <div class="text-sm text-gray-600 mb-3" id="scanStatus"></div>
-            <div class="flex items-center gap-3 mb-3">
-                <a id="scanPdfLink" class="hidden px-3 py-1 rounded bg-emerald-600 text-white" href="#" download>Download PDF</a>
-                <a id="scanCsvLink" class="hidden px-3 py-1 rounded bg-blue-600 text-white" href="#" download>Download CSV</a>
+            <div class="enhanced-card rounded-xl p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600 mb-1">Risk Score</p>
+                        <p class="text-3xl font-bold text-purple-600" id="riskScore">0</p>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                        <i data-lucide="trending-up" class="w-6 h-6 text-purple-600"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Full Brand Scan Section -->
+        <section class="enhanced-card rounded-xl p-8">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                        <i data-lucide="search" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-900">Comprehensive Brand Scan</h2>
+                        <p class="text-gray-600">Advanced threat detection across multiple vectors</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="status-indicator status-info"></span>
+                    <span class="text-sm font-medium text-gray-600">Ready</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Brand Name</label>
+                    <input id="scanBrand" type="text" placeholder="e.g., kalebet" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Official URL</label>
+                    <input id="scanBaseUrl" type="url" placeholder="https://example.com" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">CT Logs Period</label>
+                    <select id="scanCtDays" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                        <option value="30">30 days</option>
+                        <option value="60">60 days</option>
+                        <option value="90">90 days</option>
+                    </select>
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Action</label>
+                    <button id="scanBtn" onclick="startScan()" class="btn-primary w-full px-4 py-3 text-white rounded-lg font-medium">Start Analysis</button>
+                </div>
+            </div>
+
+            <!-- Feature Selection -->
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-3">Analysis Features</label>
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+                    <label class="inline-flex items-center space-x-2 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors">
+                        <input id="f_typos" type="checkbox" class="accent-blue-600" checked>
+                        <i data-lucide="type" class="w-4 h-4 text-gray-600"></i>
+                        <span class="text-sm font-medium">Typosquatting</span>
+                    </label>
+                    <label class="inline-flex items-center space-x-2 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors">
+                        <input id="f_visual" type="checkbox" class="accent-blue-600" checked>
+                        <i data-lucide="eye" class="w-4 h-4 text-gray-600"></i>
+                        <span class="text-sm font-medium">Visual AI</span>
+                    </label>
+                    <label class="inline-flex items-center space-x-2 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors">
+                        <input id="f_dark" type="checkbox" class="accent-blue-600">
+                        <i data-lucide="moon" class="w-4 h-4 text-gray-600"></i>
+                        <span class="text-sm font-medium">Dark Web</span>
+                    </label>
+                    <label class="inline-flex items-center space-x-2 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors">
+                        <input id="f_crypto" type="checkbox" class="accent-blue-600">
+                        <i data-lucide="bitcoin" class="w-4 h-4 text-gray-600"></i>
+                        <span class="text-sm font-medium">Crypto</span>
+                    </label>
+                    <label class="inline-flex items-center space-x-2 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors">
+                        <input id="f_threat" type="checkbox" class="accent-blue-600">
+                        <i data-lucide="shield-alert" class="w-4 h-4 text-gray-600"></i>
+                        <span class="text-sm font-medium">Threat Intel</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Progress Section -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <span class="text-sm font-medium text-gray-700">Analysis Progress</span>
+                    <span class="text-sm text-gray-500" id="scanStatus">Ready to start</span>
+                </div>
+                <div class="level-bar">
+                    <div id="scanProgressBar" class="level-fill level-high" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Export Options -->
+            <div class="flex items-center space-x-4 mt-6 pt-6 border-t border-gray-200">
+                <a id="scanPdfLink" class="hidden btn-secondary px-6 py-3 rounded-lg font-medium inline-flex items-center space-x-2" href="#" download>
+                    <i data-lucide="file-text" class="w-4 h-4"></i>
+                    <span>Export PDF</span>
+                </a>
+                <a id="scanCsvLink" class="hidden btn-primary px-6 py-3 rounded-lg font-medium inline-flex items-center space-x-2" href="#" download>
+                    <i data-lucide="download" class="w-4 h-4"></i>
+                    <span>Export CSV</span>
+                </a>
             </div>
         </section>
 
-        <section class="bg-white rounded-lg shadow p-6 card-hover">
-            <h2 class="text-xl font-semibold mb-4">Fake Domain Checker</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
-                <input id="fakeBrand" type="text" placeholder="Brand (e.g., kalebet)" class="px-3 py-2 border rounded">
-                <input id="fakeBaseUrl" type="url" placeholder="Official URL (optional)" class="px-3 py-2 border rounded">
-                <button id="fakeBtn" onclick="runFakeDomainCheck()" class="px-4 py-2 bg-blue-600 text-white rounded">Check</button>
+        <!-- Fake Domain Checker -->
+        <section class="enhanced-card rounded-xl p-8">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-gradient-to-br from-red-500 to-pink-600 rounded-lg flex items-center justify-center">
+                        <i data-lucide="globe-x" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-900">Fake Domain Checker</h2>
+                        <p class="text-gray-600">Identify suspicious domain variants and typosquatting attempts</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="status-indicator status-warning"></span>
+                    <span class="text-sm font-medium text-gray-600">Beta</span>
+                </div>
             </div>
-            <div id="fakeSummary" class="text-sm text-gray-600 mb-2 hidden"></div>
-            <div id="fakeResults" class="space-y-2 text-sm text-gray-700"></div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Brand Name</label>
+                    <input id="fakeBrand" type="text" placeholder="e.g., kalebet" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors">
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Official URL</label>
+                    <input id="fakeBaseUrl" type="url" placeholder="https://example.com" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors">
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Action</label>
+                    <button id="fakeBtn" onclick="runFakeDomainCheck()" class="btn-primary w-full px-4 py-3 text-white rounded-lg font-medium">Analyze Domains</button>
+                </div>
+            </div>
+
+            <div id="fakeSummary" class="mb-6 p-4 bg-gray-50 rounded-lg hidden">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-blue-600" id="fakeTotalChecked">0</div>
+                        <div class="text-gray-600">Total Checked</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-green-600" id="fakeActiveDomains">0</div>
+                        <div class="text-gray-600">Active Domains</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-red-600" id="fakeHighRisk">0</div>
+                        <div class="text-gray-600">High Risk</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-yellow-600" id="fakeMediumRisk">0</div>
+                        <div class="text-gray-600">Medium Risk</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="fakeResults" class="space-y-3"></div>
         </section>
 
-        <section class="bg-white rounded-lg shadow p-6 card-hover">
-            <h2 class="text-xl font-semibold mb-4">Clone Detection</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
-                <input id="cloneBaseUrl" type="url" placeholder="Official URL (required)" class="px-3 py-2 border rounded">
-                <input id="cloneLogoUrl" type="url" placeholder="Logo URL (optional)" class="px-3 py-2 border rounded">
-                <button onclick="runCloneDetection()" class="px-4 py-2 bg-purple-600 text-white rounded">Detect</button>
+        <!-- Clone Detection -->
+        <section class="enhanced-card rounded-xl p-8">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center">
+                        <i data-lucide="copy-x" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-900">Clone Detection</h2>
+                        <p class="text-gray-600">Advanced visual and content similarity analysis</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="status-indicator status-info"></span>
+                    <span class="text-sm font-medium text-gray-600">Advanced</span>
+                </div>
             </div>
-            <div id="cloneResults" class="space-y-2 text-sm text-gray-700"></div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Official URL</label>
+                    <input id="cloneBaseUrl" type="url" placeholder="https://example.com" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors">
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Logo URL (Optional)</label>
+                    <input id="cloneLogoUrl" type="url" placeholder="https://example.com/logo.png" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors">
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Action</label>
+                    <button onclick="runCloneDetection()" class="btn-primary w-full px-4 py-3 text-white rounded-lg font-medium">Detect Clones</button>
+                </div>
+            </div>
+
+            <div id="cloneResults" class="space-y-3"></div>
         </section>
 
-        <section class="bg-white rounded-lg shadow p-6 card-hover">
-            <h2 class="text-xl font-semibold mb-4">Visual & Content Comparison</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
-                <input id="cmpUrl1" type="url" placeholder="Official URL" class="px-3 py-2 border rounded">
-                <input id="cmpUrl2" type="url" placeholder="Suspicious URL" class="px-3 py-2 border rounded">
-                <button onclick="runVisualComparison()" class="px-4 py-2 bg-green-600 text-white rounded">Compare</button>
+        <!-- Visual & Content Comparison -->
+        <section class="enhanced-card rounded-xl p-8">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-teal-600 rounded-lg flex items-center justify-center">
+                        <i data-lucide="eye" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-900">Visual & Content Comparison</h2>
+                        <p class="text-gray-600">Compare websites for visual and structural similarities</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="status-indicator status-online"></span>
+                    <span class="text-sm font-medium text-gray-600">Available</span>
+                </div>
             </div>
-            <div id="cmpResults" class="space-y-2 text-sm text-gray-700"></div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Official URL</label>
+                    <input id="cmpUrl1" type="url" placeholder="https://example.com" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Suspicious URL</label>
+                    <input id="cmpUrl2" type="url" placeholder="https://suspicious-site.com" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Action</label>
+                    <button onclick="runVisualComparison()" class="btn-primary w-full px-4 py-3 text-white rounded-lg font-medium">Compare Sites</button>
+                </div>
+            </div>
+
+            <div id="cmpResults" class="space-y-3"></div>
+        </section>
+
+        <!-- Ahrefs Domain Analysis -->
+        <section class="enhanced-card rounded-xl p-8">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-lg flex items-center justify-center">
+                        <i data-lucide="trending-up" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-900">Ahrefs Domain Analysis</h2>
+                        <p class="text-gray-600">SEO metrics, backlinks, and domain authority analysis</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="status-indicator status-online"></span>
+                    <span class="text-sm font-medium text-gray-600">Available</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Domain to Analyze</label>
+                    <input id="ahrefsDomain" type="text" placeholder="example.com" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Analysis Type</label>
+                    <select id="ahrefsType" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                        <option value="full">Full Analysis</option>
+                        <option value="backlinks">Backlinks Only</option>
+                        <option value="keywords">Keywords Only</option>
+                        <option value="info">Domain Info</option>
+                    </select>
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Action</label>
+                    <button onclick="runAhrefsAnalysis()" class="btn-primary w-full px-4 py-3 text-white rounded-lg font-medium">Analyze Domain</button>
+                </div>
+            </div>
+
+            <div id="ahrefsResults" class="space-y-3"></div>
+        </section>
+
+        <!-- Enhanced WHOIS Analysis -->
+        <section class="enhanced-card rounded-xl p-8">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+                        <i data-lucide="database" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-900">Enhanced WHOIS Analysis</h2>
+                        <p class="text-gray-600">Detailed domain registration and ownership information</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="status-indicator status-online"></span>
+                    <span class="text-sm font-medium text-gray-600">Available</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Domain to Analyze</label>
+                    <input id="whoisDomain" type="text" placeholder="example.com" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors">
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Analysis Type</label>
+                    <select id="whoisType" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors">
+                        <option value="single">Single Domain</option>
+                        <option value="batch">Batch Analysis</option>
+                    </select>
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Action</label>
+                    <button onclick="runWhoisAnalysis()" class="btn-primary w-full px-4 py-3 text-white rounded-lg font-medium">Analyze WHOIS</button>
+                </div>
+            </div>
+
+            <div id="whoisResults" class="space-y-3"></div>
+        </section>
+
+        <!-- Enhanced Report Generation -->
+        <section class="enhanced-card rounded-xl p-8">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-green-600 rounded-lg flex items-center justify-center">
+                        <i data-lucide="file-text" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-900">Enhanced Report Generation</h2>
+                        <p class="text-gray-600">Professional reports with customizable templates and formats</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="status-indicator status-online"></span>
+                    <span class="text-sm font-medium text-gray-600">Available</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Report Template</label>
+                    <select id="reportTemplate" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors">
+                        <option value="executive-summary">Executive Summary</option>
+                        <option value="technical-details">Technical Analysis</option>
+                        <option value="compliance-report">Compliance Report</option>
+                        <option value="brand-protection">Brand Protection</option>
+                    </select>
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Report Format</label>
+                    <select id="reportFormat" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors">
+                        <option value="pdf">PDF Document</option>
+                        <option value="csv">CSV Data</option>
+                        <option value="html">HTML Report</option>
+                    </select>
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Scan ID</label>
+                    <input id="reportScanId" type="text" placeholder="Enter scan ID" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors">
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Action</label>
+                    <button onclick="generateReport()" class="btn-primary w-full px-4 py-3 text-white rounded-lg font-medium">Generate Report</button>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 rounded-lg p-4 mb-6">
+                <h3 class="font-medium text-gray-900 mb-2">Available Templates</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <div>
+                        <h4 class="font-medium text-blue-600">Executive Summary</h4>
+                        <p class="text-gray-600">High-level overview for management with key findings and recommendations</p>
+                    </div>
+                    <div>
+                        <h4 class="font-medium text-green-600">Technical Analysis</h4>
+                        <p class="text-gray-600">Detailed technical analysis for security teams with comprehensive data</p>
+                    </div>
+                    <div>
+                        <h4 class="font-medium text-purple-600">Compliance Report</h4>
+                        <p class="text-gray-600">Regulatory compliance documentation and audit trail</p>
+                    </div>
+                    <div>
+                        <h4 class="font-medium text-red-600">Brand Protection</h4>
+                        <p class="text-gray-600">Comprehensive brand protection analysis and threat assessment</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="reportResults" class="space-y-3"></div>
         </section>
     </main>
 
@@ -182,29 +648,100 @@
         }
         function asHtml(items){
             if (!items || items.length === 0) {
-                return '<div class="text-gray-500">No results found.</div>';
+                return '<div class="text-gray-500 text-center py-8">No results found.</div>';
             }
-            return `<div class=\"space-y-2\">${items.map(i=>`<div class=\"p-3 rounded border ${i.riskLevel==='high'?'border-red-300 bg-red-50':i.riskLevel==='medium'?'border-yellow-300 bg-yellow-50':'border-green-300 bg-green-50'}\">\n                <div class=\"font-medium\">${i.domain || i.url || i.name || 'Unknown'}</div>\n                ${i.riskLevel?`<div>Risk: ${i.riskLevel}</div>`:''}\n                ${i.similarity?`<div>Similarity: ${i.similarity}%</div>`:''}\n                ${Array.isArray(i.indicators)&&i.indicators.length?`<div>Indicators: ${i.indicators.join(', ')}</div>`:''}\n            </div>`).join('')}</div>`
+
+            return `<div class="space-y-4">${items.map(i => {
+                const riskLevel = i.riskLevel || 'low';
+                const riskClass = riskLevel === 'high' ? 'risk-high' : riskLevel === 'medium' ? 'risk-medium' : 'risk-low';
+                const riskBadgeClass = riskLevel === 'high' ? 'risk-high-badge' : riskLevel === 'medium' ? 'risk-medium-badge' : 'risk-low-badge';
+                const similarity = i.similarity || i.visualSimilarity || 0;
+                const levelBarClass = similarity >= 90 ? 'level-high' : similarity >= 80 ? 'level-medium' : 'level-low';
+
+                return `
+                    <div class="enhanced-card rounded-lg p-6 ${riskClass}">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex-1">
+                                <div class="flex items-center space-x-3 mb-2">
+                                    <h3 class="font-semibold text-lg text-gray-900">${i.domain || i.url || i.name || 'Unknown'}</h3>
+                                    <span class="risk-badge ${riskBadgeClass}">
+                                        ${riskLevel.toUpperCase()} RISK
+                                    </span>
+                                </div>
+                                <div class="flex items-center space-x-4 text-sm text-gray-600">
+                                    ${i.registrationDate ? `<span><i data-lucide="calendar" class="w-4 h-4 mr-1"></i>${new Date(i.registrationDate).toLocaleDateString()}</span>` : ''}
+                                    ${i.registrar ? `<span><i data-lucide="building" class="w-4 h-4 mr-1"></i>${i.registrar}</span>` : ''}
+                                    ${i.hasSSL ? `<span class="text-green-600"><i data-lucide="lock" class="w-4 h-4 mr-1"></i>SSL</span>` : '<span class="text-red-600"><i data-lucide="unlock" class="w-4 h-4 mr-1"></i>No SSL</span>'}
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <a href="${i.url || `http://${i.domain}`}" target="_blank" class="btn-secondary px-3 py-1 rounded text-sm inline-flex items-center space-x-1">
+                                    <i data-lucide="external-link" class="w-4 h-4"></i>
+                                    <span>Visit</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        ${similarity > 0 ? `
+                            <div class="mb-4">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-sm font-medium text-gray-700">Similarity Score</span>
+                                    <span class="text-sm font-semibold text-gray-900">${similarity}%</span>
+                                </div>
+                                <div class="level-bar">
+                                    <div class="level-fill ${levelBarClass}" style="width: ${similarity}%"></div>
+                                </div>
+                            </div>
+                        ` : ''}
+
+                        ${Array.isArray(i.indicators) && i.indicators.length ? `
+                            <div class="mb-4">
+                                <h4 class="text-sm font-medium text-gray-700 mb-2">Risk Indicators</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    ${i.indicators.map(indicator => `<span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs">${indicator}</span>`).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
+
+                        ${i.whois ? `
+                            <div class="pt-4 border-t border-gray-200">
+                                <h4 class="text-sm font-medium text-gray-700 mb-2">WHOIS Information</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                                    ${i.whois.registrar ? `<div><span class="font-medium">Registrar:</span> ${i.whois.registrar}</div>` : ''}
+                                    ${i.whois.creationDate ? `<div><span class="font-medium">Created:</span> ${new Date(i.whois.creationDate).toLocaleDateString()}</div>` : ''}
+                                    ${i.whois.nameServers ? `<div><span class="font-medium">Name Servers:</span> ${Array.isArray(i.whois.nameServers) ? i.whois.nameServers.join(', ') : i.whois.nameServers}</div>` : ''}
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('')}</div>`;
         }
 
         async function runFakeDomainCheck(){
             const brand = document.getElementById('fakeBrand').value.trim();
             const baseUrl = document.getElementById('fakeBaseUrl').value.trim();
             const btn = document.getElementById('fakeBtn');
-            if(!brand){ alert('Enter brand'); return; }
-            showLoading(); btn.disabled = true; btn.textContent = 'Checking...';
+            if(!brand){ alert('Enter brand name'); return; }
+            showLoading(); btn.disabled = true; btn.textContent = 'Analyzing...';
             try{
                 const r = await fetch('/api/brand-protection/fake-domain-check',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({brand, baseUrl: baseUrl || null })});
                 const data = await r.json();
                 const results = data.results || [];
-                const summary = data.summary || {};
+
+                // Update summary statistics
+                document.getElementById('fakeTotalChecked').textContent = data.totalChecked ?? 0;
+                document.getElementById('fakeActiveDomains').textContent = data.activeDomains ?? 0;
+                document.getElementById('fakeHighRisk').textContent = results.filter(r => r.riskLevel === 'high').length;
+                document.getElementById('fakeMediumRisk').textContent = results.filter(r => r.riskLevel === 'medium').length;
+
                 const summaryEl = document.getElementById('fakeSummary');
                 summaryEl.classList.remove('hidden');
-                summaryEl.textContent = `Checked: ${data.totalChecked ?? 0}, Active: ${data.activeDomains ?? 0}, High risk: ${summary.highRisk ?? 0}, Medium: ${summary.mediumRisk ?? 0}, Low: ${summary.lowRisk ?? 0}`;
+
                 document.getElementById('fakeResults').innerHTML = asHtml(results);
             }catch(e){
-                document.getElementById('fakeResults').innerHTML = '<div class="text-red-600">Fake domain check failed.</div>';
-            } finally{ hideLoading(); btn.disabled = false; btn.textContent = 'Check'; }
+                document.getElementById('fakeResults').innerHTML = '<div class="text-red-600 text-center py-8">Fake domain check failed. Please try again.</div>';
+            } finally{ hideLoading(); btn.disabled = false; btn.textContent = 'Analyze Domains'; }
         }
 
         async function runCloneDetection(){
@@ -216,7 +753,9 @@
                 const r = await fetch('/api/brand-protection/clone-detection',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({baseUrl, logoUrl: logoUrl || null})});
                 const data = await r.json();
                 document.getElementById('cloneResults').innerHTML = asHtml(data.results || []);
-            }catch(e){ alert('Clone detection failed'); } finally{ hideLoading(); }
+            }catch(e){
+                document.getElementById('cloneResults').innerHTML = '<div class="text-red-600 text-center py-8">Clone detection failed. Please try again.</div>';
+            } finally{ hideLoading(); }
         }
 
         async function runVisualComparison(){
@@ -225,14 +764,434 @@
             if(!url1 || !url2){ alert('Enter both URLs'); return; }
             showLoading();
             try{
-                const r = await fetch('/api/visual-comparison',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url1,url2})});
+                const r = await fetch('/api/website-comparison/compare',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url1,url2})});
                 const data = await r.json();
-                document.getElementById('cmpResults').innerHTML = `<div class="p-3 border rounded">
-                    <div>Visual diff ratio: ${data.visual?.diffRatio ?? '-'}</div>
-                    <div>DOM cosine: ${data.dom?.tagCosine ?? '-'}</div>
-                    <div>Text hamming: ${data.text?.hamming ?? '-'}</div>
-                </div>`;
-            }catch(e){ alert('Comparison failed'); } finally{ hideLoading(); }
+
+                const visualRatio = data.visual?.diffRatio ?? 0;
+                const domCosine = data.dom?.tagCosine ?? 0;
+                const textHamming = data.text?.hamming ?? 0;
+
+                const overallSimilarity = Math.round((1 - visualRatio) * 100);
+                const riskLevel = overallSimilarity >= 90 ? 'high' : overallSimilarity >= 80 ? 'medium' : 'low';
+
+                const resultHtml = `
+                    <div class="enhanced-card rounded-lg p-6 ${riskLevel === 'high' ? 'risk-high' : riskLevel === 'medium' ? 'risk-medium' : 'risk-low'}">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-semibold text-lg text-gray-900">Comparison Results</h3>
+                            <span class="risk-badge ${riskLevel === 'high' ? 'risk-high-badge' : riskLevel === 'medium' ? 'risk-medium-badge' : 'risk-low-badge'}">
+                                ${overallSimilarity}% SIMILAR
+                            </span>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                            <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                <div class="text-2xl font-bold text-blue-600">${Math.round((1 - visualRatio) * 100)}%</div>
+                                <div class="text-sm text-gray-600">Visual Similarity</div>
+                                <div class="level-bar mt-2">
+                                    <div class="level-fill ${visualRatio < 0.1 ? 'level-high' : visualRatio < 0.2 ? 'level-medium' : 'level-low'}" style="width: ${(1 - visualRatio) * 100}%"></div>
+                                </div>
+                            </div>
+                            <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                <div class="text-2xl font-bold text-green-600">${Math.round(domCosine * 100)}%</div>
+                                <div class="text-sm text-gray-600">Structure Similarity</div>
+                                <div class="level-bar mt-2">
+                                    <div class="level-fill ${domCosine > 0.8 ? 'level-high' : domCosine > 0.6 ? 'level-medium' : 'level-low'}" style="width: ${domCosine * 100}%"></div>
+                                </div>
+                            </div>
+                            <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                <div class="text-2xl font-bold text-purple-600">${Math.round((1 - textHamming/100) * 100)}%</div>
+                                <div class="text-sm text-gray-600">Content Similarity</div>
+                                <div class="level-bar mt-2">
+                                    <div class="level-fill ${textHamming < 20 ? 'level-high' : textHamming < 40 ? 'level-medium' : 'level-low'}" style="width: ${(1 - textHamming/100) * 100}%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between pt-4 border-t border-gray-200">
+                            <div class="flex space-x-4">
+                                <a href="${url1}" target="_blank" class="btn-secondary px-4 py-2 rounded-lg text-sm inline-flex items-center space-x-2">
+                                    <i data-lucide="external-link" class="w-4 h-4"></i>
+                                    <span>Official Site</span>
+                                </a>
+                                <a href="${url2}" target="_blank" class="btn-primary px-4 py-2 rounded-lg text-sm inline-flex items-center space-x-2">
+                                    <i data-lucide="external-link" class="w-4 h-4"></i>
+                                    <span>Suspicious Site</span>
+                                </a>
+                            </div>
+                            <div class="text-sm text-gray-600">
+                                ${overallSimilarity >= 80 ? '<span class="text-red-600 font-medium">⚠️ Potential clone detected</span>' : '<span class="text-green-600 font-medium">✓ No significant similarity</span>'}
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('cmpResults').innerHTML = resultHtml;
+            }catch(e){
+                document.getElementById('cmpResults').innerHTML = '<div class="text-red-600 text-center py-8">Comparison failed. Please try again.</div>';
+            } finally{ hideLoading(); }
+        }
+
+        async function runAhrefsAnalysis(){
+            const domain = document.getElementById('ahrefsDomain').value.trim();
+            const type = document.getElementById('ahrefsType').value;
+            if(!domain){ alert('Enter domain'); return; }
+
+            showLoading();
+            try{
+                let endpoint = '';
+                let requestBody = { domain };
+
+                switch(type){
+                    case 'full':
+                        endpoint = '/api/ahrefs/domain-analysis';
+                        break;
+                    case 'backlinks':
+                        endpoint = '/api/ahrefs/backlinks';
+                        requestBody.limit = 50;
+                        break;
+                    case 'keywords':
+                        endpoint = '/api/ahrefs/organic-keywords';
+                        requestBody.limit = 50;
+                        break;
+                    case 'info':
+                        // Use GET endpoint for domain info
+                        const infoResponse = await fetch(`/api/ahrefs/domain-info/${encodeURIComponent(domain)}`);
+                        const infoData = await infoResponse.json();
+                        if(infoData.success){
+                            displayAhrefsResults(type, infoData.info, domain);
+                        } else {
+                            throw new Error(infoData.error || 'Failed to get domain info');
+                        }
+                        return;
+                }
+
+                const r = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify(requestBody)
+                });
+
+                const data = await r.json();
+                if(data.success){
+                    displayAhrefsResults(type, data.analysis || data.backlinks || data.keywords, domain);
+                } else {
+                    throw new Error(data.error || 'Ahrefs analysis failed');
+                }
+            }catch(e){
+                document.getElementById('ahrefsResults').innerHTML = `<div class="text-red-600 text-center py-8">${e.message}</div>`;
+            } finally{ hideLoading(); }
+        }
+
+        function displayAhrefsResults(type, data, domain){
+            let resultHtml = '';
+
+            if(type === 'full' && data){
+                const riskLevel = data.riskLevel || 'low';
+                const riskClass = riskLevel === 'high' ? 'risk-high' : riskLevel === 'medium' ? 'risk-medium' : 'risk-low';
+
+                resultHtml = `
+                    <div class="enhanced-card rounded-lg p-6 ${riskClass}">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-semibold text-lg text-gray-900">Ahrefs Analysis Results</h3>
+                            <span class="risk-badge ${riskLevel === 'high' ? 'risk-high-badge' : riskLevel === 'medium' ? 'risk-medium-badge' : 'risk-low-badge'}">
+                                ${riskLevel.toUpperCase()} RISK
+                            </span>
+                        </div>
+
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                            <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                <div class="text-2xl font-bold text-blue-600">${data.domainRating || 0}</div>
+                                <div class="text-sm text-gray-600">Domain Rating</div>
+                                <div class="level-bar mt-2">
+                                    <div class="level-fill level-high" style="width: ${Math.min((data.domainRating || 0) * 2, 100)}%"></div>
+                                </div>
+                            </div>
+                            <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                <div class="text-2xl font-bold text-green-600">${(data.backlinks || 0).toLocaleString()}</div>
+                                <div class="text-sm text-gray-600">Backlinks</div>
+                            </div>
+                            <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                <div class="text-2xl font-bold text-purple-600">${(data.organicTraffic || 0).toLocaleString()}</div>
+                                <div class="text-sm text-gray-600">Organic Traffic</div>
+                            </div>
+                            <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                <div class="text-2xl font-bold text-orange-600">${(data.referringDomains || 0).toLocaleString()}</div>
+                                <div class="text-sm text-gray-600">Ref. Domains</div>
+                            </div>
+                        </div>
+
+                        ${data.indicators && data.indicators.length ? `
+                            <div class="mb-4">
+                                <h4 class="text-sm font-medium text-gray-700 mb-2">Risk Indicators</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    ${data.indicators.map(indicator => `<span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs">${indicator}</span>`).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
+
+                        ${data.topBacklinks && data.topBacklinks.length ? `
+                            <div class="pt-4 border-t border-gray-200">
+                                <h4 class="text-sm font-medium text-gray-700 mb-2">Top Backlinks</h4>
+                                <div class="space-y-2">
+                                    ${data.topBacklinks.slice(0, 5).map(link => `
+                                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                            <div>
+                                                <div class="font-medium text-sm">${link.domain}</div>
+                                                <div class="text-xs text-gray-600">DR: ${link.domainRating} • Traffic: ${link.organicTraffic?.toLocaleString() || 0}</div>
+                                            </div>
+                                            <div class="text-right">
+                                                <div class="text-sm font-medium">${link.backlinks} links</div>
+                                            </div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            } else if(type === 'backlinks' && Array.isArray(data)){
+                resultHtml = `
+                    <div class="enhanced-card rounded-lg p-6">
+                        <h3 class="font-semibold text-lg text-gray-900 mb-4">Backlink Analysis</h3>
+                        <div class="space-y-2">
+                            ${data.slice(0, 10).map(link => `
+                                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                    <div>
+                                        <div class="font-medium text-sm">${link.domain}</div>
+                                        <div class="text-xs text-gray-600">DR: ${link.domainRating} • Traffic: ${link.organicTraffic?.toLocaleString() || 0}</div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-sm font-medium">${link.backlinks} backlinks</div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            } else if(type === 'keywords' && Array.isArray(data)){
+                resultHtml = `
+                    <div class="enhanced-card rounded-lg p-6">
+                        <h3 class="font-semibold text-lg text-gray-900 mb-4">Organic Keywords</h3>
+                        <div class="space-y-2">
+                            ${data.slice(0, 10).map(keyword => `
+                                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                    <div>
+                                        <div class="font-medium text-sm">${keyword.keyword || 'Unknown'}</div>
+                                        <div class="text-xs text-gray-600">Position: ${keyword.position || 0} • Volume: ${keyword.volume?.toLocaleString() || 0}</div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-sm font-medium">Traffic: ${keyword.traffic || 0}</div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            } else if(type === 'info' && data){
+                resultHtml = `
+                    <div class="enhanced-card rounded-lg p-6">
+                        <h3 class="font-semibold text-lg text-gray-900 mb-4">Domain Information</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                <div class="text-2xl font-bold text-blue-600">${data.domainRating || 0}</div>
+                                <div class="text-sm text-gray-600">Domain Rating</div>
+                            </div>
+                            <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                <div class="text-2xl font-bold text-green-600">${(data.backlinks || 0).toLocaleString()}</div>
+                                <div class="text-sm text-gray-600">Backlinks</div>
+                            </div>
+                            <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                <div class="text-2xl font-bold text-purple-600">${(data.organicTraffic || 0).toLocaleString()}</div>
+                                <div class="text-sm text-gray-600">Organic Traffic</div>
+                            </div>
+                            <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                <div class="text-2xl font-bold text-orange-600">${(data.referringDomains || 0).toLocaleString()}</div>
+                                <div class="text-sm text-gray-600">Ref. Domains</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            document.getElementById('ahrefsResults').innerHTML = resultHtml || '<div class="text-gray-600 text-center py-8">No data available</div>';
+        }
+
+        async function runWhoisAnalysis(){
+            const domain = document.getElementById('whoisDomain').value.trim();
+            const type = document.getElementById('whoisType').value;
+
+            if(!domain){
+                alert('Enter domain');
+                return;
+            }
+
+            if(type === 'batch'){
+                // For batch analysis, we'll use the existing scan functionality
+                // that already includes WHOIS data
+                alert('Batch analysis is available in the main scan section above');
+                return;
+            }
+
+            showLoading();
+            try{
+                const r = await fetch('/api/whois/enhanced-check', {
+                    method: 'POST',
+                    headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify({ domain })
+                });
+
+                const data = await r.json();
+                if(data.success){
+                    displayWhoisResults(data.whois, domain);
+                } else {
+                    throw new Error(data.error || 'WHOIS analysis failed');
+                }
+            }catch(e){
+                document.getElementById('whoisResults').innerHTML = `<div class="text-red-600 text-center py-8">${e.message}</div>`;
+            } finally{ hideLoading(); }
+        }
+
+        function displayWhoisResults(whoisData, domain){
+            const riskLevel = whoisData.riskLevel || 'low';
+            const riskClass = riskLevel === 'high' ? 'risk-high' : riskLevel === 'medium' ? 'risk-medium' : 'risk-low';
+
+            let resultHtml = `
+                <div class="enhanced-card rounded-lg p-6 ${riskClass}">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-semibold text-lg text-gray-900">WHOIS Analysis Results</h3>
+                        <span class="risk-badge ${riskLevel === 'high' ? 'risk-high-badge' : riskLevel === 'medium' ? 'risk-medium-badge' : 'risk-low-badge'}">
+                            ${riskLevel.toUpperCase()} RISK
+                        </span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div class="space-y-4">
+                            <div class="p-4 bg-gray-50 rounded-lg">
+                                <h4 class="font-medium text-gray-900 mb-2">Domain Information</h4>
+                                <div class="space-y-2 text-sm">
+                                    <div><span class="font-medium">Status:</span> ${whoisData.isRegistered ? 'Registered' : 'Not Registered'}</div>
+                                    ${whoisData.registrar ? `<div><span class="font-medium">Registrar:</span> ${whoisData.registrar}</div>` : ''}
+                                    ${whoisData.creationDate ? `<div><span class="font-medium">Created:</span> ${new Date(whoisData.creationDate).toLocaleDateString()}</div>` : ''}
+                                    ${whoisData.expirationDate ? `<div><span class="font-medium">Expires:</span> ${new Date(whoisData.expirationDate).toLocaleDateString()}</div>` : ''}
+                                </div>
+                            </div>
+
+                            <div class="p-4 bg-gray-50 rounded-lg">
+                                <h4 class="font-medium text-gray-900 mb-2">Registrant Information</h4>
+                                <div class="space-y-2 text-sm">
+                                    ${whoisData.registrantOrganization ? `<div><span class="font-medium">Organization:</span> ${whoisData.registrantOrganization}</div>` : ''}
+                                    ${whoisData.registrantEmail ? `<div><span class="font-medium">Email:</span> ${whoisData.registrantEmail}</div>` : ''}
+                                    ${whoisData.registrantCountry ? `<div><span class="font-medium">Country:</span> ${whoisData.registrantCountry}</div>` : ''}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            ${whoisData.nameServers && whoisData.nameServers.length ? `
+                                <div class="p-4 bg-gray-50 rounded-lg">
+                                    <h4 class="font-medium text-gray-900 mb-2">Name Servers</h4>
+                                    <div class="space-y-1">
+                                        ${whoisData.nameServers.map(ns => `<div class="text-sm text-gray-700">${ns}</div>`).join('')}
+                                    </div>
+                                </div>
+                            ` : ''}
+
+                            ${whoisData.status && whoisData.status.length ? `
+                                <div class="p-4 bg-gray-50 rounded-lg">
+                                    <h4 class="font-medium text-gray-900 mb-2">Domain Status</h4>
+                                    <div class="flex flex-wrap gap-2">
+                                        ${whoisData.status.map(status => `<span class="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs">${status}</span>`).join('')}
+                                    </div>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+
+                    ${whoisData.riskIndicators && whoisData.riskIndicators.length ? `
+                        <div class="pt-4 border-t border-gray-200">
+                            <h4 class="text-sm font-medium text-gray-700 mb-2">Risk Indicators</h4>
+                            <div class="flex flex-wrap gap-2">
+                                ${whoisData.riskIndicators.map(indicator => `<span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs">${indicator}</span>`).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+
+            document.getElementById('whoisResults').innerHTML = resultHtml;
+        }
+
+        async function generateReport(){
+            const scanId = document.getElementById('reportScanId').value.trim();
+            const template = document.getElementById('reportTemplate').value;
+            const format = document.getElementById('reportFormat').value;
+
+            if(!scanId){
+                alert('Enter scan ID');
+                return;
+            }
+
+            showLoading();
+            try{
+                const r = await fetch('/api/reports/generate', {
+                    method: 'POST',
+                    headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify({ scanId, template, format })
+                });
+
+                const data = await r.json();
+                if(data.success){
+                    displayReportResults(data);
+                } else {
+                    throw new Error(data.error || 'Report generation failed');
+                }
+            }catch(e){
+                document.getElementById('reportResults').innerHTML = `<div class="text-red-600 text-center py-8">${e.message}</div>`;
+            } finally{ hideLoading(); }
+        }
+
+        function displayReportResults(data){
+            const resultHtml = `
+                <div class="enhanced-card rounded-lg p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-semibold text-lg text-gray-900">Report Generated Successfully</h3>
+                        <span class="risk-badge low">Ready</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                <i data-lucide="file-text" class="w-8 h-8 text-blue-600 mx-auto mb-2"></i>
+                                <div class="font-medium text-gray-900">Template</div>
+                                <div class="text-sm text-gray-600">${data.template.replace('-', ' ').toUpperCase()}</div>
+                            </div>
+                            <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                <i data-lucide="download" class="w-8 h-8 text-green-600 mx-auto mb-2"></i>
+                                <div class="font-medium text-gray-900">Format</div>
+                                <div class="text-sm text-gray-600">${data.format.toUpperCase()}</div>
+                            </div>
+                            <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                <i data-lucide="clock" class="w-8 h-8 text-purple-600 mx-auto mb-2"></i>
+                                <div class="font-medium text-gray-900">Generated</div>
+                                <div class="text-sm text-gray-600">${new Date(data.timestamp).toLocaleTimeString()}</div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-center space-x-4 pt-4 border-t border-gray-200">
+                            <a href="${data.downloadUrl}" class="btn-primary px-6 py-3 rounded-lg font-medium inline-flex items-center space-x-2" download>
+                                <i data-lucide="download" class="w-4 h-4"></i>
+                                <span>Download Report</span>
+                            </a>
+                            <button onclick="generateReport()" class="btn-secondary px-6 py-3 rounded-lg font-medium inline-flex items-center space-x-2">
+                                <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                                <span>Generate Another</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('reportResults').innerHTML = resultHtml;
         }
     </script>
 </body>
