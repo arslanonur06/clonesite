@@ -31,7 +31,7 @@ const homographs: Record<string, string[]> = {
   x: ['х'],
 };
 
-const additions = ['1', '2', '123', 'net', 'official', 'tr'];
+const additions = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46', '47', '48', '49', '50', '51', '52', '53', '54', '55', '56', '57', '58', '59', '60', '61', '62', '63', '64', '65', '66', '67', '68', '69', '70', '71', '72', '73', '74', '75', '76', '77', '78', '79', '80', '81', '82', '83', '84', '85', '86', '87', '88', '89', '90', '91', '92', '93', '94', '95', '96', '97', '98', '99', '100', '123', '777', '888', '999', 'net', 'official', 'tr', 'best', 'top', 'pro', 'vip', 'new', 'live', 'bet', 'win', 'play', 'game', 'casino', 'slot', 'bonus', 'app'];
 
 function unique<T>(items: T[]): T[] {
   return Array.from(new Set(items));
@@ -145,6 +145,45 @@ export function generateDomainVariants(
     for (const h of homog) {
       const variant = label.slice(0, i) + h + label.slice(i + 1);
       add(variant, `homograph ${ch}->${h}`);
+    }
+  }
+
+  // 10) Prefix additions - common prefixes for clones
+  const prefixes = ['the', 'my', 'get', 'try', 'new', 'real', 'true', 'official', 'go'];
+  for (const pre of prefixes) {
+    add(pre + label, `prefix '${pre}'`);
+  }
+
+  // 11) Middle insertions - add numbers or letters in the middle
+  const middleInserts = ['24', '365', 'bet', 'win'];
+  const mid = Math.floor(label.length / 2);
+  for (const ins of middleInserts) {
+    add(label.slice(0, mid) + ins + label.slice(mid), `middle insertion '${ins}'`);
+  }
+
+  // 12) Hyphen variations
+  if (label.length > 3) {
+    for (let i = 1; i < label.length - 1; i += 2) {
+      add(label.slice(0, i) + '-' + label.slice(i), `hyphen at position ${i}`);
+    }
+  }
+
+  // 13) Common misspellings - swap similar letters
+  const similarPairs: [string, string][] = [
+    ['b', 'd'], ['m', 'n'], ['v', 'w'], ['c', 'k'], 
+    ['s', 'z'], ['i', 'y']
+  ];
+  
+  for (let i = 0; i < label.length; i++) {
+    const ch = label[i];
+    for (const [a, b] of similarPairs) {
+      if (ch === a) {
+        const variant = label.slice(0, i) + b + label.slice(i + 1);
+        add(variant, `similar letter ${a}->${b}`);
+      } else if (ch === b) {
+        const variant = label.slice(0, i) + a + label.slice(i + 1);
+        add(variant, `similar letter ${b}->${a}`);
+      }
     }
   }
 

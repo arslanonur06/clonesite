@@ -3,72 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bonus Comparison - Security Suite</title>
+    <title>Bonus Comparison - iGaming Security Suite</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .gradient-bg { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
         .card-hover { transition: all 0.3s ease; }
         .card-hover:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        .feature-card { background: linear-gradient(145deg, #f8fafc, #e2e8f0); }
-        .pdf-download { background: #10b981; color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; text-decoration: none; display: inline-block; margin-top: 0.5rem; }
-        .pdf-download:hover { background: #059669; }
-        .csv-download { background: #3b82f6; color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; text-decoration: none; display: inline-block; margin-top: 0.5rem; }
-        .csv-download:hover { background: #2563eb; }
-    </style>
-    <script>
-        function addRow() {
-            const container = document.getElementById('competitors');
-            const idx = container.children.length + 1;
-            const div = document.createElement('div');
-            div.className = 'grid grid-cols-1 md:grid-cols-2 gap-3';
-            div.innerHTML = `
-                <input type="text" placeholder="Competitor ${idx} Name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                <input type="url" placeholder="Competitor ${idx} URL" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-            `;
-            container.appendChild(div);
+        .btn-primary {
+            background: linear-gradient(135deg, #10b981, #059669);
+            transition: all 0.3s ease;
         }
-    </script>
-    
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+        }
+        .level-bar {
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            background: #e5e7eb;
+        }
+        .level-fill {
+            height: 100%;
+            transition: width 0.5s ease;
+            border-radius: 4px;
+        }
+    </style>
 </head>
 <body class="bg-gray-50">
-    <header class="gradient-bg text-white py-6">
+    <!-- Header -->
+    <header class="gradient-bg text-white py-8 shadow-lg">
         <div class="container mx-auto px-6">
             <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-4">
-                    <i data-lucide="percent" class="w-8 h-8"></i>
+                <div class="flex items-center space-x-6">
+                    <div class="w-16 h-16 bg-white bg-opacity-20 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                        <i data-lucide="percent" class="w-10 h-10"></i>
+                    </div>
                     <div>
-                        <h1 class="text-3xl font-bold">Bonus Comparison</h1>
-                        <p class="text-blue-100">Compare competitors' bonus systems</p>
+                        <h1 class="text-4xl font-bold tracking-tight">Bonus Comparison Tool</h1>
+                        <p class="text-green-100 text-lg mt-1">Analyze and compare competitors' bonus systems</p>
                     </div>
                 </div>
-                <div class="text-right">
-                    <a href="index.html" class="underline">← Back to Dashboard</a>
-                </div>
+                <a href="index.html" class="btn-primary px-6 py-3 rounded-lg font-medium inline-flex items-center space-x-2">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    <span>Dashboard</span>
+                </a>
             </div>
         </div>
     </header>
 
     <main class="container mx-auto px-6 py-8">
-        <div class="feature-card rounded-lg p-6">
-            <h2 class="text-xl font-semibold mb-4">Enter competitors to compare</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
-                <input id="brandInput" type="text" placeholder="Your brand name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                <input id="baseUrlInput" type="url" placeholder="Your base url (optional)" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-            </div>
-            <div id="competitors" class="space-y-3 mb-4"></div>
+        <!-- Comparison Form -->
+        <div class="bg-white rounded-xl p-8 shadow-xl mb-8">
             <div class="flex items-center space-x-3 mb-6">
-                <button onclick="addRow()" class="px-4 py-2 bg-gray-200 rounded">Add competitor</button>
-                <button onclick="runBonusComparison()" class="px-4 py-2 bg-blue-600 text-white rounded">Compare Bonuses</button>
+                <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
+                    <i data-lucide="settings" class="w-6 h-6 text-white"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900">Configure Comparison</h2>
+                    <p class="text-gray-600">Enter your brand and competitor information</p>
+                </div>
             </div>
-            <div id="results" class="hidden"></div>
+
+            <!-- Your Brand Info -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">
+                        <i data-lucide="building" class="w-4 h-4 inline mr-1"></i>
+                        Your Brand Name
+                    </label>
+                    <input id="brandInput" type="text" placeholder="e.g., KaleBet" 
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">
+                        <i data-lucide="link" class="w-4 h-4 inline mr-1"></i>
+                        Your Website URL (Optional)
+                    </label>
+                    <input id="baseUrlInput" type="url" placeholder="https://example.com" 
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
+                </div>
+            </div>
+
+            <!-- Competitors Section -->
+            <div class="mb-6">
+                <div class="flex items-center justify-between mb-4">
+                    <label class="block text-sm font-medium text-gray-700">
+                        <i data-lucide="users" class="w-4 h-4 inline mr-1"></i>
+                        Competitors to Compare
+                    </label>
+                    <button onclick="addRow()" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg font-medium transition-colors inline-flex items-center space-x-2">
+                        <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                        <span>Add Competitor</span>
+                    </button>
+                </div>
+                <div id="competitors" class="space-y-3"></div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center space-x-4">
+                <button onclick="runBonusComparison()" class="btn-primary px-8 py-3 text-white rounded-lg font-semibold inline-flex items-center space-x-2">
+                    <i data-lucide="play" class="w-5 h-5"></i>
+                    <span>Start Comparison</span>
+                </button>
+                <button onclick="clearForm()" class="px-8 py-3 bg-gray-200 hover:bg-gray-300 rounded-lg font-semibold transition-colors inline-flex items-center space-x-2">
+                    <i data-lucide="refresh-cw" class="w-5 h-5"></i>
+                    <span>Clear Form</span>
+                </button>
+            </div>
         </div>
+
+        <!-- Results Section -->
+        <div id="results" class="hidden"></div>
     </main>
 
+    <!-- Loading Overlay -->
     <div id="loadingOverlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-lg p-6 flex items-center space-x-3">
-            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
-            <span class="text-gray-700">Processing...</span>
+        <div class="bg-white rounded-xl p-8 flex flex-col items-center space-y-4">
+            <div class="animate-spin rounded-full h-16 w-16 border-b-4 border-green-600"></div>
+            <span class="text-gray-700 font-medium text-lg">Analyzing bonuses...</span>
+            <span class="text-gray-500 text-sm">This may take a moment</span>
         </div>
     </div>
 
@@ -78,62 +134,148 @@
         function showLoading() {
             document.getElementById('loadingOverlay').classList.remove('hidden');
         }
+
         function hideLoading() {
             document.getElementById('loadingOverlay').classList.add('hidden');
+        }
+
+        function addRow() {
+            const container = document.getElementById('competitors');
+            const idx = container.children.length + 1;
+            const div = document.createElement('div');
+            div.className = 'grid grid-cols-1 md:grid-cols-12 gap-3 items-center bg-gray-50 p-4 rounded-lg';
+            div.innerHTML = `
+                <div class="md:col-span-5">
+                    <input type="text" placeholder="Competitor ${idx} Name" 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
+                </div>
+                <div class="md:col-span-6">
+                    <input type="url" placeholder="https://competitor${idx}.com" 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
+                </div>
+                <div class="md:col-span-1 flex justify-center">
+                    <button onclick="this.closest('.grid').remove()" 
+                            class="w-8 h-8 bg-red-100 hover:bg-red-200 rounded-lg flex items-center justify-center transition-colors">
+                        <i data-lucide="x" class="w-4 h-4 text-red-600"></i>
+                    </button>
+                </div>
+            `;
+            container.appendChild(div);
+            lucide.createIcons();
+        }
+
+        function clearForm() {
+            document.getElementById('brandInput').value = '';
+            document.getElementById('baseUrlInput').value = '';
+            document.getElementById('competitors').innerHTML = '';
+            document.getElementById('results').classList.add('hidden');
+            addRow();
         }
 
         function renderResults(data) {
             const el = document.getElementById('results');
             el.classList.remove('hidden');
-            const rows = (data.results || []).map(r => `
-                <tr>
-                    <td class="px-3 py-2 border">${r.name}</td>
-                    <td class="px-3 py-2 border">${r.url}</td>
-                    <td class="px-3 py-2 border">${r.welcomeBonus}</td>
-                    <td class="px-3 py-2 border">${r.wagering}</td>
-                    <td class="px-3 py-2 border">${r.maxCashout}</td>
-                    <td class="px-3 py-2 border">${r.rating}</td>
-                </tr>
-            `).join('');
-            el.innerHTML = `
-                <div class="flex items-center space-x-3 mb-3">
-                    ${data.csvPath ? `<a class="csv-download" href="${data.csvPath}" download>⬇️ Download CSV</a>` : ''}
-                    ${data.pdfPath ? `<a class="pdf-download" href="${data.pdfPath}" download>⬇️ Download PDF</a>` : ''}
+            
+            const results = data.results || [];
+            
+            let html = `
+                <div class="bg-white rounded-xl p-8 shadow-xl">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-2xl font-bold text-gray-900 flex items-center">
+                            <i data-lucide="bar-chart" class="w-6 h-6 mr-3 text-green-600"></i>
+                            Comparison Results
+                        </h3>
+                        <div class="flex items-center space-x-3">
+                            ${data.csvPath ? `<a href="${data.csvPath}" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors inline-flex items-center space-x-2" download>
+                                <i data-lucide="download" class="w-4 h-4"></i>
+                                <span>Download CSV</span>
+                            </a>` : ''}
+                            ${data.pdfPath ? `<a href="${data.pdfPath}" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors inline-flex items-center space-x-2" download>
+                                <i data-lucide="file-text" class="w-4 h-4"></i>
+                                <span>Download PDF</span>
+                            </a>` : ''}
                 </div>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full bg-white">
-                        <thead>
-                            <tr class="bg-gray-100">
-                                <th class="px-3 py-2 text-left">Name</th>
-                                <th class="px-3 py-2 text-left">URL</th>
-                                <th class="px-3 py-2 text-left">Welcome Bonus</th>
-                                <th class="px-3 py-2 text-left">Wagering</th>
-                                <th class="px-3 py-2 text-left">Max Cashout</th>
-                                <th class="px-3 py-2 text-left">Rating</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${rows || '<tr><td class="px-3 py-2" colspan="6">No data</td></tr>'}
-                        </tbody>
-                    </table>
                 </div>
             `;
+
+            if (results.length === 0) {
+                html += `
+                    <div class="text-center py-12">
+                        <i data-lucide="alert-circle" class="w-16 h-16 text-gray-400 mx-auto mb-4"></i>
+                        <p class="text-gray-600 text-lg">No comparison data available</p>
+                    </div>
+                `;
+            } else {
+                html += `<div class="grid grid-cols-1 gap-6">`;
+                
+                results.forEach((result, index) => {
+                    const ratingPercent = (parseFloat(result.rating) / 5) * 100;
+                    const wageringNum = parseInt(result.wagering.replace('x', ''));
+                    const wageringColor = wageringNum <= 30 ? 'bg-green-500' : wageringNum <= 40 ? 'bg-yellow-500' : 'bg-red-500';
+                    
+                    html += `
+                        <div class="border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-shadow">
+                            <div class="flex items-start justify-between mb-4">
+                                <div class="flex-1">
+                                    <h4 class="text-xl font-bold text-gray-900 mb-2">${result.name}</h4>
+                                    <a href="${result.url}" target="_blank" class="text-sm text-blue-600 hover:underline flex items-center space-x-1">
+                                        <i data-lucide="external-link" class="w-4 h-4"></i>
+                                        <span>${result.url}</span>
+                                    </a>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-3xl font-bold text-green-600">${result.welcomeBonus}</div>
+                                    <div class="text-xs text-gray-600">Welcome Bonus</div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                <div class="bg-gray-50 p-4 rounded-lg">
+                                    <div class="text-sm text-gray-600 mb-2">Wagering Requirement</div>
+                                    <div class="text-2xl font-bold text-gray-900">${result.wagering}</div>
+                                    <div class="level-bar mt-2">
+                                        <div class="level-fill ${wageringColor}" style="width: ${Math.min((wageringNum / 50) * 100, 100)}%"></div>
+                                    </div>
+                                </div>
+                                <div class="bg-gray-50 p-4 rounded-lg">
+                                    <div class="text-sm text-gray-600 mb-2">Max Cashout</div>
+                                    <div class="text-2xl font-bold text-gray-900">${result.maxCashout}</div>
+                                </div>
+                                <div class="bg-gray-50 p-4 rounded-lg">
+                                    <div class="text-sm text-gray-600 mb-2">Overall Rating</div>
+                                    <div class="text-2xl font-bold text-gray-900 mb-2">${result.rating}/5.0</div>
+                                    <div class="level-bar">
+                                        <div class="level-fill bg-yellow-500" style="width: ${ratingPercent}%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += `</div>`;
+            }
+
+            html += `</div>`;
+            el.innerHTML = html;
+            lucide.createIcons();
         }
 
         async function runBonusComparison() {
             const brand = document.getElementById('brandInput').value.trim();
-            const baseUrl = document.getElementById('baseUrlInput').value;
+            const baseUrl = document.getElementById('baseUrlInput').value.trim();
             const competitors = Array.from(document.querySelectorAll('#competitors .grid'))
                 .map(g => {
                     const inputs = g.querySelectorAll('input');
-                    const nameEl = inputs[0];
-                    const urlEl = inputs[1];
-                    return { name: (nameEl?.value || '').trim(), url: (urlEl?.value || '').trim() };
+                    return { 
+                        name: (inputs[0]?.value || '').trim(), 
+                        url: (inputs[1]?.value || '').trim() 
+                    };
                 })
                 .filter(x => x.name && x.url);
 
             if (competitors.length === 0) {
-                alert('Please enter at least one competitor (name and URL).');
+                alert('Please add at least one competitor with both name and URL.');
                 return;
             }
 
@@ -142,21 +284,29 @@
                 const res = await fetch('/api/igaming/bonus-comparison', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ brand: brand || null, baseUrl: baseUrl || null, competitors })
+                    body: JSON.stringify({ 
+                        brand: brand || 'My Brand', 
+                        baseUrl: baseUrl || null, 
+                        competitors 
+                    })
                 });
+                
+                if (!res.ok) {
+                    throw new Error(`Server returned ${res.status}`);
+                }
+                
                 const data = await res.json();
                 renderResults(data);
             } catch (e) {
-                alert('Bonus comparison failed');
+                console.error('Bonus comparison error:', e);
+                alert('Bonus comparison failed. Please check your inputs and try again.');
             } finally {
                 hideLoading();
             }
         }
 
-        // Initialize one row
+        // Initialize with one row
         addRow();
     </script>
 </body>
 </html>
-
-
