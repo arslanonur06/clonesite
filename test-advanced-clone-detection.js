@@ -12,7 +12,7 @@ async function testAdvancedCloneDetection() {
     console.log('1. Testing Advanced Domain Variant Generation');
     console.log('----------------------------------------------');
     
-    const testBrand = 'kalebet';
+    const testBrand = 'suratbet';
     const variants = advancedCloneDetector.generateAdvancedDomainVariants(testBrand);
     
     console.log(`✅ Generated ${variants.length} domain variants for "${testBrand}"`);
@@ -27,16 +27,16 @@ async function testAdvancedCloneDetection() {
     console.log('--------------------------------------');
     
     const testCases = [
-        ['kalebet', 'kaleebet'],
-        ['kalebet', 'kalebett'],
-        ['kalebet', 'kalabet'],
-        ['kalebet', 'kalebet.com'],
-        ['kalebet', 'kalebet123'],
-        ['kalebet', 'kalebet-official'],
-        ['kalebet', 'kalebet.net'],
-        ['kalebet', 'kalebet-casino'],
-        ['kalebet', 'kalebet-games'],
-        ['kalebet', 'kalebet-online']
+        ['suratbet', 'kaleebet'],
+        ['suratbet', 'suratbett'],
+        ['suratbet', 'kalabet'],
+        ['suratbet', 't2m.io'],
+        ['suratbet', 'suratbet123'],
+        ['suratbet', 'suratbet-official'],
+        ['suratbet', 't2m.io'],
+        ['suratbet', 'suratbet-casino'],
+        ['suratbet', 'suratbet-games'],
+        ['suratbet', 'suratbet-online']
     ];
 
     testCases.forEach(([text1, text2]) => {
@@ -50,11 +50,11 @@ async function testAdvancedCloneDetection() {
     console.log('----------------------------------------');
     
     const distanceTests = [
-        ['kalebet', 'kaleebet'],
-        ['kalebet', 'kalebett'],
-        ['kalebet', 'kalabet'],
-        ['kalebet', 'kalebet123'],
-        ['kalebet', 'kalebet-official']
+        ['suratbet', 'kaleebet'],
+        ['suratbet', 'suratbett'],
+        ['suratbet', 'kalabet'],
+        ['suratbet', 'suratbet123'],
+        ['suratbet', 'suratbet-official']
     ];
 
     distanceTests.forEach(([str1, str2]) => {
@@ -85,7 +85,7 @@ async function testAdvancedCloneDetection() {
     console.log('5. Testing External Data Integration');
     console.log('-----------------------------------');
     
-    const mockDomain = 'kalebet.com';
+    const mockDomain = 't2m.io';
     console.log(`   Testing external data lookup for: ${mockDomain}`);
     
     try {
@@ -110,7 +110,7 @@ async function testAdvancedCloneDetection() {
     console.log('6. Testing Comprehensive Domain Analysis');
     console.log('---------------------------------------');
     
-    const testDomains = ['kalebet.com', 'kaleebet.com', 'kalebett.com', 'kalabet.com'];
+    const testDomains = ['t2m.io', 'kaleebet.com', 'suratbett.com', 'kalabet.com'];
     
     for (const domain of testDomains) {
         try {
@@ -131,14 +131,14 @@ async function testAdvancedCloneDetection() {
     console.log('-------------------------------------');
     
     const advancedPatterns = [
-        'kalebet', 'kaleebet', 'kalebett', 'kalabet', 'kalebet123',
-        'kalebet-official', 'kalebet-casino', 'kalebet-games',
-        'kalebet.net', 'kalebet.org', 'kalebet.bet', 'kalebet.casino'
+        'suratbet', 'kaleebet', 'suratbett', 'kalabet', 'suratbet123',
+        'suratbet-official', 'suratbet-casino', 'suratbet-games',
+        't2m.io', 't2m.io', 'suratbet.bet', 'suratbet.casino'
     ];
 
     console.log('   Generated advanced patterns:');
     advancedPatterns.forEach((pattern, index) => {
-        const similarity = advancedCloneDetector.calculateTextSimilarity('kalebet', pattern);
+        const similarity = advancedCloneDetector.calculateTextSimilarity('suratbet', pattern);
         console.log(`   ${index + 1}. ${pattern} (${similarity}% similarity)`);
     });
     console.log('');
@@ -148,13 +148,13 @@ async function testAdvancedCloneDetection() {
     console.log('-----------------------------------');
     
     const riskTestCases = [
-        { domain: 'kalebet.com', similarity: 100, isThreat: false, hasSSL: true },
+        { domain: 't2m.io', similarity: 100, isThreat: false, hasSSL: true },
         { domain: 'kaleebet.com', similarity: 95, isThreat: false, hasSSL: true },
-        { domain: 'kalebett.com', similarity: 90, isThreat: false, hasSSL: false },
+        { domain: 'suratbett.com', similarity: 90, isThreat: false, hasSSL: false },
         { domain: 'kalabet.com', similarity: 85, isThreat: false, hasSSL: false },
-        { domain: 'kalebet123.com', similarity: 80, isThreat: false, hasSSL: false },
-        { domain: 'kalebet-fake.com', similarity: 75, isThreat: true, hasSSL: false },
-        { domain: 'kalebet-clone.com', similarity: 70, isThreat: true, hasSSL: false }
+        { domain: 'suratbet123.com', similarity: 80, isThreat: false, hasSSL: false },
+        { domain: 'suratbet-fake.com', similarity: 75, isThreat: true, hasSSL: false },
+        { domain: 'suratbet-clone.com', similarity: 70, isThreat: true, hasSSL: false }
     ];
 
     riskTestCases.forEach(({ domain, similarity, isThreat, hasSSL }) => {

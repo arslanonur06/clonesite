@@ -1,5 +1,5 @@
 export type SequenceConfig = {
-  patternDomain: string; // e.g., kalebet1256.com
+  patternDomain: string; // e.g., suratbet1256.com
   range: number; // +/- range, e.g., 20
   includeWWW?: boolean;
 };

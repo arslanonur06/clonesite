@@ -7,9 +7,9 @@ const BASE_URL = 'http://localhost:3000';
 
 // Test configuration
 const TEST_CONFIG = {
-    brand: 'kalebet',
-    domains: ['kalebet.com', 'kalebet.net', 'kalebet.org'],
-    urls: ['https://kalebet.com', 'https://kalebet.net'],
+    brand: 'suratbet',
+    domains: ['t2m.io', 't2m.io', 't2m.io'],
+    urls: ['https://t2m.io/telg', 'https://t2m.io/telg'],
     affiliateIds: ['AFF001', 'AFF002', 'AFF003']
 };
 

@@ -82,7 +82,7 @@ export function generateDomainVariants(originalDomain, options) {
     for (const suffix of additions) {
         add(label + suffix, `suffix '${suffix}'`);
     }
-    // 7) Letter games - double letters (kalebet -> kaleebet, kalebett)
+    // 7) Letter games - double letters (suratbet -> kaleebet, suratbett)
     for (let i = 0; i < label.length; i++) {
         const ch = label[i];
         if (/[aeiou]/.test(ch)) {
@@ -96,7 +96,7 @@ export function generateDomainVariants(originalDomain, options) {
             add(variant, `double consonant '${ch}' at ${i}`);
         }
     }
-    // 8) Vowel swaps (kalebet -> kalibet, kolubet)
+    // 8) Vowel swaps (suratbet -> kalibet, kolubet)
     const vowelSwaps = {
         a: ['e', 'i', 'o', 'u'],
         e: ['a', 'i', 'o', 'u'],

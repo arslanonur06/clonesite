@@ -30,7 +30,7 @@ program
     .version('0.1.0');
 program
     .command('check')
-    .argument('<domain>', 'original domain, e.g., kalebet.com')
+    .argument('<domain>', 'original domain, e.g., t2m.io')
     .option('-c, --concurrency <n>', 'concurrent checks', '10')
     .option('-e, --extensions <csv>', 'extra TLDs CSV to consider')
     .action(async (domainArg, options) => {
@@ -66,8 +66,8 @@ program
 });
 program
     .command('monitor-variants')
-    .argument('<domain>', 'base domain e.g., kalebet.com')
-    .argument('<baseUrl>', 'canonical site url, e.g., https://kalebet.com')
+    .argument('<domain>', 'base domain e.g., t2m.io')
+    .argument('<baseUrl>', 'canonical site url, e.g., https://t2m.io/telg')
     .option('-o, --out <dir>', 'output dir', 'monitor-artifacts')
     .option('--db <path>', 'sqlite path', 'data/monitor.db')
     .option('--limit <n>', 'max variants to monitor', '50')
@@ -102,8 +102,8 @@ program
 });
 program
     .command('schedule')
-    .argument('<domain>', 'base domain e.g., kalebet.com')
-    .argument('<baseUrl>', 'canonical site url, e.g., https://kalebet.com')
+    .argument('<domain>', 'base domain e.g., t2m.io')
+    .argument('<baseUrl>', 'canonical site url, e.g., https://t2m.io/telg')
     .option('-o, --out <dir>', 'output dir', 'monitor-artifacts')
     .option('--db <path>', 'sqlite path', 'data/monitor.db')
     .option('--hour <h>', 'hour of day (0-23)', '8')
@@ -115,9 +115,9 @@ program
 });
 program
     .command('ultimate-scan')
-    .argument('<baseUrl>', 'original site url, e.g., https://www.kalebet.com/')
-    .argument('<brand>', 'brand name, e.g., kalebet')
-    .option('--sequence <pattern>', 'sequence pattern like kalebet1256.com')
+    .argument('<baseUrl>', 'original site url, e.g., https://t2m.io/telg')
+    .argument('<brand>', 'brand name, e.g., suratbet')
+    .option('--sequence <pattern>', 'sequence pattern like suratbet1256.com')
     .option('--range <n>', '+/- range for sequence scan', '10')
     .option('--ct-days <n>', 'CT log search days back', '30')
     .option('--logo <url>', 'original logo URL for visual comparison')
@@ -302,7 +302,7 @@ program
 });
 program
     .command('monitor')
-    .argument('<baseUrl>', 'canonical site url, e.g., https://kalebet.com')
+    .argument('<baseUrl>', 'canonical site url, e.g., https://t2m.io/telg')
     .argument('<url>', 'target url to compare')
     .option('-o, --out <dir>', 'output dir for artifacts', 'monitor-artifacts')
     .option('--threshold <r>', 'diff ratio threshold 0..1', '0.1')

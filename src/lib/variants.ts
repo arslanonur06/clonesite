@@ -104,7 +104,7 @@ export function generateDomainVariants(
     add(label + suffix, `suffix '${suffix}'`);
   }
 
-  // 7) Letter games - double letters (kalebet -> kaleebet, kalebett)
+  // 7) Letter games - double letters (suratbet -> kaleebet, suratbett)
   for (let i = 0; i < label.length; i++) {
     const ch = label[i];
     if (/[aeiou]/.test(ch)) {
@@ -119,7 +119,7 @@ export function generateDomainVariants(
     }
   }
 
-  // 8) Vowel swaps (kalebet -> kalibet, kolubet)
+  // 8) Vowel swaps (suratbet -> kalibet, kolubet)
   const vowelSwaps: Record<string, string[]> = {
     a: ['e', 'i', 'o', 'u'],
     e: ['a', 'i', 'o', 'u'],
