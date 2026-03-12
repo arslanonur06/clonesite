@@ -69,7 +69,7 @@
             </div>
 
             <!-- Your Brand Info -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                 <div class="space-y-2">
                     <label class="block text-sm font-medium text-gray-700">
                         <i data-lucide="building" class="w-4 h-4 inline mr-1"></i>
@@ -85,6 +85,17 @@
                     </label>
                     <input id="baseUrlInput" type="url" placeholder="https://t2m.io/telg" 
                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">
+                        <i data-lucide="languages" class="w-4 h-4 inline mr-1"></i>
+                        Content Language
+                    </label>
+                    <select id="languageInput" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
+                        <option value="tr" selected>Turkish (Türkçe)</option>
+                        <option value="auto">Auto Detect</option>
+                        <option value="en">English</option>
+                    </select>
                 </div>
             </div>
 
@@ -168,6 +179,7 @@
         function clearForm() {
             document.getElementById('brandInput').value = '';
             document.getElementById('baseUrlInput').value = '';
+            document.getElementById('languageInput').value = 'tr';
             document.getElementById('competitors').innerHTML = '';
             document.getElementById('results').classList.add('hidden');
             addRow();
@@ -178,6 +190,7 @@
             el.classList.remove('hidden');
             
             const results = data.results || [];
+            const sideBySide = data.sideBySide || [];
             
             let html = `
                 <div class="bg-white rounded-xl p-8 shadow-xl">
@@ -199,6 +212,40 @@
                 </div>
             `;
 
+            if (sideBySide.length > 0) {
+                html += `
+                    <div class="mb-8 overflow-x-auto">
+                        <h4 class="text-lg font-bold text-gray-900 mb-3">Side-by-Side Bonus Matrix</h4>
+                        <table class="min-w-full border border-gray-200 rounded-lg overflow-hidden">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="text-left px-4 py-3 text-sm font-semibold text-gray-700">Site</th>
+                                    <th class="text-left px-4 py-3 text-sm font-semibold text-gray-700">Welcome Bonus</th>
+                                    <th class="text-left px-4 py-3 text-sm font-semibold text-gray-700">Wagering</th>
+                                    <th class="text-left px-4 py-3 text-sm font-semibold text-gray-700">Max Cashout</th>
+                                    <th class="text-left px-4 py-3 text-sm font-semibold text-gray-700">Offers</th>
+                                    <th class="text-left px-4 py-3 text-sm font-semibold text-gray-700">Lang</th>
+                                    <th class="text-left px-4 py-3 text-sm font-semibold text-gray-700">Confidence</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                ${sideBySide.map(row => `
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-4 py-3 text-sm font-semibold text-gray-900">${row.name}</td>
+                                        <td class="px-4 py-3 text-sm text-gray-700">${row.welcomeBonus || 'N/A'}</td>
+                                        <td class="px-4 py-3 text-sm text-gray-700">${row.wagering || 'N/A'}</td>
+                                        <td class="px-4 py-3 text-sm text-gray-700">${row.maxCashout || 'N/A'}</td>
+                                        <td class="px-4 py-3 text-sm text-gray-700">${row.offerCount || 0}</td>
+                                        <td class="px-4 py-3 text-sm text-gray-700">${row.language || 'unknown'}</td>
+                                        <td class="px-4 py-3 text-sm text-gray-700">${row.confidence || 0}%</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+
             if (results.length === 0) {
                 html += `
                     <div class="text-center py-12">
@@ -211,8 +258,9 @@
                 
                 results.forEach((result, index) => {
                     const ratingPercent = (parseFloat(result.rating) / 5) * 100;
-                    const wageringNum = parseInt(result.wagering.replace('x', ''));
-                    const wageringColor = wageringNum <= 30 ? 'bg-green-500' : wageringNum <= 40 ? 'bg-yellow-500' : 'bg-red-500';
+                    const wageringNum = parseInt(String(result.wagering || '').replace('x', ''), 10);
+                    const safeWageringNum = Number.isFinite(wageringNum) ? wageringNum : 50;
+                    const wageringColor = safeWageringNum <= 30 ? 'bg-green-500' : safeWageringNum <= 40 ? 'bg-yellow-500' : 'bg-red-500';
                     
                     html += `
                         <div class="border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-shadow">
@@ -235,7 +283,7 @@
                                     <div class="text-sm text-gray-600 mb-2">Wagering Requirement</div>
                                     <div class="text-2xl font-bold text-gray-900">${result.wagering}</div>
                                     <div class="level-bar mt-2">
-                                        <div class="level-fill ${wageringColor}" style="width: ${Math.min((wageringNum / 50) * 100, 100)}%"></div>
+                                        <div class="level-fill ${wageringColor}" style="width: ${Math.min((safeWageringNum / 50) * 100, 100)}%"></div>
                                     </div>
                                 </div>
                                 <div class="bg-gray-50 p-4 rounded-lg">
@@ -250,6 +298,17 @@
                                     </div>
                                 </div>
                             </div>
+
+                            ${Array.isArray(result.offers) && result.offers.length ? `
+                                <div class="mt-3 p-4 bg-gray-50 rounded-lg">
+                                    <div class="text-sm font-semibold text-gray-800 mb-2">Detected Turkish Bonus Signals</div>
+                                    <ul class="space-y-1 text-sm text-gray-700">
+                                        ${result.offers.slice(0, 4).map(offer => `
+                                            <li>• ${offer.title}</li>
+                                        `).join('')}
+                                    </ul>
+                                </div>
+                            ` : ''}
                         </div>
                     `;
                 });
@@ -265,6 +324,7 @@
         async function runBonusComparison() {
             const brand = document.getElementById('brandInput').value.trim();
             const baseUrl = document.getElementById('baseUrlInput').value.trim();
+            const language = document.getElementById('languageInput').value;
             const competitors = Array.from(document.querySelectorAll('#competitors .grid'))
                 .map(g => {
                     const inputs = g.querySelectorAll('input');
@@ -288,7 +348,8 @@
                     body: JSON.stringify({ 
                         brand: brand || 'My Brand', 
                         baseUrl: baseUrl || null, 
-                        competitors 
+                        competitors,
+                        language
                     })
                 });
                 

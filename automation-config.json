@@ -1,0 +1,65 @@
+{
+  "scheduledScans": {
+    "scan_1773339458384_xogzrtcmm": {
+      "brand": "suratbet",
+      "baseUrl": "https://t2m.io/telg",
+      "features": [
+        "typosquatting"
+      ],
+      "frequency": "daily",
+      "id": "scan_1773339458384_xogzrtcmm",
+      "createdAt": "2026-03-12T18:17:38.384Z",
+      "updatedAt": "2026-03-12T18:17:38.384Z"
+    },
+    "scan_1773340338013_z9ekgp4d0": {
+      "brand": "suratbet",
+      "baseUrl": "https://t2m.io/telg",
+      "features": [
+        "typosquatting"
+      ],
+      "frequency": "daily",
+      "id": "scan_1773340338013_z9ekgp4d0",
+      "createdAt": "2026-03-12T18:32:18.013Z",
+      "updatedAt": "2026-03-12T18:32:18.013Z"
+    }
+  },
+  "alertRules": {
+    "alert_1773339458393_gexqas3o1": {
+      "name": "suratbet-domain_monitoring",
+      "conditions": [
+        {
+          "field": "riskLevel",
+          "operator": "gte",
+          "value": "medium"
+        }
+      ],
+      "enabled": true,
+      "id": "alert_1773339458393_gexqas3o1",
+      "createdAt": "2026-03-12T18:17:38.393Z",
+      "updatedAt": "2026-03-12T18:17:38.393Z"
+    },
+    "alert_1773340338022_net7ckzvm": {
+      "name": "suratbet-domain_monitoring",
+      "conditions": [
+        {
+          "field": "riskLevel",
+          "operator": "gte",
+          "value": "medium"
+        }
+      ],
+      "enabled": true,
+      "id": "alert_1773340338022_net7ckzvm",
+      "createdAt": "2026-03-12T18:32:18.022Z",
+      "updatedAt": "2026-03-12T18:32:18.022Z"
+    }
+  },
+  "stats": {
+    "totalScans": 0,
+    "scheduledScans": 0,
+    "activeAlerts": 0,
+    "alertsTriggeredToday": 0,
+    "averageScanTime": 0,
+    "uptime": 0
+  },
+  "lastSaved": "2026-03-12T18:32:18.022Z"
+}
