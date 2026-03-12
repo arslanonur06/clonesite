@@ -8,18 +8,18 @@
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .gradient-card { background: linear-gradient(145deg, #ffffff, #f8fafc); }
+        .gradient-bg { background: linear-gradient(135deg, #1f2937 0%, #111827 100%); }
+        .gradient-card { background: #ffffff; border: 1px solid #e5e7eb; }
         .card-hover { 
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
             cursor: pointer;
         }
-        .card-hover:hover { 
-            transform: translateY(-8px) scale(1.02); 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        .card-hover:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 28px rgba(15, 23, 42, 0.08);
         }
         .feature-icon {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
             width: 60px;
             height: 60px;
             border-radius: 16px;
@@ -36,30 +36,24 @@
             background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
             border: 1px solid #cbd5e1;
         }
-        .animated-bg {
-            background: linear-gradient(270deg, #667eea, #764ba2, #3b82f6);
-            background-size: 600% 600%;
-            animation: gradient 15s ease infinite;
-        }
+        .animated-bg { background: linear-gradient(135deg, #111827 0%, #1f2937 100%); }
         @keyframes gradient {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-        .pulse-ring {
-            animation: pulse-ring 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
+        .pulse-ring { animation: none; }
         @keyframes pulse-ring {
             0%, 100% { opacity: 0.6; }
             50% { opacity: 1; transform: scale(1.05); }
         }
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
             transition: all 0.3s ease;
         }
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+            transform: translateY(-1px);
+            box-shadow: 0 10px 22px rgba(37, 99, 235, 0.25);
         }
         .tool-badge {
             background: linear-gradient(135deg, #10b981, #059669);
@@ -134,7 +128,7 @@
         <!-- Main Features Grid -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
             <!-- Brand Protection -->
-            <div class="gradient-card rounded-2xl p-8 shadow-xl card-hover" onclick="window.location.href='brand-protection.html'">
+            <a href="brand-protection.html" class="gradient-card rounded-2xl p-8 shadow-xl card-hover block">
                 <div class="feature-icon mb-6">
                     <i data-lucide="shield-alert" class="w-8 h-8 text-white"></i>
                 </div>
@@ -166,10 +160,10 @@
                     <i data-lucide="arrow-right" class="w-5 h-5"></i>
                     <span>Start Protection</span>
                 </button>
-            </div>
+            </a>
 
             <!-- Bonus Comparison -->
-            <div class="gradient-card rounded-2xl p-8 shadow-xl card-hover" onclick="window.location.href='bonus-comparison.html'">
+            <a href="bonus-comparison.html" class="gradient-card rounded-2xl p-8 shadow-xl card-hover block">
                 <div class="feature-icon mb-6" style="background: linear-gradient(135deg, #10b981, #059669);">
                     <i data-lucide="percent" class="w-8 h-8 text-white"></i>
                 </div>
@@ -201,7 +195,7 @@
                     <i data-lucide="arrow-right" class="w-5 h-5"></i>
                     <span>Compare Bonuses</span>
                 </button>
-            </div>
+            </a>
 
             <!-- Automation & Reports -->
             <div class="gradient-card rounded-2xl p-8 shadow-xl card-hover">
@@ -323,7 +317,7 @@
                     <span class="font-semibold">iGaming Security Suite</span>
                     </div>
                 <div class="text-sm text-gray-400">
-                    © 2025 All rights reserved | Professional Brand Protection Platform
+                    © 2025 All rights reserved | Professional Brand Protection Platform | jelibon marketing
                 </div>
             </div>
         </div>
