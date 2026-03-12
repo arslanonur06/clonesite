@@ -10,17 +10,17 @@
 
 ## 🎯 Domain Variant Detection Examples
 
-For brand: **kalebet**
+For brand: **suratbet**
 
 ### Numbers (1-100):
 ```
-kalebet1, kalebet2, kalebet3... kalebet100
-kalebet123, kalebet777, kalebet888, kalebet999
+suratbet1, suratbet2, suratbet3... suratbet100
+suratbet123, suratbet777, suratbet888, suratbet999
 ```
 
 ### Letter Games:
 ```
-kalebett (doubled t)
+suratbett (doubled t)
 kaleebet (doubled e)
 kalabet (e→a)
 kalibet (e→i)
@@ -31,15 +31,15 @@ kaalebet (doubled a)
 
 ### Prefixes:
 ```
-thekalebet, mykalebet, getkalebet, newkalebet
-officialkalebet, realkalebet, truekalebet
+thesuratbet, mysuratbet, getsuratbet, newsuratbet
+officialsuratbet, realsuratbet, truesuratbet
 ```
 
 ### Suffixes:
 ```
-kalebetnet, kalebetofficial, kalebettr
-kalebettop, kalebetpro, kalebetvip
-kalebetlive, kalebetnew, kalebetbet
+suratbetnet, suratbetofficial, suratbettr
+suratbettop, suratbetpro, suratbetvip
+suratbetlive, suratbetnew, suratbetbet
 ```
 
 ### Hyphens:
@@ -49,9 +49,9 @@ kale-bet, ka-lebet, kal-ebet
 
 ### TLDs:
 ```
-kalebet.com, kalebet.net, kalebet.bet
-kalebet.casino, kalebet.games, kalebet.io
-kalebet.com.tr, kalebet.net.tr
+https://t2m.io/telg (official redirect)
+suratbet.bet, suratbet.casino, suratbet.games
+suratbet.io, suratbet.com.tr, suratbet.net.tr
 ```
 
 ## 📊 Level Bar Color Coding
@@ -137,7 +137,7 @@ npm run web
 
 - [ ] Load main dashboard - check stats display
 - [ ] Click Brand Protection - verify navigation
-- [ ] Enter brand "kalebet" - start scan
+- [ ] Enter brand "suratbet" - start scan
 - [ ] Watch level bars fill - check progress
 - [ ] View results - verify all variants
 - [ ] Click Bonus Comparison - navigate there
@@ -167,3 +167,8 @@ npm run web
 
 **Everything is now working perfectly with professional design and comprehensive clone detection!** ✨
 
+---
+
+## Brand Note
+This documentation is configured for **suratbet** with official redirect URL **https://t2m.io/telg**.
+Brand owner/agency: **jelibon marketing**.

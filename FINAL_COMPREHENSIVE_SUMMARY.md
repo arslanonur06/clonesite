@@ -142,12 +142,12 @@ node test-all-features.js
 # Check for fake domains
 curl -X POST http://localhost:3000/api/brand-protection/fake-domain-check \
   -H "Content-Type: application/json" \
-  -d '{"brand": "kalebet", "useExternalData": true}'
+  -d '{"brand": "suratbet", "useExternalData": true}'
 
 # Detect clones
 curl -X POST http://localhost:3000/api/brand-protection/clone-detection \
   -H "Content-Type: application/json" \
-  -d '{"baseUrl": "https://kalebet.com", "threshold": 0.8}'
+  -d '{"baseUrl": "https://t2m.io/telg", "threshold": 0.8}'
 ```
 
 ### **iGaming Analysis**
@@ -155,12 +155,12 @@ curl -X POST http://localhost:3000/api/brand-protection/clone-detection \
 # Monitor affiliates
 curl -X POST http://localhost:3000/api/igaming/affiliate-monitor \
   -H "Content-Type: application/json" \
-  -d '{"brand": "kalebet", "officialAffiliateIds": ["AFF001", "AFF002"]}'
+  -d '{"brand": "suratbet", "officialAffiliateIds": ["AFF001", "AFF002"]}'
 
 # Verify licenses
 curl -X POST http://localhost:3000/api/igaming/license-verify \
   -H "Content-Type: application/json" \
-  -d '{"domains": ["kalebet.com", "kalebet.net"]}'
+  -d '{"domains": ["https://t2m.io/telg", "https://t2m.io/telg"]}'
 ```
 
 ### **Advanced Monitoring**
@@ -168,12 +168,12 @@ curl -X POST http://localhost:3000/api/igaming/license-verify \
 # Visual comparison
 curl -X POST http://localhost:3000/api/visual-comparison \
   -H "Content-Type: application/json" \
-  -d '{"url1": "https://kalebet.com", "url2": "https://kalebet.net"}'
+  -d '{"url1": "https://t2m.io/telg", "url2": "https://t2m.io/telg"}'
 
 # Threat intelligence
 curl -X POST http://localhost:3000/api/threat-intelligence \
   -H "Content-Type: application/json" \
-  -d '{"brand": "kalebet"}'
+  -d '{"brand": "suratbet"}'
 ```
 
 ---
@@ -297,3 +297,9 @@ The iGaming Security Suite is now **COMPLETE** with 44+ professional tools, adva
 
 *Last Updated: September 20, 2025*  
 *Status: ✅ COMPLETE & FULLY FUNCTIONAL*
+
+---
+
+## Brand Note
+This documentation is configured for **suratbet** with official redirect URL **https://t2m.io/telg**.
+Brand owner/agency: **jelibon marketing**.

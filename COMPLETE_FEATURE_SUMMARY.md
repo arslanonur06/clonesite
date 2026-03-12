@@ -150,7 +150,7 @@ node dist/cli.js --help
 
 3. **Test a Tool**
    - Go to "Brand Protection" tab
-   - Enter a brand name (e.g., "kalebet")
+   - Enter a brand name (e.g., "suratbet")
    - Click "Check Fake Domains"
    - View results with risk analysis
 
@@ -199,3 +199,9 @@ node dist/cli.js --help
 ---
 
 **🎉 Your iGaming Security Suite is now COMPLETE with 45+ professional tools!**
+
+---
+
+## Brand Note
+This documentation is configured for **suratbet** with official redirect URL **https://t2m.io/telg**.
+Brand owner/agency: **jelibon marketing**.

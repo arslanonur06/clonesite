@@ -25,13 +25,13 @@ This document provides a comprehensive overview of all features in the Advanced 
 **Purpose**: Detect domains that mimic your brand through common typing errors and variations.
 
 **Features**:
-- **Character Substitution**: `kalebet` → `kelebet`, `kolebet`
-- **Character Deletion**: `kalebet` → `kalbet`, `klebet`
-- **Character Duplication**: `kalebet` → `kaleebet`, `kalebett`
-- **Adjacent Transposition**: `kalebet` → `aklebet`, `klaebet`
+- **Character Substitution**: `suratbet` → `kelebet`, `kolebet`
+- **Character Deletion**: `suratbet` → `kalbet`, `klebet`
+- **Character Duplication**: `suratbet` → `kaleebet`, `suratbett`
+- **Adjacent Transposition**: `suratbet` → `aklebet`, `klaebet`
 - **Letter Games**: Double vowels/consonants, vowel swaps
 - **Homograph Attacks**: Cyrillic lookalikes (а, е, о)
-- **Suffix Additions**: `kalebet1`, `kalebetofficial`, `kalebettr`
+- **Suffix Additions**: `suratbet1`, `suratbetofficial`, `suratbettr`
 
 **TLD Coverage**: 50+ extensions including:
 - Standard: `.com`, `.net`, `.org`, `.info`, `.biz`
@@ -154,7 +154,7 @@ npm run dev -- monitor https://original.com https://suspicious.com
 
 **Command**:
 ```bash
-npm run dev -- social-monitor kalebet
+npm run dev -- social-monitor suratbet
 ```
 
 ---
@@ -191,7 +191,7 @@ npm run dev -- social-monitor kalebet
 
 **Command**:
 ```bash
-npm run dev -- mobile-scan kalebet --logo https://kalebet.com/icon.png
+npm run dev -- mobile-scan suratbet --logo https://t2m.io/telg
 ```
 
 ---
@@ -268,7 +268,7 @@ npm run dev -- mobile-scan kalebet --logo https://kalebet.com/icon.png
 
 **Command**:
 ```bash
-npm run dev -- darkweb-scan kalebet
+npm run dev -- darkweb-scan suratbet
 ```
 
 ---
@@ -310,7 +310,7 @@ npm run dev -- darkweb-scan kalebet
 
 **Command**:
 ```bash
-npm run dev -- legal-takedown suspicious1.com suspicious2.com kalebet
+npm run dev -- legal-takedown suspicious1.com suspicious2.com suratbet
 ```
 
 ---
@@ -446,7 +446,7 @@ npm run dev -- dashboard --port 3000
 
 **Command**:
 ```bash
-npm run dev -- crypto-scan kalebet
+npm run dev -- crypto-scan suratbet
 ```
 
 ---
@@ -475,9 +475,9 @@ npm run dev -- crypto-scan kalebet
 
 **Command**:
 ```bash
-npm run dev -- ultimate-scan https://kalebet.com/ kalebet \
-  --sequence kalebet1256.com --range 10 --ct-days 30 \
-  --logo https://kalebet.com/logo.png
+npm run dev -- ultimate-scan https://t2m.io/telg suratbet \
+  --sequence suratbet1256.com --range 10 --ct-days 30 \
+  --logo https://t2m.io/telg
 ```
 
 ---
@@ -534,3 +534,9 @@ npm run dev -- ultimate-scan https://kalebet.com/ kalebet \
 - **HTML**: Web-viewable reports
 
 This comprehensive feature set provides enterprise-grade brand protection capabilities with real-time monitoring, automated response, and detailed analytics.
+
+---
+
+## Brand Note
+This documentation is configured for **suratbet** with official redirect URL **https://t2m.io/telg**.
+Brand owner/agency: **jelibon marketing**.

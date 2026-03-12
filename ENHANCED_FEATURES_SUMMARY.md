@@ -17,11 +17,11 @@
 The system now checks **ALL possible combinations** for clone detection:
 
 #### **Number Combinations** (1-100+):
-- `kalebet1`, `kalebet2`, `kalebet3`... up to `kalebet100`
-- Special numbers: `kalebet123`, `kalebet777`, `kalebet888`, `kalebet999`
+- `suratbet1`, `suratbet2`, `suratbet3`... up to `suratbet100`
+- Special numbers: `suratbet123`, `suratbet777`, `suratbet888`, `suratbet999`
 
 #### **Letter Games & Variations**:
-- **Doubled Letters**: `kalebett`, `kaleebet`, `kallebet`
+- **Doubled Letters**: `suratbett`, `kaleebet`, `kallebet`
 - **Similar Letters**: `kalabet` (e→a), `kalibet` (e→i), `kolubet` (a→o)
 - **Letter Swaps**: `b↔d`, `m↔n`, `v↔w`, `c↔k`, `s↔z`, `i↔y`
 - **Vowel Swaps**: All vowel combinations (a,e,i,o,u)
@@ -30,11 +30,11 @@ The system now checks **ALL possible combinations** for clone detection:
 - **Transposition**: `aklebet`, `klaebet`
 
 #### **Prefix & Suffix Variations**:
-- **Prefixes**: `thekalebet`, `mykalebet`, `getkalebet`, `trykalebet`, `newkalebet`
-- **Suffixes**: All numbers 1-100, plus: `kalebetnet`, `kalebetofficial`, `kalebettr`, `kalebetbest`, `kalebettop`, `kalebetpro`, `kalebetvip`, `kalebetnew`, `kalebetlive`
+- **Prefixes**: `thesuratbet`, `mysuratbet`, `getsuratbet`, `trysuratbet`, `newsuratbet`
+- **Suffixes**: All numbers 1-100, plus: `suratbetnet`, `suratbetofficial`, `suratbettr`, `suratbetbest`, `suratbettop`, `suratbetpro`, `suratbetvip`, `suratbetnew`, `suratbetlive`
 
 #### **Middle Insertions**:
-- `kale24bet`, `kale365bet`, `kalebetwin`, `kalebetplay`
+- `kale24bet`, `kale365bet`, `suratbetwin`, `suratbetplay`
 
 #### **Hyphen Variations**:
 - `kale-bet`, `ka-lebet`, `kal-ebet`
@@ -118,13 +118,13 @@ node dist/web-server.js
 
 ### Test Brand Protection:
 1. Go to Brand Protection page
-2. Enter brand: `kalebet`
-3. Enter URL: `https://kalebet.com`
+2. Enter brand: `suratbet`
+3. Enter URL: `https://t2m.io/telg`
 4. Click "Start Analysis"
 5. Watch the level bars fill in real-time
 6. See comprehensive results with:
-   - All number variations (kalebet1-100)
-   - All letter games (kalebett, kalabet, etc.)
+   - All number variations (suratbet1-100)
+   - All letter games (suratbett, kalabet, etc.)
    - Similarity scores with visual level bars
    - Risk indicators with color coding
 
@@ -209,3 +209,8 @@ Your platform is now fully functional with:
 
 **Ready to use in production!** 🚀
 
+---
+
+## Brand Note
+This documentation is configured for **suratbet** with official redirect URL **https://t2m.io/telg**.
+Brand owner/agency: **jelibon marketing**.

@@ -277,3 +277,9 @@ CMD ["npm", "start"]
 - Maintain online reputation
 
 The web interface makes advanced brand protection accessible to anyone, regardless of technical expertise.
+
+---
+
+## Brand Note
+This documentation is configured for **suratbet** with official redirect URL **https://t2m.io/telg**.
+Brand owner/agency: **jelibon marketing**.

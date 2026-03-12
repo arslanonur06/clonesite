@@ -75,15 +75,15 @@ export ENABLE_TG_ALERT=1
 
 The ultimate scanning command:
 ```bash
-npm run dev -- comprehensive-scan https://www.kalebet.com/ kalebet \
-  --sequence kalebet1256.com --range 10 --ct-days 30 -o comprehensive-reports
+npm run dev -- comprehensive-scan https://t2m.io/telg suratbet \
+  --sequence suratbet1256.com --range 10 --ct-days 30 -o comprehensive-reports
 ```
 
 This combines:
-- **Letter games**: kaleebet, kalebett, vowel swaps (kalibet, kolubet)
+- **Letter games**: kaleebet, suratbett, vowel swaps (kalibet, kolubet)
 - **50+ TLD coverage**: .xyz, .me, .app, .bet, .casino, .poker, .games, .win, etc.
-- **Numeric sequences**: kalebet1254.com through kalebet1258.com
-- **Certificate Transparency**: newly registered domains with "kalebet" in last 30 days
+- **Numeric sequences**: suratbet1254.com through suratbet1258.com
+- **Certificate Transparency**: newly registered domains with "suratbet" in last 30 days
 - **Visual analysis**: screenshots, pixel diffs, DOM structure, text similarity
 
 Output: comprehensive PDF with WHOIS, DNS, similarity metrics, and clone flagging.
@@ -95,3 +95,8 @@ Output: comprehensive PDF with WHOIS, DNS, similarity metrics, and clone flaggin
 - Headless rendering uses Chromium; if a site blocks bots, screenshots may fail.
 - CT log searches may timeout or be rate-limited; results are best-effort.
 
+---
+
+## Brand Note
+This documentation is configured for **suratbet** with official redirect URL **https://t2m.io/telg**.
+Brand owner/agency: **jelibon marketing**.

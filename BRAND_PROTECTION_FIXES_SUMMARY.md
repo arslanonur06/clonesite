@@ -69,7 +69,7 @@
 
 ## 📊 **TEST RESULTS**
 
-### **Clone Detection Test (kalebet.com)**
+### **Clone Detection Test (https://t2m.io/telg)**
 - **Total Domains Checked**: 100
 - **Active Domains Found**: 17
 - **Clones Detected**: 13
@@ -78,7 +78,7 @@
 - **Low Risk**: 10
 - **Average Similarity**: 83%
 
-### **Fake Domain Checker Test (kalebet)**
+### **Fake Domain Checker Test (suratbet)**
 - **Total Domains Checked**: 100
 - **Active Domains Found**: 17
 - **Fake Domains Detected**: 17
@@ -101,12 +101,12 @@ Open: **http://localhost:3000**
 
 ### **Brand Protection Tools**
 1. **Fake Domain Checker**:
-   - Enter brand name (e.g., "kalebet")
+   - Enter brand name (e.g., "suratbet")
    - Click "Check Fake Domains"
    - View detailed analysis with risk levels
 
 2. **Clone Detection**:
-   - Enter base URL (e.g., "https://kalebet.com")
+   - Enter base URL (e.g., "https://t2m.io/telg")
    - Set similarity threshold (default: 80%)
    - Click "Detect Clones"
    - View comprehensive clone analysis
@@ -176,3 +176,9 @@ Open: **http://localhost:3000**
 ---
 
 **Status**: ✅ **COMPLETE** - All brand protection issues have been resolved and enhanced!
+
+---
+
+## Brand Note
+This documentation is configured for **suratbet** with official redirect URL **https://t2m.io/telg**.
+Brand owner/agency: **jelibon marketing**.

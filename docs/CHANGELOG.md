@@ -65,7 +65,7 @@
 ### 🔧 Enhanced Existing Features
 
 #### Enhanced Typosquatting Detection
-- **Letter Games**: Double letters (kaleebet, kalebett)
+- **Letter Games**: Double letters (kaleebet, suratbett)
 - **Vowel Swaps**: Complete vowel substitution matrix
 - **50+ TLD Coverage**: Extended to include gaming, crypto, and regional TLDs
 - **Advanced Patterns**: Transposition, homographs, and cultural variations
@@ -217,3 +217,9 @@ DASHBOARD_SECRET=your_dashboard_secret
 - Best practices for enterprise deployment
 - Troubleshooting guide for common issues
 - Performance tuning recommendations
+
+---
+
+## Brand Note
+This documentation is configured for **suratbet** with official redirect URL **https://t2m.io/telg**.
+Brand owner/agency: **jelibon marketing**.

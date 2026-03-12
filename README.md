@@ -25,13 +25,13 @@ pnpm build
 ### Run (dev)
 
 ```bash
-pnpm dev check kalebet.com
+pnpm dev check https://t2m.io/telg
 ```
 
 ### Run (built)
 
 ```bash
-pnpm start check kalebet.com
+pnpm start check https://t2m.io/telg
 ```
 
 ### Options
@@ -56,7 +56,7 @@ Use `cron` (macOS/Linux) to run daily:
 ```bash
 crontab -e
 # Run every day at 08:00
-0 8 * * * cd /Users/oa/Documents/gitdosyam/clonesite && pnpm start check kalebet.com | tee -a logs/monitor.log
+0 8 * * * cd /Users/oa/Documents/gitdosyam/clonesite && pnpm start check https://t2m.io/telg | tee -a logs/monitor.log
 ```
 
 Ensure the `logs/` directory exists, and adjust domain/TLDs as needed.
@@ -83,11 +83,11 @@ Persist results to SQLite and alert when similarity is high:
 
 ```bash
 # monitor top registered variants against your base URL
-npm run dev -- monitor-variants kalebet.com https://kalebet.com \
+npm run dev -- monitor-variants https://t2m.io/telg https://t2m.io/telg \
   --db data/monitor.db -o monitor-artifacts --limit 50
 
 # schedule daily at hour 8
-npm run dev -- schedule kalebet.com https://kalebet.com \
+npm run dev -- schedule https://t2m.io/telg https://t2m.io/telg \
   --db data/monitor.db -o monitor-artifacts --hour 8
 ```
 
@@ -130,8 +130,8 @@ This verifies all 8 advanced features, CLI commands, web interface, documentatio
 ### Ultimate Brand Protection Scan
 ```bash
 # Complete brand protection analysis
-npm run dev -- ultimate-scan https://www.kalebet.com/ kalebet \
-  --sequence kalebet1256.com --range 10 --ct-days 30 --logo https://kalebet.com/logo.png
+npm run dev -- ultimate-scan https://t2m.io/telg suratbet \
+  --sequence suratbet1256.com --range 10 --ct-days 30 --logo https://t2m.io/telg
 ```
 
 ### Real-Time Dashboard
@@ -144,29 +144,29 @@ npm run dev -- dashboard --port 3000
 ### Specialized Scans
 ```bash
 # Mobile app monitoring
-npm run dev -- mobile-scan kalebet --logo https://kalebet.com/icon.png
+npm run dev -- mobile-scan suratbet --logo https://t2m.io/telg
 
 # Cryptocurrency threats
-npm run dev -- crypto-scan kalebet
+npm run dev -- crypto-scan suratbet
 
 # Dark web monitoring  
-npm run dev -- darkweb-scan kalebet
+npm run dev -- darkweb-scan suratbet
 
 # Social media threats
-npm run dev -- social-monitor kalebet
+npm run dev -- social-monitor suratbet
 
 # Threat intelligence analysis
 npm run dev -- threat-intel suspicious1.com suspicious2.com
 
 # Legal takedown automation
-npm run dev -- legal-takedown suspicious1.com suspicious2.com kalebet
+npm run dev -- legal-takedown suspicious1.com suspicious2.com suratbet
 ```
 
 ## 📊 What Gets Detected
 
 ### 🔍 Domain Threats
-- **Typosquatting**: kaleebet.com, kalebett.xyz, kalibet.me (2000+ patterns)
-- **Sequence Domains**: kalebet1254.com, kalebet1257.com, kalebet1258.com  
+- **Typosquatting**: kaleebet.com, suratbett.xyz, kalibet.me (2000+ patterns)
+- **Sequence Domains**: suratbet1254.com, suratbet1257.com, suratbet1258.com  
 - **New Registrations**: Certificate Transparency monitoring
 - **50+ TLDs**: .bet, .casino, .xyz, .me, .app, .crypto, .eth
 
@@ -216,3 +216,8 @@ npm run dev -- legal-takedown suspicious1.com suspicious2.com kalebet
 
 See the detailed guide: `docs/monitoring-guide.md`.
 
+---
+
+## Brand Note
+This documentation is configured for **suratbet** with official redirect URL **https://t2m.io/telg**.
+Brand owner/agency: **jelibon marketing**.

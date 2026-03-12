@@ -13,12 +13,12 @@ Open your browser and go to: **http://localhost:3000**
 
 ### **3. Test Brand Protection**
 1. Click on "Brand Protection" tab
-2. Enter brand name: `kalebet`
+2. Enter brand name: `suratbet`
 3. Click "Check Fake Domains"
 4. View detailed results with risk analysis
 
 ### **4. Test Clone Detection**
-1. Enter base URL: `https://kalebet.com`
+1. Enter base URL: `https://t2m.io/telg`
 2. Click "Detect Clones"
 3. View comprehensive clone analysis
 
@@ -63,37 +63,37 @@ node test-advanced-clone-detection.js
 ```bash
 # Fake Domain Checker
 POST /api/brand-protection/fake-domain-check
-{"brand": "kalebet", "useExternalData": true}
+{"brand": "suratbet", "useExternalData": true}
 
 # Clone Detection
 POST /api/brand-protection/clone-detection
-{"baseUrl": "https://kalebet.com", "threshold": 0.8}
+{"baseUrl": "https://t2m.io/telg", "threshold": 0.8}
 ```
 
 ### **iGaming Tools**
 ```bash
 # Affiliate Monitoring
 POST /api/igaming/affiliate-monitor
-{"brand": "kalebet", "officialAffiliateIds": ["AFF001", "AFF002"]}
+{"brand": "suratbet", "officialAffiliateIds": ["AFF001", "AFF002"]}
 
 # License Verification
 POST /api/igaming/license-verify
-{"domains": ["kalebet.com", "kalebet.net"]}
+{"domains": ["https://t2m.io/telg", "https://t2m.io/telg"]}
 
 # CRM Dashboard
 POST /api/igaming/crm-dashboard
-{"brand": "kalebet"}
+{"brand": "suratbet"}
 ```
 
 ### **Advanced Monitoring**
 ```bash
 # Visual Comparison
 POST /api/visual-comparison
-{"url1": "https://kalebet.com", "url2": "https://kalebet.net"}
+{"url1": "https://t2m.io/telg", "url2": "https://t2m.io/telg"}
 
 # Threat Intelligence
 POST /api/threat-intelligence
-{"brand": "kalebet"}
+{"brand": "suratbet"}
 ```
 
 ---
@@ -120,3 +120,9 @@ The iGaming Security Suite is now **COMPLETE** and ready for production use. All
 4. Deploy to production environment
 
 **Happy Monitoring!** 🚀
+
+---
+
+## Brand Note
+This documentation is configured for **suratbet** with official redirect URL **https://t2m.io/telg**.
+Brand owner/agency: **jelibon marketing**.
