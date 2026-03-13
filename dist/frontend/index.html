@@ -225,7 +225,7 @@
             </a>
 
             <!-- Automation & Reports -->
-            <div class="gradient-card rounded-2xl p-6 shadow-lg card-hover">
+            <a href="brand-protection.html" class="gradient-card rounded-2xl p-6 shadow-lg card-hover block">
                 <div class="feature-icon mb-5" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
                     <i data-lucide="zap" class="w-7 h-7 text-white"></i>
                 </div>
@@ -240,160 +240,125 @@
                     <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>Batch Processing</span></div>
                 </div>
                 <button class="w-full mt-5 py-2.5 rounded-lg text-white font-semibold text-sm" style="background: linear-gradient(135deg, #f59e0b, #d97706);">Configure Automation</button>
-            </div>
+            </a>
         </div>
 
-        <div class="section-divider mb-16"></div>
+        <div class="section-divider mb-12"></div>
 
-        <!-- All Tools Grid -->
+        <!-- Google Trends Section -->
+        <div class="bg-white rounded-2xl p-8 shadow-xl mb-12">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-bold text-gray-900 flex items-center">
+                    <span class="mr-3">📈</span> Google Trends - Turkish iGaming Keywords
+                </h3>
+                <button onclick="loadGoogleTrends()" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-semibold">Load Trends</button>
+            </div>
+            <div id="trendsContent" class="text-gray-500 text-sm">Click "Load Trends" to fetch real-time search trend data for Turkish gambling keywords...</div>
+        </div>
+
+        <!-- Turkish Site Directory -->
+        <div class="bg-white rounded-2xl p-8 shadow-xl mb-12">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-bold text-gray-900 flex items-center">
+                    <span class="mr-3">🇹🇷</span> Turkish iGaming Site Directory
+                </h3>
+                <button onclick="loadSiteDirectory()" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm font-semibold">Load Directory</button>
+            </div>
+            <div id="directoryContent" class="text-gray-500 text-sm">Click "Load Directory" to see official Turkish iGaming site data with addresses, payment methods, and bonuses...</div>
+        </div>
+
+        <div class="section-divider mb-12"></div>
+
+        <!-- All Tools Grid - ALL CLICKABLE -->
         <div class="mb-16">
             <h3 class="text-2xl font-bold text-gray-900 mb-8 text-center">Complete Tool Suite (40+ Professional Tools)</h3>
 
-            <!-- Turkey Tools -->
+            <!-- Turkey Tools - ALL LINKED -->
             <div class="mb-8">
-                <h4 class="text-lg font-bold text-red-700 mb-4 flex items-center">
-                    <span class="mr-2">🇹🇷</span> Turkey-Specific Tools (15 Tools)
-                </h4>
+                <h4 class="text-lg font-bold text-red-700 mb-4 flex items-center"><span class="mr-2">🇹🇷</span> Turkey-Specific Tools (15 Tools)</h4>
                 <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
-                    <div class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
-                        <div class="font-semibold text-xs text-gray-900">BTK Compliance</div>
-                        <div class="text-xs text-gray-500">Domain blocking monitor</div>
-                    </div>
-                    <div class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
-                        <div class="font-semibold text-xs text-gray-900">KVKK Checker</div>
-                        <div class="text-xs text-gray-500">Turkish GDPR compliance</div>
-                    </div>
-                    <div class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
-                        <div class="font-semibold text-xs text-gray-900">Turkish Payments</div>
-                        <div class="text-xs text-gray-500">Papara/Payfix/EFT analysis</div>
-                    </div>
-                    <div class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
-                        <div class="font-semibold text-xs text-gray-900">Domain Rotation</div>
-                        <div class="text-xs text-gray-500">Turkish domain tracker</div>
-                    </div>
-                    <div class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
-                        <div class="font-semibold text-xs text-gray-900">Telegram Monitor</div>
-                        <div class="text-xs text-gray-500">TR channel intelligence</div>
-                    </div>
-                    <div class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
-                        <div class="font-semibold text-xs text-gray-900">Market Analysis</div>
-                        <div class="text-xs text-gray-500">Turkish market intelligence</div>
-                    </div>
-                    <div class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
-                        <div class="font-semibold text-xs text-gray-900">Competitor Intel</div>
-                        <div class="text-xs text-gray-500">TR competitor tracking</div>
-                    </div>
-                    <div class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
-                        <div class="font-semibold text-xs text-gray-900">Super Lig Betting</div>
-                        <div class="text-xs text-gray-500">Sports betting monitor</div>
-                    </div>
-                    <div class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
-                        <div class="font-semibold text-xs text-gray-900">Revenue Intel</div>
-                        <div class="text-xs text-gray-500">Turkish revenue analysis</div>
-                    </div>
-                    <div class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
-                        <div class="font-semibold text-xs text-gray-900">Ad Monitor</div>
-                        <div class="text-xs text-gray-500">Turkish advertising tracker</div>
-                    </div>
-                    <div class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
-                        <div class="font-semibold text-xs text-gray-900">Player Behavior</div>
-                        <div class="text-xs text-gray-500">Turkish player analytics</div>
-                    </div>
-                    <div class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
-                        <div class="font-semibold text-xs text-gray-900">Bonus Optimizer</div>
-                        <div class="text-xs text-gray-500">Turkish bonus strategy</div>
-                    </div>
-                    <div class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
-                        <div class="font-semibold text-xs text-gray-900">Regulatory Tracker</div>
-                        <div class="text-xs text-gray-500">Law & regulation changes</div>
-                    </div>
-                    <div class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
-                        <div class="font-semibold text-xs text-gray-900">Social Monitor</div>
-                        <div class="text-xs text-gray-500">TR social media tracker</div>
-                    </div>
-                    <div class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
-                        <div class="font-semibold text-xs text-gray-900">Full Turkey Report</div>
-                        <div class="text-xs text-gray-500">Comprehensive TR report</div>
-                    </div>
+                    <a href="turkey-dashboard.html" class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100 block cursor-pointer"><div class="font-semibold text-xs text-gray-900">BTK Compliance</div><div class="text-xs text-gray-500">Domain blocking monitor</div></a>
+                    <a href="compliance-center.html" class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100 block cursor-pointer"><div class="font-semibold text-xs text-gray-900">KVKK Checker</div><div class="text-xs text-gray-500">Turkish GDPR compliance</div></a>
+                    <a href="turkey-dashboard.html" class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100 block cursor-pointer"><div class="font-semibold text-xs text-gray-900">Turkish Payments</div><div class="text-xs text-gray-500">Papara/Payfix/EFT analysis</div></a>
+                    <a href="turkey-dashboard.html" class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100 block cursor-pointer"><div class="font-semibold text-xs text-gray-900">Domain Rotation</div><div class="text-xs text-gray-500">Turkish domain tracker</div></a>
+                    <a href="turkey-dashboard.html" class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100 block cursor-pointer"><div class="font-semibold text-xs text-gray-900">Telegram Monitor</div><div class="text-xs text-gray-500">TR channel intelligence</div></a>
+                    <a href="turkey-dashboard.html" class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100 block cursor-pointer"><div class="font-semibold text-xs text-gray-900">Market Analysis</div><div class="text-xs text-gray-500">Turkish market intelligence</div></a>
+                    <a href="turkey-dashboard.html" class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100 block cursor-pointer"><div class="font-semibold text-xs text-gray-900">Competitor Intel</div><div class="text-xs text-gray-500">TR competitor tracking</div></a>
+                    <a href="turkey-dashboard.html" class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100 block cursor-pointer"><div class="font-semibold text-xs text-gray-900">Super Lig Betting</div><div class="text-xs text-gray-500">Sports betting monitor</div></a>
+                    <a href="financial-monitoring.html" class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100 block cursor-pointer"><div class="font-semibold text-xs text-gray-900">Revenue Intel</div><div class="text-xs text-gray-500">Turkish revenue analysis</div></a>
+                    <a href="turkey-dashboard.html" class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100 block cursor-pointer"><div class="font-semibold text-xs text-gray-900">Ad Monitor</div><div class="text-xs text-gray-500">Turkish advertising tracker</div></a>
+                    <a href="player-analytics.html" class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100 block cursor-pointer"><div class="font-semibold text-xs text-gray-900">Player Behavior</div><div class="text-xs text-gray-500">Turkish player analytics</div></a>
+                    <a href="turkey-dashboard.html" class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100 block cursor-pointer"><div class="font-semibold text-xs text-gray-900">Bonus Optimizer</div><div class="text-xs text-gray-500">Turkish bonus strategy</div></a>
+                    <a href="turkey-dashboard.html" class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100 block cursor-pointer"><div class="font-semibold text-xs text-gray-900">Regulatory Tracker</div><div class="text-xs text-gray-500">Law & regulation changes</div></a>
+                    <a href="turkey-dashboard.html" class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100 block cursor-pointer"><div class="font-semibold text-xs text-gray-900">Social Monitor</div><div class="text-xs text-gray-500">TR social media tracker</div></a>
+                    <a href="turkey-dashboard.html" class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100 block cursor-pointer"><div class="font-semibold text-xs text-gray-900">Full Turkey Report</div><div class="text-xs text-gray-500">Comprehensive TR report</div></a>
                 </div>
             </div>
 
-            <!-- Brand Protection Tools -->
+            <!-- Brand Protection Tools - ALL LINKED -->
             <div class="mb-8">
-                <h4 class="text-lg font-bold text-blue-700 mb-4 flex items-center">
-                    <i data-lucide="shield-alert" class="w-5 h-5 mr-2"></i> Brand Protection Tools (10 Tools)
-                </h4>
+                <h4 class="text-lg font-bold text-blue-700 mb-4 flex items-center"><i data-lucide="shield-alert" class="w-5 h-5 mr-2"></i> Brand Protection Tools (10 Tools)</h4>
                 <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
-                    <div class="p-3 bg-blue-50 rounded-lg border border-blue-100"><div class="font-semibold text-xs">Domain Monitoring</div><div class="text-xs text-gray-500">Typosquatting detection</div></div>
-                    <div class="p-3 bg-blue-50 rounded-lg border border-blue-100"><div class="font-semibold text-xs">Clone Detection</div><div class="text-xs text-gray-500">Visual + content analysis</div></div>
-                    <div class="p-3 bg-blue-50 rounded-lg border border-blue-100"><div class="font-semibold text-xs">WHOIS Analysis</div><div class="text-xs text-gray-500">Registration data</div></div>
-                    <div class="p-3 bg-blue-50 rounded-lg border border-blue-100"><div class="font-semibold text-xs">Ahrefs SEO</div><div class="text-xs text-gray-500">Backlinks & authority</div></div>
-                    <div class="p-3 bg-blue-50 rounded-lg border border-blue-100"><div class="font-semibold text-xs">Visual Comparison</div><div class="text-xs text-gray-500">AI-powered analysis</div></div>
-                    <div class="p-3 bg-blue-50 rounded-lg border border-blue-100"><div class="font-semibold text-xs">CT Logs</div><div class="text-xs text-gray-500">Certificate transparency</div></div>
-                    <div class="p-3 bg-blue-50 rounded-lg border border-blue-100"><div class="font-semibold text-xs">Dark Web Monitor</div><div class="text-xs text-gray-500">Hidden service scanning</div></div>
-                    <div class="p-3 bg-blue-50 rounded-lg border border-blue-100"><div class="font-semibold text-xs">Crypto Monitor</div><div class="text-xs text-gray-500">Blockchain threats</div></div>
-                    <div class="p-3 bg-blue-50 rounded-lg border border-blue-100"><div class="font-semibold text-xs">DMCA Automation</div><div class="text-xs text-gray-500">Takedown requests</div></div>
-                    <div class="p-3 bg-blue-50 rounded-lg border border-blue-100"><div class="font-semibold text-xs">Threat Intelligence</div><div class="text-xs text-gray-500">Multi-source intel</div></div>
+                    <a href="brand-protection.html" class="p-3 bg-blue-50 rounded-lg border border-blue-100 block cursor-pointer hover:bg-blue-100"><div class="font-semibold text-xs">Domain Monitoring</div><div class="text-xs text-gray-500">Typosquatting detection</div></a>
+                    <a href="brand-protection.html" class="p-3 bg-blue-50 rounded-lg border border-blue-100 block cursor-pointer hover:bg-blue-100"><div class="font-semibold text-xs">Clone Detection</div><div class="text-xs text-gray-500">Visual + content analysis</div></a>
+                    <a href="brand-protection.html" class="p-3 bg-blue-50 rounded-lg border border-blue-100 block cursor-pointer hover:bg-blue-100"><div class="font-semibold text-xs">WHOIS Analysis</div><div class="text-xs text-gray-500">Registration data</div></a>
+                    <a href="brand-protection.html" class="p-3 bg-blue-50 rounded-lg border border-blue-100 block cursor-pointer hover:bg-blue-100"><div class="font-semibold text-xs">Ahrefs SEO</div><div class="text-xs text-gray-500">Backlinks & authority</div></a>
+                    <a href="brand-protection.html" class="p-3 bg-blue-50 rounded-lg border border-blue-100 block cursor-pointer hover:bg-blue-100"><div class="font-semibold text-xs">Visual Comparison</div><div class="text-xs text-gray-500">AI-powered analysis</div></a>
+                    <a href="brand-protection.html" class="p-3 bg-blue-50 rounded-lg border border-blue-100 block cursor-pointer hover:bg-blue-100"><div class="font-semibold text-xs">CT Logs</div><div class="text-xs text-gray-500">Certificate transparency</div></a>
+                    <a href="brand-protection.html" class="p-3 bg-blue-50 rounded-lg border border-blue-100 block cursor-pointer hover:bg-blue-100"><div class="font-semibold text-xs">Dark Web Monitor</div><div class="text-xs text-gray-500">Hidden service scanning</div></a>
+                    <a href="brand-protection.html" class="p-3 bg-blue-50 rounded-lg border border-blue-100 block cursor-pointer hover:bg-blue-100"><div class="font-semibold text-xs">Crypto Monitor</div><div class="text-xs text-gray-500">Blockchain threats</div></a>
+                    <a href="brand-protection.html" class="p-3 bg-blue-50 rounded-lg border border-blue-100 block cursor-pointer hover:bg-blue-100"><div class="font-semibold text-xs">DMCA Automation</div><div class="text-xs text-gray-500">Takedown requests</div></a>
+                    <a href="brand-protection.html" class="p-3 bg-blue-50 rounded-lg border border-blue-100 block cursor-pointer hover:bg-blue-100"><div class="font-semibold text-xs">Threat Intelligence</div><div class="text-xs text-gray-500">Multi-source intel</div></a>
                 </div>
             </div>
 
-            <!-- Financial & Compliance Tools -->
+            <!-- Financial & Compliance Tools - ALL LINKED -->
             <div class="mb-8">
-                <h4 class="text-lg font-bold text-orange-700 mb-4 flex items-center">
-                    <i data-lucide="banknote" class="w-5 h-5 mr-2"></i> Financial & Compliance Tools (15 Tools)
-                </h4>
+                <h4 class="text-lg font-bold text-orange-700 mb-4 flex items-center"><i data-lucide="banknote" class="w-5 h-5 mr-2"></i> Financial & Compliance Tools (15 Tools)</h4>
                 <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
-                    <div class="p-3 bg-orange-50 rounded-lg border border-orange-100"><div class="font-semibold text-xs">Fraud Detection</div><div class="text-xs text-gray-500">Real-time alerts</div></div>
-                    <div class="p-3 bg-orange-50 rounded-lg border border-orange-100"><div class="font-semibold text-xs">AML Monitoring</div><div class="text-xs text-gray-500">Anti-money laundering</div></div>
-                    <div class="p-3 bg-orange-50 rounded-lg border border-orange-100"><div class="font-semibold text-xs">KYC Verification</div><div class="text-xs text-gray-500">Identity checks</div></div>
-                    <div class="p-3 bg-orange-50 rounded-lg border border-orange-100"><div class="font-semibold text-xs">Transaction Monitor</div><div class="text-xs text-gray-500">Real-time tracking</div></div>
-                    <div class="p-3 bg-orange-50 rounded-lg border border-orange-100"><div class="font-semibold text-xs">Chargebacks</div><div class="text-xs text-gray-500">Prevention & analytics</div></div>
-                    <div class="p-3 bg-orange-50 rounded-lg border border-orange-100"><div class="font-semibold text-xs">Risk Assessment</div><div class="text-xs text-gray-500">Multi-factor scoring</div></div>
-                    <div class="p-3 bg-orange-50 rounded-lg border border-orange-100"><div class="font-semibold text-xs">Payment Analysis</div><div class="text-xs text-gray-500">Method verification</div></div>
-                    <div class="p-3 bg-orange-50 rounded-lg border border-orange-100"><div class="font-semibold text-xs">License Verify</div><div class="text-xs text-gray-500">Gaming license check</div></div>
-                    <div class="p-3 bg-orange-50 rounded-lg border border-orange-100"><div class="font-semibold text-xs">Responsible Gaming</div><div class="text-xs text-gray-500">RG compliance</div></div>
-                    <div class="p-3 bg-orange-50 rounded-lg border border-orange-100"><div class="font-semibold text-xs">Geo Compliance</div><div class="text-xs text-gray-500">Regional blocking</div></div>
-                    <div class="p-3 bg-orange-50 rounded-lg border border-orange-100"><div class="font-semibold text-xs">Game Fairness</div><div class="text-xs text-gray-500">RTP verification</div></div>
-                    <div class="p-3 bg-orange-50 rounded-lg border border-orange-100"><div class="font-semibold text-xs">Affiliate Monitor</div><div class="text-xs text-gray-500">Tracking & DMCA</div></div>
-                    <div class="p-3 bg-orange-50 rounded-lg border border-orange-100"><div class="font-semibold text-xs">Odds Detection</div><div class="text-xs text-gray-500">Manipulation check</div></div>
-                    <div class="p-3 bg-orange-50 rounded-lg border border-orange-100"><div class="font-semibold text-xs">Security Analysis</div><div class="text-xs text-gray-500">SSL & encryption</div></div>
-                    <div class="p-3 bg-orange-50 rounded-lg border border-orange-100"><div class="font-semibold text-xs">Customer Support</div><div class="text-xs text-gray-500">Quality analysis</div></div>
+                    <a href="financial-monitoring.html" class="p-3 bg-orange-50 rounded-lg border border-orange-100 block cursor-pointer hover:bg-orange-100"><div class="font-semibold text-xs">Fraud Detection</div><div class="text-xs text-gray-500">Real-time alerts</div></a>
+                    <a href="financial-monitoring.html" class="p-3 bg-orange-50 rounded-lg border border-orange-100 block cursor-pointer hover:bg-orange-100"><div class="font-semibold text-xs">AML Monitoring</div><div class="text-xs text-gray-500">Anti-money laundering</div></a>
+                    <a href="financial-monitoring.html" class="p-3 bg-orange-50 rounded-lg border border-orange-100 block cursor-pointer hover:bg-orange-100"><div class="font-semibold text-xs">KYC Verification</div><div class="text-xs text-gray-500">Identity checks</div></a>
+                    <a href="financial-monitoring.html" class="p-3 bg-orange-50 rounded-lg border border-orange-100 block cursor-pointer hover:bg-orange-100"><div class="font-semibold text-xs">Transaction Monitor</div><div class="text-xs text-gray-500">Real-time tracking</div></a>
+                    <a href="financial-monitoring.html" class="p-3 bg-orange-50 rounded-lg border border-orange-100 block cursor-pointer hover:bg-orange-100"><div class="font-semibold text-xs">Chargebacks</div><div class="text-xs text-gray-500">Prevention & analytics</div></a>
+                    <a href="financial-monitoring.html" class="p-3 bg-orange-50 rounded-lg border border-orange-100 block cursor-pointer hover:bg-orange-100"><div class="font-semibold text-xs">Risk Assessment</div><div class="text-xs text-gray-500">Multi-factor scoring</div></a>
+                    <a href="compliance-center.html" class="p-3 bg-orange-50 rounded-lg border border-orange-100 block cursor-pointer hover:bg-orange-100"><div class="font-semibold text-xs">Payment Analysis</div><div class="text-xs text-gray-500">Method verification</div></a>
+                    <a href="compliance-center.html" class="p-3 bg-orange-50 rounded-lg border border-orange-100 block cursor-pointer hover:bg-orange-100"><div class="font-semibold text-xs">License Verify</div><div class="text-xs text-gray-500">Gaming license check</div></a>
+                    <a href="compliance-center.html" class="p-3 bg-orange-50 rounded-lg border border-orange-100 block cursor-pointer hover:bg-orange-100"><div class="font-semibold text-xs">Responsible Gaming</div><div class="text-xs text-gray-500">RG compliance</div></a>
+                    <a href="compliance-center.html" class="p-3 bg-orange-50 rounded-lg border border-orange-100 block cursor-pointer hover:bg-orange-100"><div class="font-semibold text-xs">Geo Compliance</div><div class="text-xs text-gray-500">Regional blocking</div></a>
+                    <a href="player-analytics.html" class="p-3 bg-orange-50 rounded-lg border border-orange-100 block cursor-pointer hover:bg-orange-100"><div class="font-semibold text-xs">Game Fairness</div><div class="text-xs text-gray-500">RTP verification</div></a>
+                    <a href="brand-protection.html" class="p-3 bg-orange-50 rounded-lg border border-orange-100 block cursor-pointer hover:bg-orange-100"><div class="font-semibold text-xs">Affiliate Monitor</div><div class="text-xs text-gray-500">Tracking & DMCA</div></a>
+                    <a href="turkey-dashboard.html" class="p-3 bg-orange-50 rounded-lg border border-orange-100 block cursor-pointer hover:bg-orange-100"><div class="font-semibold text-xs">Odds Detection</div><div class="text-xs text-gray-500">Manipulation check</div></a>
+                    <a href="compliance-center.html" class="p-3 bg-orange-50 rounded-lg border border-orange-100 block cursor-pointer hover:bg-orange-100"><div class="font-semibold text-xs">Security Analysis</div><div class="text-xs text-gray-500">SSL & encryption</div></a>
+                    <a href="player-analytics.html" class="p-3 bg-orange-50 rounded-lg border border-orange-100 block cursor-pointer hover:bg-orange-100"><div class="font-semibold text-xs">Customer Support</div><div class="text-xs text-gray-500">Quality analysis</div></a>
                 </div>
             </div>
         </div>
 
-        <!-- Quick Start Guide -->
+        <!-- Quick Start -->
         <div class="bg-gradient-to-r from-red-50 via-blue-50 to-purple-50 rounded-2xl p-8 shadow-lg">
             <h3 class="text-2xl font-bold text-gray-900 mb-8 text-center">Quick Start Guide</h3>
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div class="text-center">
-                    <div class="w-14 h-14 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg">
-                        <span class="text-xl font-bold text-red-600">1</span>
-                    </div>
+                <a href="turkey-dashboard.html" class="text-center block hover:opacity-80">
+                    <div class="w-14 h-14 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg"><span class="text-xl font-bold text-red-600">1</span></div>
                     <h4 class="font-bold text-sm mb-1">Turkey Dashboard</h4>
                     <p class="text-gray-500 text-xs">Start with Turkey Market Dashboard for comprehensive market intel</p>
-                </div>
-                <div class="text-center">
-                    <div class="w-14 h-14 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg">
-                        <span class="text-xl font-bold text-blue-600">2</span>
-                    </div>
+                </a>
+                <a href="brand-protection.html" class="text-center block hover:opacity-80">
+                    <div class="w-14 h-14 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg"><span class="text-xl font-bold text-blue-600">2</span></div>
                     <h4 class="font-bold text-sm mb-1">Brand Protection</h4>
                     <p class="text-gray-500 text-xs">Scan for fake domains, clones & threats targeting your brand</p>
-                </div>
-                <div class="text-center">
-                    <div class="w-14 h-14 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg">
-                        <span class="text-xl font-bold text-green-600">3</span>
-                    </div>
+                </a>
+                <a href="compliance-center.html" class="text-center block hover:opacity-80">
+                    <div class="w-14 h-14 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg"><span class="text-xl font-bold text-green-600">3</span></div>
                     <h4 class="font-bold text-sm mb-1">Compliance Check</h4>
                     <p class="text-gray-500 text-xs">Verify KVKK, BTK, licensing & responsible gaming compliance</p>
-                </div>
-                <div class="text-center">
-                    <div class="w-14 h-14 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg">
-                        <span class="text-xl font-bold text-purple-600">4</span>
-                    </div>
+                </a>
+                <a href="financial-monitoring.html" class="text-center block hover:opacity-80">
+                    <div class="w-14 h-14 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg"><span class="text-xl font-bold text-purple-600">4</span></div>
                     <h4 class="font-bold text-sm mb-1">Analyze & Report</h4>
                     <p class="text-gray-500 text-xs">Generate comprehensive reports & set up automated monitoring</p>
-                </div>
+                </a>
             </div>
         </div>
     </main>
@@ -430,6 +395,125 @@
 
         loadStats();
         setInterval(loadStats, 30000);
+
+        function fmt(n) { return n >= 1000000 ? (n/1000000).toFixed(1)+'M' : n >= 1000 ? (n/1000).toFixed(1)+'K' : String(n); }
+
+        async function loadGoogleTrends() {
+            const el = document.getElementById('trendsContent');
+            el.innerHTML = '<div class="text-center py-4"><div class="inline-block w-8 h-8 border-3 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div><p class="text-sm text-gray-500 mt-2">Loading Google Trends data...</p></div>';
+            try {
+                const res = await fetch('/api/turkey/google-trends', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ brand: 'suratbet' }) });
+                const data = await res.json();
+                const kw = data.trendKeywords || [];
+                const rq = data.relatedQueries || [];
+                const cities = data.topCities || [];
+                el.innerHTML = `
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="lg:col-span-2">
+                            <h4 class="font-bold text-gray-900 mb-3">Trending Keywords (Turkey)</h4>
+                            <div class="space-y-2">
+                                ${kw.slice(0, 12).map((k, i) => `
+                                    <div class="flex items-center justify-between p-2 ${i % 2 === 0 ? 'bg-gray-50' : ''} rounded">
+                                        <div class="flex items-center space-x-3">
+                                            <span class="text-xs font-mono text-gray-400 w-6">#${i+1}</span>
+                                            <span class="text-sm font-semibold text-gray-900">${k.keyword}</span>
+                                            ${k.trend === 'rising' ? '<span class="text-xs px-2 py-0.5 bg-green-100 text-green-700 rounded-full">RISING</span>' : '<span class="text-xs px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full">STABLE</span>'}
+                                        </div>
+                                        <div class="flex items-center space-x-2">
+                                            <div style="width:100px;height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden"><div style="width:${k.interest}%;height:100%;background:linear-gradient(90deg,#3b82f6,#2563eb);border-radius:3px"></div></div>
+                                            <span class="text-xs font-bold text-gray-700 w-8 text-right">${k.interest}</span>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-gray-900 mb-3">Top Cities</h4>
+                            <div class="space-y-2 mb-6">
+                                ${cities.map(c => `
+                                    <div class="flex items-center justify-between text-sm">
+                                        <span>${c.city}</span>
+                                        <div class="flex items-center space-x-2">
+                                            <div style="width:60px;height:5px;background:#e5e7eb;border-radius:3px;overflow:hidden"><div style="width:${c.interest}%;height:100%;background:#dc2626;border-radius:3px"></div></div>
+                                            <span class="text-xs font-bold w-8 text-right">${c.interest}</span>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <h4 class="font-bold text-gray-900 mb-3">Related Rising Queries</h4>
+                            <div class="space-y-1">
+                                ${rq.filter(q => q.type === 'rising').slice(0, 6).map(q => `
+                                    <div class="flex justify-between text-xs p-1">
+                                        <span class="text-gray-700">${q.query}</span>
+                                        <span class="text-green-600 font-bold">${q.value}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <div class="mt-4 p-3 bg-blue-50 rounded-lg text-xs">
+                                <div class="font-bold text-blue-900 mb-1">Insights</div>
+                                <div>Top keyword: <strong>${data.insights?.topKeyword}</strong></div>
+                                <div>YoY growth: <strong class="text-green-600">${data.insights?.yearOverYearGrowth}</strong></div>
+                                <div>Peak: <strong>${data.insights?.peakMonth}</strong></div>
+                            </div>
+                        </div>
+                    </div>`;
+            } catch (e) {
+                el.innerHTML = '<p class="text-red-500">Failed to load trends. Ensure the server is running.</p>';
+            }
+        }
+
+        async function loadSiteDirectory() {
+            const el = document.getElementById('directoryContent');
+            el.innerHTML = '<div class="text-center py-4"><div class="inline-block w-8 h-8 border-3 border-red-200 border-t-red-600 rounded-full animate-spin"></div><p class="text-sm text-gray-500 mt-2">Loading site directory...</p></div>';
+            try {
+                const res = await fetch('/api/turkey/site-directory');
+                const data = await res.json();
+                const sites = data.sites || [];
+                el.innerHTML = `
+                    <div class="overflow-x-auto mb-6">
+                        <table class="w-full text-sm">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-3 py-2 text-left font-semibold">Site</th>
+                                    <th class="px-3 py-2 text-left font-semibold">Category</th>
+                                    <th class="px-3 py-2 text-left font-semibold">License</th>
+                                    <th class="px-3 py-2 text-left font-semibold">Welcome Bonus</th>
+                                    <th class="px-3 py-2 text-left font-semibold">Payments</th>
+                                    <th class="px-3 py-2 text-left font-semibold">Telegram</th>
+                                    <th class="px-3 py-2 text-right font-semibold">Est. Players</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${sites.map(s => `
+                                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                        <td class="px-3 py-3">
+                                            <div class="font-bold text-gray-900">${s.name}</div>
+                                            <div class="text-xs text-blue-600">${s.currentDomain}</div>
+                                            <div class="text-xs text-gray-400">Est. ${s.established} | Pattern: ${s.domainPattern}</div>
+                                        </td>
+                                        <td class="px-3 py-3 text-xs">${s.category}</td>
+                                        <td class="px-3 py-3 text-xs">${s.license}</td>
+                                        <td class="px-3 py-3 text-xs font-semibold text-green-700">${s.welcomeBonus}</td>
+                                        <td class="px-3 py-3 text-xs">${s.paymentMethods.slice(0, 3).join(', ')}${s.paymentMethods.length > 3 ? ' +' + (s.paymentMethods.length - 3) : ''}</td>
+                                        <td class="px-3 py-3 text-xs text-blue-600">${s.telegramChannel}</td>
+                                        <td class="px-3 py-3 text-xs text-right font-bold">${s.estimatedTurkishPlayers}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                    ${data.legalOperator ? `
+                        <div class="p-4 bg-green-50 rounded-lg border border-green-200">
+                            <h4 class="font-bold text-green-900 mb-2">Legal Operator: ${data.legalOperator.name}</h4>
+                            <div class="text-sm text-green-800">Website: <a href="${data.legalOperator.website}" target="_blank" class="underline">${data.legalOperator.website}</a></div>
+                            <div class="text-sm text-green-700 mt-1">${data.legalOperator.description}</div>
+                            <div class="text-xs text-green-600 mt-1">Limitations: ${data.legalOperator.limitations.join(' | ')}</div>
+                        </div>
+                    ` : ''}`;
+            } catch (e) {
+                el.innerHTML = '<p class="text-red-500">Failed to load directory. Ensure the server is running.</p>';
+            }
+        }
     </script>
 </body>
 </html>

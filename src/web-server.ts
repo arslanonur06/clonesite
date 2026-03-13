@@ -81,7 +81,9 @@ import {
   trackCompetitors,
   analyzeTurkishPlayerBehavior,
   optimizeTurkishBonusStrategy,
-  trackTurkishRegulatory
+  trackTurkishRegulatory,
+  getTurkishGoogleTrends,
+  getTurkishSiteDirectory
 } from './lib/turkey-market-intelligence.js';
 import 'dotenv/config';
 
@@ -1976,6 +1978,29 @@ class BrandProtectionWebServer {
       } catch (error) {
         console.error('Regulatory tracking failed:', error);
         res.status(500).json({ error: 'Regulatory tracking failed' });
+      }
+    });
+
+    // Google Trends for Turkish iGaming
+    this.app.post('/api/turkey/google-trends', async (req, res) => {
+      try {
+        const { brand = 'suratbet' } = req.body;
+        const result = await getTurkishGoogleTrends(brand);
+        res.json(result);
+      } catch (error) {
+        console.error('Google Trends failed:', error);
+        res.status(500).json({ error: 'Google Trends analysis failed' });
+      }
+    });
+
+    // Turkish Site Directory
+    this.app.get('/api/turkey/site-directory', (req, res) => {
+      try {
+        const result = getTurkishSiteDirectory();
+        res.json(result);
+      } catch (error) {
+        console.error('Site directory failed:', error);
+        res.status(500).json({ error: 'Site directory failed' });
       }
     });
 

@@ -83,6 +83,8 @@
                 <button onclick="showTab('sports')" id="tab-sports" class="tab-inactive py-4 px-2 text-sm whitespace-nowrap">Sports Betting</button>
                 <button onclick="showTab('bonus')" id="tab-bonus" class="tab-inactive py-4 px-2 text-sm whitespace-nowrap">Bonus Strategy</button>
                 <button onclick="showTab('regulatory')" id="tab-regulatory" class="tab-inactive py-4 px-2 text-sm whitespace-nowrap">Regulatory</button>
+                <button onclick="showTab('trends')" id="tab-trends" class="tab-inactive py-4 px-2 text-sm whitespace-nowrap">Google Trends</button>
+                <button onclick="showTab('directory')" id="tab-directory" class="tab-inactive py-4 px-2 text-sm whitespace-nowrap">Site Directory</button>
             </div>
         </div>
     </div>
@@ -343,6 +345,30 @@
                 </div>
             </div>
         </div>
+
+        <!-- Tab Content: Google Trends -->
+        <div id="content-trends" class="tab-content hidden fade-in">
+            <div class="section-card p-6 mb-8">
+                <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                    <span class="mr-2">📈</span> Google Trends - Turkish iGaming Keywords
+                </h3>
+                <div id="trendsResults" class="space-y-4">
+                    <p class="text-gray-500 text-sm">Run analysis to see Google Trends data...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Content: Site Directory -->
+        <div id="content-directory" class="tab-content hidden fade-in">
+            <div class="section-card p-6 mb-8">
+                <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                    <span class="mr-2">🏢</span> Turkish iGaming Site Directory
+                </h3>
+                <div id="directoryResults" class="space-y-4">
+                    <p class="text-gray-500 text-sm">Run analysis to see site directory...</p>
+                </div>
+            </div>
+        </div>
     </main>
 
     <footer class="bg-gray-900 text-white py-6 mt-12">
@@ -384,7 +410,7 @@
             document.getElementById('loadingIndicator').classList.remove('hidden');
 
             try {
-                const [dashboard, competitors, domains, payments, social, sports, bonus, regulatory] = await Promise.all([
+                const [dashboard, competitors, domains, payments, social, sports, bonus, regulatory, trends, directory] = await Promise.all([
                     apiPost('/api/turkey/market-dashboard', { brand }),
                     apiPost('/api/turkey/competitor-intelligence', { brand }),
                     apiPost('/api/turkey/domain-monitoring', { brand }),
@@ -392,7 +418,9 @@
                     apiPost('/api/turkey/social-media', { brand }),
                     apiPost('/api/turkey/sports-betting', { brand }),
                     apiPost('/api/turkey/bonus-strategy', { brand }),
-                    fetch('/api/turkey/regulatory-tracker').then(r => r.json())
+                    fetch('/api/turkey/regulatory-tracker').then(r => r.json()),
+                    apiPost('/api/turkey/google-trends', { brand }),
+                    fetch('/api/turkey/site-directory').then(r => r.json())
                 ]);
 
                 renderDashboard(dashboard);
@@ -403,6 +431,8 @@
                 renderSports(sports);
                 renderBonus(bonus);
                 renderRegulatory(regulatory);
+                renderTrends(trends);
+                renderDirectory(directory);
             } catch (err) {
                 console.error('Failed to load data:', err);
             } finally {
@@ -731,6 +761,93 @@
                             <span class="badge ${badgeClass(v.threatLevel.toLowerCase())} mt-1 inline-block">${v.threatLevel}</span>
                         </div>
                     `).join('')}
+                </div>` : ''}`;
+        }
+        function renderTrends(data) {
+            if (!data || !data.trendKeywords) return;
+            const kw = data.trendKeywords;
+            const rq = data.relatedQueries || [];
+            const cities = data.topCities || [];
+            document.getElementById('trendsResults').innerHTML = `
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2">
+                        <h4 class="font-bold text-gray-900 mb-3">Trending iGaming Keywords (Turkey)</h4>
+                        <div class="space-y-2">
+                            ${kw.slice(0, 15).map((k, i) => `
+                                <div class="flex items-center justify-between p-2 ${i % 2 === 0 ? 'bg-gray-50' : ''} rounded">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-xs font-mono text-gray-400 w-6">#${i+1}</span>
+                                        <span class="text-sm font-semibold">${k.keyword}</span>
+                                        ${k.trend === 'rising' ? '<span class="text-xs px-2 py-0.5 bg-green-100 text-green-700 rounded-full">RISING</span>' : '<span class="text-xs px-2 py-0.5 bg-gray-100 text-gray-500 rounded-full">STABLE</span>'}
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <div style="width:80px;height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden"><div style="width:${k.interest}%;height:100%;background:linear-gradient(90deg,#3b82f6,#1d4ed8);border-radius:3px"></div></div>
+                                        <span class="text-xs font-bold w-8 text-right">${k.interest}</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-900 mb-3">Top Cities</h4>
+                        <div class="space-y-2 mb-6">
+                            ${cities.map(c => `
+                                <div class="flex items-center justify-between text-sm">
+                                    <span>${c.city}</span>
+                                    <div class="flex items-center space-x-2">
+                                        <div style="width:60px;height:5px;background:#e5e7eb;border-radius:3px;overflow:hidden"><div style="width:${c.interest}%;height:100%;background:#dc2626;border-radius:3px"></div></div>
+                                        <span class="text-xs font-bold">${c.interest}</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <h4 class="font-bold text-gray-900 mb-3">Rising Queries</h4>
+                        <div class="space-y-1">
+                            ${rq.filter(q => q.type === 'rising').slice(0, 8).map(q => `
+                                <div class="flex justify-between text-xs p-1">
+                                    <span class="text-gray-700">${q.query}</span>
+                                    <span class="text-green-600 font-bold">${q.value}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="mt-4 p-3 bg-blue-50 rounded-lg text-xs">
+                            <div class="font-bold text-blue-900 mb-1">Insights</div>
+                            <div>Top: <strong>${data.insights?.topKeyword}</strong></div>
+                            <div>YoY: <strong class="text-green-600">${data.insights?.yearOverYearGrowth}</strong></div>
+                            <div>Peak: <strong>${data.insights?.peakMonth}</strong></div>
+                        </div>
+                    </div>
+                </div>`;
+        }
+
+        function renderDirectory(data) {
+            if (!data || !data.sites) return;
+            const sites = data.sites;
+            document.getElementById('directoryResults').innerHTML = `
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead class="bg-gray-50"><tr>
+                            <th class="px-3 py-2 text-left font-semibold">Site</th>
+                            <th class="px-3 py-2 text-left font-semibold">License</th>
+                            <th class="px-3 py-2 text-left font-semibold">Bonus</th>
+                            <th class="px-3 py-2 text-left font-semibold">Payments</th>
+                            <th class="px-3 py-2 text-left font-semibold">Telegram</th>
+                            <th class="px-3 py-2 text-right font-semibold">Players</th>
+                        </tr></thead>
+                        <tbody>${sites.map(s => `<tr class="border-b hover:bg-gray-50">
+                            <td class="px-3 py-2"><div class="font-bold">${s.name}</div><div class="text-xs text-blue-600">${s.currentDomain}</div><div class="text-xs text-gray-400">Since ${s.established}</div></td>
+                            <td class="px-3 py-2 text-xs">${s.license}</td>
+                            <td class="px-3 py-2 text-xs font-semibold text-green-700">${s.welcomeBonus}</td>
+                            <td class="px-3 py-2 text-xs">${s.paymentMethods.slice(0, 3).join(', ')}</td>
+                            <td class="px-3 py-2 text-xs text-blue-600">${s.telegramChannel}</td>
+                            <td class="px-3 py-2 text-xs text-right font-bold">${s.estimatedTurkishPlayers}</td>
+                        </tr>`).join('')}</tbody>
+                    </table>
+                </div>
+                ${data.legalOperator ? `
+                <div class="mt-4 p-4 bg-green-50 rounded-lg border border-green-200">
+                    <h4 class="font-bold text-green-900">${data.legalOperator.name}</h4>
+                    <div class="text-sm text-green-700 mt-1">${data.legalOperator.description}</div>
                 </div>` : ''}`;
         }
     </script>
