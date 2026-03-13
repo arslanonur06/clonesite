@@ -3,89 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iGaming Security Suite - Professional Brand Protection</title>
+    <title>iGaming Security Suite - Professional Turkish Market Intelligence</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         .gradient-bg { background: linear-gradient(135deg, #1f2937 0%, #111827 100%); }
         .gradient-card { background: #ffffff; border: 1px solid #e5e7eb; }
-        .card-hover { 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-            cursor: pointer;
-        }
-        .card-hover:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 14px 28px rgba(15, 23, 42, 0.08);
-        }
+        .card-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; }
+        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12); }
         .feature-icon {
-            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-            width: 60px;
-            height: 60px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto;
-            transition: all 0.3s ease;
+            width: 64px; height: 64px; border-radius: 18px;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto; transition: all 0.3s ease;
         }
-        .card-hover:hover .feature-icon {
-            transform: rotate(5deg) scale(1.1);
-        }
-        .stat-card {
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-            border: 1px solid #cbd5e1;
-        }
-        .animated-bg { background: linear-gradient(135deg, #111827 0%, #1f2937 100%); }
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        .pulse-ring { animation: none; }
-        @keyframes pulse-ring {
-            0%, 100% { opacity: 0.6; }
-            50% { opacity: 1; transform: scale(1.05); }
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-            transition: all 0.3s ease;
-        }
-        .btn-primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 10px 22px rgba(37, 99, 235, 0.25);
-        }
-        .tool-badge {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
+        .card-hover:hover .feature-icon { transform: rotate(5deg) scale(1.1); }
+        .stat-card { background: linear-gradient(135deg, #f8fafc, #e2e8f0); border: 1px solid #cbd5e1; }
+        .animated-bg { background: linear-gradient(135deg, #111827 0%, #1e3a5f 50%, #111827 100%); background-size: 200% 200%; animation: gradientShift 8s ease infinite; }
+        @keyframes gradientShift { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+        .pulse-ring { animation: pulseRing 2s infinite; }
+        @keyframes pulseRing { 0%,100% { opacity: 0.7; } 50% { opacity: 1; transform: scale(1.05); } }
+        .btn-primary { background: linear-gradient(135deg, #2563eb, #1d4ed8); transition: all 0.3s ease; }
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 10px 22px rgba(37, 99, 235, 0.25); }
+        .tool-badge { background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 3px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; }
+        .turkey-badge { background: linear-gradient(135deg, #dc2626, #991b1b); color: white; padding: 3px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; }
+        .new-badge { background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; padding: 3px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; }
+        .section-divider { height: 1px; background: linear-gradient(to right, transparent, #e5e7eb, transparent); }
     </style>
 </head>
 <body class="bg-gray-50">
     <!-- Hero Header -->
     <header class="animated-bg text-white shadow-2xl">
-        <div class="container mx-auto px-6 py-8">
+        <div class="container mx-auto px-6 py-10">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4">
-                    <div class="w-16 h-16 bg-white bg-opacity-20 rounded-2xl flex items-center justify-center backdrop-blur-sm pulse-ring">
+                    <div class="w-16 h-16 bg-white bg-opacity-15 rounded-2xl flex items-center justify-center backdrop-blur-sm pulse-ring">
                         <i data-lucide="shield-check" class="w-10 h-10"></i>
                     </div>
                     <div>
                         <h1 class="text-4xl font-bold tracking-tight">iGaming Security Suite</h1>
-                        <p class="text-blue-100 text-lg mt-1">Professional Brand Protection & Threat Intelligence Platform</p>
+                        <p class="text-blue-200 text-lg mt-1">Professional Brand Protection & Turkish Market Intelligence</p>
                     </div>
                 </div>
                 <div class="hidden md:flex items-center space-x-4">
-                    <div class="text-right bg-white bg-opacity-10 rounded-lg px-4 py-2 backdrop-blur-sm">
+                    <div class="bg-white bg-opacity-10 rounded-xl px-5 py-3 backdrop-blur-sm">
                         <div class="flex items-center space-x-2">
                             <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
                             <span class="text-sm font-semibold">System Online</span>
                         </div>
-                        <div class="text-xs text-blue-200 mt-1">All Services Operational</div>
+                        <div class="text-xs text-blue-200 mt-1">All 40+ Tools Operational</div>
+                    </div>
+                    <div class="bg-red-600 bg-opacity-80 rounded-xl px-4 py-3">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xl">🇹🇷</span>
+                            <span class="text-sm font-bold">Turkey Focus</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -94,230 +66,349 @@
 
     <!-- Stats Bar -->
     <div class="bg-white shadow-sm border-b">
-        <div class="container mx-auto px-6 py-4">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="container mx-auto px-6 py-5">
+            <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
                 <div class="text-center">
-                    <div class="text-3xl font-bold text-blue-600" id="totalScans">0</div>
-                    <div class="text-sm text-gray-600">Total Scans</div>
+                    <div class="text-2xl font-bold text-blue-600" id="totalScans">0</div>
+                    <div class="text-xs text-gray-500">Total Scans</div>
                 </div>
                 <div class="text-center">
-                    <div class="text-3xl font-bold text-red-600" id="threatsDetected">0</div>
-                    <div class="text-sm text-gray-600">Threats Detected</div>
+                    <div class="text-2xl font-bold text-red-600" id="threatsDetected">0</div>
+                    <div class="text-xs text-gray-500">Threats Found</div>
                 </div>
                 <div class="text-center">
-                    <div class="text-3xl font-bold text-green-600" id="domainsMonitored">0</div>
-                    <div class="text-sm text-gray-600">Domains Monitored</div>
+                    <div class="text-2xl font-bold text-green-600" id="domainsMonitored">0</div>
+                    <div class="text-xs text-gray-500">Domains Tracked</div>
                 </div>
                 <div class="text-center">
-                    <div class="text-3xl font-bold text-purple-600" id="riskScore">0</div>
-                    <div class="text-sm text-gray-600">Risk Score</div>
+                    <div class="text-2xl font-bold text-purple-600" id="riskScore">0</div>
+                    <div class="text-xs text-gray-500">Risk Score</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-orange-600">40+</div>
+                    <div class="text-xs text-gray-500">Active Tools</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-red-600">15+</div>
+                    <div class="text-xs text-gray-500">Turkey Tools</div>
                 </div>
             </div>
         </div>
     </div>
 
     <main class="container mx-auto px-6 py-12">
-        <!-- Welcome Section -->
-        <div class="text-center mb-16">
-            <h2 class="text-4xl font-bold text-gray-900 mb-4">Complete Brand Protection Solution</h2>
+        <!-- Turkey Market Section -->
+        <div class="text-center mb-12">
+            <div class="inline-flex items-center space-x-2 mb-4">
+                <span class="text-3xl">🇹🇷</span>
+                <h2 class="text-4xl font-bold text-gray-900">Turkish Market Intelligence</h2>
+            </div>
             <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                Advanced threat detection, domain monitoring, and automated security tools designed specifically for iGaming operators
+                The world's most comprehensive iGaming toolkit built specifically for Turkish market operations
             </p>
         </div>
 
-        <!-- Main Features Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            <!-- Brand Protection -->
-            <a href="brand-protection.html" class="gradient-card rounded-2xl p-8 shadow-xl card-hover block">
-                <div class="feature-icon mb-6">
-                    <i data-lucide="shield-alert" class="w-8 h-8 text-white"></i>
+        <!-- Turkey-Specific Tools (Featured) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+            <!-- Turkey Market Dashboard -->
+            <a href="turkey-dashboard.html" class="gradient-card rounded-2xl p-6 shadow-lg card-hover block relative overflow-hidden">
+                <div class="absolute top-3 right-3"><span class="turkey-badge">TURKEY</span></div>
+                <div class="feature-icon mb-5" style="background: linear-gradient(135deg, #dc2626, #991b1b);">
+                    <span class="text-white text-2xl">🇹🇷</span>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-900 mb-3 text-center">Brand Protection</h3>
-                <p class="text-gray-600 mb-6 text-center">Comprehensive domain monitoring, clone detection, and visual comparison tools</p>
-                <div class="space-y-3">
-                    <div class="flex items-center space-x-3 text-sm">
-                        <i data-lucide="check-circle" class="w-5 h-5 text-green-600"></i>
-                        <span>Fake Domain Detection</span>
-                    </div>
-                    <div class="flex items-center space-x-3 text-sm">
-                        <i data-lucide="check-circle" class="w-5 h-5 text-green-600"></i>
-                        <span>Clone Site Analysis</span>
-                    </div>
-                    <div class="flex items-center space-x-3 text-sm">
-                        <i data-lucide="check-circle" class="w-5 h-5 text-green-600"></i>
-                        <span>Visual Comparison</span>
-                    </div>
-                    <div class="flex items-center space-x-3 text-sm">
-                        <i data-lucide="check-circle" class="w-5 h-5 text-green-600"></i>
-                        <span>Ahrefs SEO Analysis</span>
-                    </div>
-                    <div class="flex items-center space-x-3 text-sm">
-                        <i data-lucide="check-circle" class="w-5 h-5 text-green-600"></i>
-                        <span>Enhanced WHOIS</span>
-                    </div>
+                <h3 class="text-lg font-bold text-gray-900 mb-2 text-center">Turkey Market Dashboard</h3>
+                <p class="text-gray-500 mb-4 text-center text-sm">Complete Turkish iGaming market intelligence with BTK, payments, competitors & regulatory tracking</p>
+                <div class="space-y-2 text-xs">
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>BTK/RTUK Compliance Monitor</span></div>
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>Papara/Payfix Payment Analysis</span></div>
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>Domain Rotation Tracker</span></div>
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>Competitor Intelligence</span></div>
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>Telegram Channel Monitor</span></div>
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>Super Lig Betting Intel</span></div>
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>Bonus Strategy Optimizer</span></div>
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>Regulatory Change Tracker</span></div>
                 </div>
-                <button class="btn-primary w-full mt-6 py-3 rounded-lg text-white font-semibold flex items-center justify-center space-x-2">
-                    <i data-lucide="arrow-right" class="w-5 h-5"></i>
-                    <span>Start Protection</span>
+                <button class="w-full mt-5 py-2.5 rounded-lg text-white font-semibold text-sm" style="background: linear-gradient(135deg, #dc2626, #991b1b);">
+                    Open Turkey Dashboard
                 </button>
+            </a>
+
+            <!-- Brand Protection -->
+            <a href="brand-protection.html" class="gradient-card rounded-2xl p-6 shadow-lg card-hover block">
+                <div class="feature-icon mb-5" style="background: linear-gradient(135deg, #2563eb, #1d4ed8);">
+                    <i data-lucide="shield-alert" class="w-7 h-7 text-white"></i>
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 mb-2 text-center">Brand Protection</h3>
+                <p class="text-gray-500 mb-4 text-center text-sm">Domain monitoring, clone detection, visual comparison & WHOIS analysis</p>
+                <div class="space-y-2 text-xs">
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>Fake Domain Detection</span></div>
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>Clone Site Analysis</span></div>
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>Visual Comparison</span></div>
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>Ahrefs SEO Analysis</span></div>
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>Enhanced WHOIS</span></div>
+                </div>
+                <button class="btn-primary w-full mt-5 py-2.5 rounded-lg text-white font-semibold text-sm">Start Protection</button>
             </a>
 
             <!-- Bonus Comparison -->
-            <a href="bonus-comparison.html" class="gradient-card rounded-2xl p-8 shadow-xl card-hover block">
-                <div class="feature-icon mb-6" style="background: linear-gradient(135deg, #10b981, #059669);">
-                    <i data-lucide="percent" class="w-8 h-8 text-white"></i>
+            <a href="bonus-comparison.html" class="gradient-card rounded-2xl p-6 shadow-lg card-hover block">
+                <div class="feature-icon mb-5" style="background: linear-gradient(135deg, #10b981, #059669);">
+                    <i data-lucide="percent" class="w-7 h-7 text-white"></i>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-900 mb-3 text-center">Bonus Comparison</h3>
-                <p class="text-gray-600 mb-6 text-center">Analyze and compare competitors' bonus systems and promotional offers</p>
-                <div class="space-y-3">
-                    <div class="flex items-center space-x-3 text-sm">
-                        <i data-lucide="check-circle" class="w-5 h-5 text-green-600"></i>
-                        <span>Multi-Site Comparison</span>
-                    </div>
-                    <div class="flex items-center space-x-3 text-sm">
-                        <i data-lucide="check-circle" class="w-5 h-5 text-green-600"></i>
-                        <span>Wagering Analysis</span>
-                    </div>
-                    <div class="flex items-center space-x-3 text-sm">
-                        <i data-lucide="check-circle" class="w-5 h-5 text-green-600"></i>
-                        <span>Terms Extraction</span>
-                    </div>
-                    <div class="flex items-center space-x-3 text-sm">
-                        <i data-lucide="check-circle" class="w-5 h-5 text-green-600"></i>
-                        <span>PDF & CSV Export</span>
-                    </div>
-                    <div class="flex items-center space-x-3 text-sm">
-                        <i data-lucide="check-circle" class="w-5 h-5 text-green-600"></i>
-                        <span>Competitive Intelligence</span>
-                    </div>
+                <h3 class="text-lg font-bold text-gray-900 mb-2 text-center">Bonus Comparison</h3>
+                <p class="text-gray-500 mb-4 text-center text-sm">Analyze competitor bonus structures with Turkish market focus</p>
+                <div class="space-y-2 text-xs">
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>Multi-Site Comparison</span></div>
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>Turkish Bonus Analysis</span></div>
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>Wagering Terms</span></div>
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>PDF & CSV Export</span></div>
                 </div>
-                <button class="w-full mt-6 py-3 rounded-lg text-white font-semibold flex items-center justify-center space-x-2" style="background: linear-gradient(135deg, #10b981, #059669);">
-                    <i data-lucide="arrow-right" class="w-5 h-5"></i>
-                    <span>Compare Bonuses</span>
-                </button>
+                <button class="w-full mt-5 py-2.5 rounded-lg text-white font-semibold text-sm" style="background: linear-gradient(135deg, #10b981, #059669);">Compare Bonuses</button>
+            </a>
+
+            <!-- Player Analytics -->
+            <a href="player-analytics.html" class="gradient-card rounded-2xl p-6 shadow-lg card-hover block relative overflow-hidden">
+                <div class="absolute top-3 right-3"><span class="new-badge">NEW</span></div>
+                <div class="feature-icon mb-5" style="background: linear-gradient(135deg, #7c3aed, #5b21b6);">
+                    <i data-lucide="users" class="w-7 h-7 text-white"></i>
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 mb-2 text-center">Player Analytics & CRM</h3>
+                <p class="text-gray-500 mb-4 text-center text-sm">Turkish player behavior, VIP management, tournaments & segmentation</p>
+                <div class="space-y-2 text-xs">
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>Turkish Player Segments</span></div>
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>VIP Management</span></div>
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>Tournament System</span></div>
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>Game Performance</span></div>
+                </div>
+                <button class="w-full mt-5 py-2.5 rounded-lg text-white font-semibold text-sm" style="background: linear-gradient(135deg, #7c3aed, #5b21b6);">View Analytics</button>
+            </a>
+        </div>
+
+        <!-- Second Row -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+            <!-- Compliance Center -->
+            <a href="compliance-center.html" class="gradient-card rounded-2xl p-6 shadow-lg card-hover block relative overflow-hidden">
+                <div class="absolute top-3 right-3"><span class="new-badge">NEW</span></div>
+                <div class="feature-icon mb-5" style="background: linear-gradient(135deg, #059669, #047857);">
+                    <i data-lucide="shield" class="w-7 h-7 text-white"></i>
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 mb-2 text-center">Compliance & Regulatory</h3>
+                <p class="text-gray-500 mb-4 text-center text-sm">KVKK compliance, BTK status, license verification & responsible gaming</p>
+                <div class="space-y-2 text-xs">
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>KVKK (Turkish GDPR) Check</span></div>
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>BTK/RTUK Status</span></div>
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>License Verification</span></div>
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>Responsible Gaming</span></div>
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>Geo Compliance</span></div>
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>Security Analysis</span></div>
+                </div>
+                <button class="w-full mt-5 py-2.5 rounded-lg text-white font-semibold text-sm" style="background: linear-gradient(135deg, #059669, #047857);">Check Compliance</button>
+            </a>
+
+            <!-- Financial Monitoring -->
+            <a href="financial-monitoring.html" class="gradient-card rounded-2xl p-6 shadow-lg card-hover block relative overflow-hidden">
+                <div class="absolute top-3 right-3"><span class="new-badge">NEW</span></div>
+                <div class="feature-icon mb-5" style="background: linear-gradient(135deg, #ea580c, #c2410c);">
+                    <i data-lucide="banknote" class="w-7 h-7 text-white"></i>
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 mb-2 text-center">Financial & Fraud Center</h3>
+                <p class="text-gray-500 mb-4 text-center text-sm">AML monitoring, KYC verification, fraud detection & revenue intelligence</p>
+                <div class="space-y-2 text-xs">
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>Fraud Detection</span></div>
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>AML Monitoring</span></div>
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>KYC Verification</span></div>
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>Transaction Monitor</span></div>
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>Chargeback Prevention</span></div>
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>Turkey Revenue Intel</span></div>
+                </div>
+                <button class="w-full mt-5 py-2.5 rounded-lg text-white font-semibold text-sm" style="background: linear-gradient(135deg, #ea580c, #c2410c);">Open Finance Center</button>
             </a>
 
             <!-- Automation & Reports -->
-            <div class="gradient-card rounded-2xl p-8 shadow-xl card-hover">
-                <div class="feature-icon mb-6" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
-                    <i data-lucide="zap" class="w-8 h-8 text-white"></i>
+            <div class="gradient-card rounded-2xl p-6 shadow-lg card-hover">
+                <div class="feature-icon mb-5" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                    <i data-lucide="zap" class="w-7 h-7 text-white"></i>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-900 mb-3 text-center">Automation & Reports</h3>
-                <p class="text-gray-600 mb-6 text-center">Scheduled scans, automated alerts, and professional report generation</p>
-                <div class="space-y-3">
-                    <div class="flex items-center space-x-3 text-sm">
-                        <i data-lucide="check-circle" class="w-5 h-5 text-green-600"></i>
-                        <span>Scheduled Scanning</span>
-                    </div>
-                    <div class="flex items-center space-x-3 text-sm">
-                        <i data-lucide="check-circle" class="w-5 h-5 text-green-600"></i>
-                        <span>Alert Rules</span>
-                    </div>
-                    <div class="flex items-center space-x-3 text-sm">
-                        <i data-lucide="check-circle" class="w-5 h-5 text-green-600"></i>
-                        <span>PDF Reports</span>
-                    </div>
-                    <div class="flex items-center space-x-3 text-sm">
-                        <i data-lucide="check-circle" class="w-5 h-5 text-green-600"></i>
-                        <span>CSV Exports</span>
-                    </div>
-                    <div class="flex items-center space-x-3 text-sm">
-                        <i data-lucide="check-circle" class="w-5 h-5 text-green-600"></i>
-                        <span>Batch Processing</span>
-                    </div>
+                <h3 class="text-lg font-bold text-gray-900 mb-2 text-center">Automation & Reports</h3>
+                <p class="text-gray-500 mb-4 text-center text-sm">Scheduled scans, automated alerts, Telegram integration & PDF reports</p>
+                <div class="space-y-2 text-xs">
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>Scheduled Scanning</span></div>
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>Alert Rules Engine</span></div>
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>Telegram Notifications</span></div>
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>PDF Report Generation</span></div>
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>Google Sheets Export</span></div>
+                    <div class="flex items-center space-x-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-600"></i><span>Batch Processing</span></div>
                 </div>
-                <button class="w-full mt-6 py-3 rounded-lg text-white font-semibold flex items-center justify-center space-x-2" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
-                    <i data-lucide="arrow-right" class="w-5 h-5"></i>
-                    <span>View Features</span>
-                </button>
+                <button class="w-full mt-5 py-2.5 rounded-lg text-white font-semibold text-sm" style="background: linear-gradient(135deg, #f59e0b, #d97706);">Configure Automation</button>
             </div>
         </div>
 
-        <!-- Additional Tools Section -->
-        <div class="bg-white rounded-2xl p-8 shadow-xl mb-16">
-            <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                <i data-lucide="tool" class="w-6 h-6 mr-3 text-blue-600"></i>
-                Additional Security Tools
-            </h3>
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div class="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                    <div class="flex items-center space-x-3">
-                        <i data-lucide="globe" class="w-5 h-5 text-blue-600"></i>
-                        <div>
-                            <div class="font-semibold text-sm">WHOIS Analysis</div>
-                            <div class="text-xs text-gray-600">Domain registration data</div>
-                        </div>
+        <div class="section-divider mb-16"></div>
+
+        <!-- All Tools Grid -->
+        <div class="mb-16">
+            <h3 class="text-2xl font-bold text-gray-900 mb-8 text-center">Complete Tool Suite (40+ Professional Tools)</h3>
+
+            <!-- Turkey Tools -->
+            <div class="mb-8">
+                <h4 class="text-lg font-bold text-red-700 mb-4 flex items-center">
+                    <span class="mr-2">🇹🇷</span> Turkey-Specific Tools (15 Tools)
+                </h4>
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                    <div class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
+                        <div class="font-semibold text-xs text-gray-900">BTK Compliance</div>
+                        <div class="text-xs text-gray-500">Domain blocking monitor</div>
                     </div>
-                </div>
-                <div class="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                    <div class="flex items-center space-x-3">
-                        <i data-lucide="trending-up" class="w-5 h-5 text-green-600"></i>
-                        <div>
-                            <div class="font-semibold text-sm">Ahrefs SEO</div>
-                            <div class="text-xs text-gray-600">Backlinks & authority</div>
-                        </div>
+                    <div class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
+                        <div class="font-semibold text-xs text-gray-900">KVKK Checker</div>
+                        <div class="text-xs text-gray-500">Turkish GDPR compliance</div>
                     </div>
-                </div>
-                <div class="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                    <div class="flex items-center space-x-3">
-                        <i data-lucide="eye" class="w-5 h-5 text-purple-600"></i>
-                        <div>
-                            <div class="font-semibold text-sm">Visual Comparison</div>
-                            <div class="text-xs text-gray-600">Site similarity detection</div>
-                        </div>
+                    <div class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
+                        <div class="font-semibold text-xs text-gray-900">Turkish Payments</div>
+                        <div class="text-xs text-gray-500">Papara/Payfix/EFT analysis</div>
                     </div>
-                </div>
-                <div class="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                    <div class="flex items-center space-x-3">
-                        <i data-lucide="file-text" class="w-5 h-5 text-orange-600"></i>
-                        <div>
-                            <div class="font-semibold text-sm">Report Generation</div>
-                            <div class="text-xs text-gray-600">Professional PDFs</div>
-                        </div>
-                        </div>
+                    <div class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
+                        <div class="font-semibold text-xs text-gray-900">Domain Rotation</div>
+                        <div class="text-xs text-gray-500">Turkish domain tracker</div>
+                    </div>
+                    <div class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
+                        <div class="font-semibold text-xs text-gray-900">Telegram Monitor</div>
+                        <div class="text-xs text-gray-500">TR channel intelligence</div>
+                    </div>
+                    <div class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
+                        <div class="font-semibold text-xs text-gray-900">Market Analysis</div>
+                        <div class="text-xs text-gray-500">Turkish market intelligence</div>
+                    </div>
+                    <div class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
+                        <div class="font-semibold text-xs text-gray-900">Competitor Intel</div>
+                        <div class="text-xs text-gray-500">TR competitor tracking</div>
+                    </div>
+                    <div class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
+                        <div class="font-semibold text-xs text-gray-900">Super Lig Betting</div>
+                        <div class="text-xs text-gray-500">Sports betting monitor</div>
+                    </div>
+                    <div class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
+                        <div class="font-semibold text-xs text-gray-900">Revenue Intel</div>
+                        <div class="text-xs text-gray-500">Turkish revenue analysis</div>
+                    </div>
+                    <div class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
+                        <div class="font-semibold text-xs text-gray-900">Ad Monitor</div>
+                        <div class="text-xs text-gray-500">Turkish advertising tracker</div>
+                    </div>
+                    <div class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
+                        <div class="font-semibold text-xs text-gray-900">Player Behavior</div>
+                        <div class="text-xs text-gray-500">Turkish player analytics</div>
+                    </div>
+                    <div class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
+                        <div class="font-semibold text-xs text-gray-900">Bonus Optimizer</div>
+                        <div class="text-xs text-gray-500">Turkish bonus strategy</div>
+                    </div>
+                    <div class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
+                        <div class="font-semibold text-xs text-gray-900">Regulatory Tracker</div>
+                        <div class="text-xs text-gray-500">Law & regulation changes</div>
+                    </div>
+                    <div class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
+                        <div class="font-semibold text-xs text-gray-900">Social Monitor</div>
+                        <div class="text-xs text-gray-500">TR social media tracker</div>
+                    </div>
+                    <div class="p-3 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100">
+                        <div class="font-semibold text-xs text-gray-900">Full Turkey Report</div>
+                        <div class="text-xs text-gray-500">Comprehensive TR report</div>
                     </div>
                 </div>
             </div>
 
+            <!-- Brand Protection Tools -->
+            <div class="mb-8">
+                <h4 class="text-lg font-bold text-blue-700 mb-4 flex items-center">
+                    <i data-lucide="shield-alert" class="w-5 h-5 mr-2"></i> Brand Protection Tools (10 Tools)
+                </h4>
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+                    <div class="p-3 bg-blue-50 rounded-lg border border-blue-100"><div class="font-semibold text-xs">Domain Monitoring</div><div class="text-xs text-gray-500">Typosquatting detection</div></div>
+                    <div class="p-3 bg-blue-50 rounded-lg border border-blue-100"><div class="font-semibold text-xs">Clone Detection</div><div class="text-xs text-gray-500">Visual + content analysis</div></div>
+                    <div class="p-3 bg-blue-50 rounded-lg border border-blue-100"><div class="font-semibold text-xs">WHOIS Analysis</div><div class="text-xs text-gray-500">Registration data</div></div>
+                    <div class="p-3 bg-blue-50 rounded-lg border border-blue-100"><div class="font-semibold text-xs">Ahrefs SEO</div><div class="text-xs text-gray-500">Backlinks & authority</div></div>
+                    <div class="p-3 bg-blue-50 rounded-lg border border-blue-100"><div class="font-semibold text-xs">Visual Comparison</div><div class="text-xs text-gray-500">AI-powered analysis</div></div>
+                    <div class="p-3 bg-blue-50 rounded-lg border border-blue-100"><div class="font-semibold text-xs">CT Logs</div><div class="text-xs text-gray-500">Certificate transparency</div></div>
+                    <div class="p-3 bg-blue-50 rounded-lg border border-blue-100"><div class="font-semibold text-xs">Dark Web Monitor</div><div class="text-xs text-gray-500">Hidden service scanning</div></div>
+                    <div class="p-3 bg-blue-50 rounded-lg border border-blue-100"><div class="font-semibold text-xs">Crypto Monitor</div><div class="text-xs text-gray-500">Blockchain threats</div></div>
+                    <div class="p-3 bg-blue-50 rounded-lg border border-blue-100"><div class="font-semibold text-xs">DMCA Automation</div><div class="text-xs text-gray-500">Takedown requests</div></div>
+                    <div class="p-3 bg-blue-50 rounded-lg border border-blue-100"><div class="font-semibold text-xs">Threat Intelligence</div><div class="text-xs text-gray-500">Multi-source intel</div></div>
+                </div>
+            </div>
+
+            <!-- Financial & Compliance Tools -->
+            <div class="mb-8">
+                <h4 class="text-lg font-bold text-orange-700 mb-4 flex items-center">
+                    <i data-lucide="banknote" class="w-5 h-5 mr-2"></i> Financial & Compliance Tools (15 Tools)
+                </h4>
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+                    <div class="p-3 bg-orange-50 rounded-lg border border-orange-100"><div class="font-semibold text-xs">Fraud Detection</div><div class="text-xs text-gray-500">Real-time alerts</div></div>
+                    <div class="p-3 bg-orange-50 rounded-lg border border-orange-100"><div class="font-semibold text-xs">AML Monitoring</div><div class="text-xs text-gray-500">Anti-money laundering</div></div>
+                    <div class="p-3 bg-orange-50 rounded-lg border border-orange-100"><div class="font-semibold text-xs">KYC Verification</div><div class="text-xs text-gray-500">Identity checks</div></div>
+                    <div class="p-3 bg-orange-50 rounded-lg border border-orange-100"><div class="font-semibold text-xs">Transaction Monitor</div><div class="text-xs text-gray-500">Real-time tracking</div></div>
+                    <div class="p-3 bg-orange-50 rounded-lg border border-orange-100"><div class="font-semibold text-xs">Chargebacks</div><div class="text-xs text-gray-500">Prevention & analytics</div></div>
+                    <div class="p-3 bg-orange-50 rounded-lg border border-orange-100"><div class="font-semibold text-xs">Risk Assessment</div><div class="text-xs text-gray-500">Multi-factor scoring</div></div>
+                    <div class="p-3 bg-orange-50 rounded-lg border border-orange-100"><div class="font-semibold text-xs">Payment Analysis</div><div class="text-xs text-gray-500">Method verification</div></div>
+                    <div class="p-3 bg-orange-50 rounded-lg border border-orange-100"><div class="font-semibold text-xs">License Verify</div><div class="text-xs text-gray-500">Gaming license check</div></div>
+                    <div class="p-3 bg-orange-50 rounded-lg border border-orange-100"><div class="font-semibold text-xs">Responsible Gaming</div><div class="text-xs text-gray-500">RG compliance</div></div>
+                    <div class="p-3 bg-orange-50 rounded-lg border border-orange-100"><div class="font-semibold text-xs">Geo Compliance</div><div class="text-xs text-gray-500">Regional blocking</div></div>
+                    <div class="p-3 bg-orange-50 rounded-lg border border-orange-100"><div class="font-semibold text-xs">Game Fairness</div><div class="text-xs text-gray-500">RTP verification</div></div>
+                    <div class="p-3 bg-orange-50 rounded-lg border border-orange-100"><div class="font-semibold text-xs">Affiliate Monitor</div><div class="text-xs text-gray-500">Tracking & DMCA</div></div>
+                    <div class="p-3 bg-orange-50 rounded-lg border border-orange-100"><div class="font-semibold text-xs">Odds Detection</div><div class="text-xs text-gray-500">Manipulation check</div></div>
+                    <div class="p-3 bg-orange-50 rounded-lg border border-orange-100"><div class="font-semibold text-xs">Security Analysis</div><div class="text-xs text-gray-500">SSL & encryption</div></div>
+                    <div class="p-3 bg-orange-50 rounded-lg border border-orange-100"><div class="font-semibold text-xs">Customer Support</div><div class="text-xs text-gray-500">Quality analysis</div></div>
+                </div>
+            </div>
+        </div>
+
         <!-- Quick Start Guide -->
-        <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8 shadow-lg">
-            <h3 class="text-2xl font-bold text-gray-900 mb-8 text-center">🚀 Quick Start Guide</h3>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="text-center">
-                    <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-                        <span class="text-2xl font-bold text-blue-600">1</span>
+        <div class="bg-gradient-to-r from-red-50 via-blue-50 to-purple-50 rounded-2xl p-8 shadow-lg">
+            <h3 class="text-2xl font-bold text-gray-900 mb-8 text-center">Quick Start Guide</h3>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="text-center">
+                    <div class="w-14 h-14 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg">
+                        <span class="text-xl font-bold text-red-600">1</span>
                     </div>
-                    <h4 class="font-bold text-lg mb-2">Choose Your Tool</h4>
-                    <p class="text-gray-600 text-sm">Select from brand protection, bonus comparison, or automation tools</p>
+                    <h4 class="font-bold text-sm mb-1">Turkey Dashboard</h4>
+                    <p class="text-gray-500 text-xs">Start with Turkey Market Dashboard for comprehensive market intel</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-14 h-14 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg">
+                        <span class="text-xl font-bold text-blue-600">2</span>
                     </div>
-                    <div class="text-center">
-                    <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-                        <span class="text-2xl font-bold text-green-600">2</span>
+                    <h4 class="font-bold text-sm mb-1">Brand Protection</h4>
+                    <p class="text-gray-500 text-xs">Scan for fake domains, clones & threats targeting your brand</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-14 h-14 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg">
+                        <span class="text-xl font-bold text-green-600">3</span>
                     </div>
-                    <h4 class="font-bold text-lg mb-2">Enter Your Data</h4>
-                    <p class="text-gray-600 text-sm">Provide brand name, URLs, or competitor information for analysis</p>
+                    <h4 class="font-bold text-sm mb-1">Compliance Check</h4>
+                    <p class="text-gray-500 text-xs">Verify KVKK, BTK, licensing & responsible gaming compliance</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-14 h-14 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg">
+                        <span class="text-xl font-bold text-purple-600">4</span>
                     </div>
-                    <div class="text-center">
-                    <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-                        <span class="text-2xl font-bold text-purple-600">3</span>
-                    </div>
-                    <h4 class="font-bold text-lg mb-2">Get Results</h4>
-                    <p class="text-gray-600 text-sm">View detailed analysis and download professional reports</p>
+                    <h4 class="font-bold text-sm mb-1">Analyze & Report</h4>
+                    <p class="text-gray-500 text-xs">Generate comprehensive reports & set up automated monitoring</p>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- Footer -->
     <footer class="bg-gray-900 text-white py-8 mt-16">
         <div class="container mx-auto px-6">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="flex items-center space-x-3 mb-4 md:mb-0">
                     <i data-lucide="shield-check" class="w-6 h-6"></i>
                     <span class="font-semibold">iGaming Security Suite</span>
-                    </div>
+                    <span class="text-gray-500">|</span>
+                    <span class="text-sm text-gray-400">40+ Professional Tools</span>
+                </div>
                 <div class="text-sm text-gray-400">
-                    © 2025 All rights reserved | Professional Brand Protection Platform | jelibon marketing
+                    &copy; 2025 All rights reserved | Turkey Market Intelligence Platform | jelibon marketing
                 </div>
             </div>
         </div>
@@ -326,7 +417,6 @@
     <script>
         lucide.createIcons();
 
-        // Load stats
         async function loadStats() {
             try {
                 const res = await fetch('/api/metrics');
@@ -335,15 +425,10 @@
                 document.getElementById('threatsDetected').textContent = data.activeThreats || 0;
                 document.getElementById('domainsMonitored').textContent = data.domainsMonitored || 0;
                 document.getElementById('riskScore').textContent = data.riskScore || 0;
-            } catch (e) {
-                console.error('Failed to load stats:', e);
-            }
+            } catch (e) { console.error('Stats load failed:', e); }
         }
 
-        // Load stats on page load
         loadStats();
-
-        // Refresh stats every 30 seconds
         setInterval(loadStats, 30000);
     </script>
 </body>

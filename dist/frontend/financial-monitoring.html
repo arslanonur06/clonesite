@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Monitoring & Fraud Center - iGaming Security Suite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .gradient-bg { background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%); }
+        .section-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.04); }
+        .level-bar { height: 8px; border-radius: 4px; overflow: hidden; background: #e5e7eb; }
+        .level-fill { height: 100%; transition: width 0.6s ease; border-radius: 4px; }
+        .level-high { background: linear-gradient(90deg, #ef4444, #dc2626); }
+        .level-medium { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .level-low { background: linear-gradient(90deg, #10b981, #059669); }
+        .badge { padding: 2px 10px; border-radius: 12px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; }
+        .badge-critical { background: #fef2f2; color: #dc2626; }
+        .badge-high { background: #fff7ed; color: #ea580c; }
+        .badge-medium { background: #fffbeb; color: #d97706; }
+        .badge-low { background: #f0fdf4; color: #16a34a; }
+        .tab-active { border-bottom: 3px solid #ea580c; color: #ea580c; font-weight: 700; }
+        .tab-inactive { border-bottom: 3px solid transparent; color: #6b7280; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <header class="gradient-bg text-white shadow-2xl">
+        <div class="container mx-auto px-6 py-6">
+            <div class="flex items-center justify-between">
+                <a href="/" class="flex items-center space-x-3 hover:opacity-80">
+                    <div class="w-12 h-12 bg-white bg-opacity-20 rounded-xl flex items-center justify-center"><i data-lucide="banknote" class="w-7 h-7"></i></div>
+                    <div><h1 class="text-2xl font-bold">Financial Monitoring & Fraud Center</h1><p class="text-orange-100 text-sm">AML, KYC, Fraud Detection, Transactions & Chargebacks</p></div>
+                </a>
+                <a href="/" class="bg-white bg-opacity-20 rounded-lg px-4 py-2 text-sm font-medium hover:bg-opacity-30"><i data-lucide="arrow-left" class="w-4 h-4 inline mr-1"></i> Dashboard</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="bg-white shadow-sm border-b sticky top-0 z-30">
+        <div class="container mx-auto px-6">
+            <div class="flex space-x-6 overflow-x-auto">
+                <button onclick="showTab('fraud')" id="tab-fraud" class="tab-active py-4 px-2 text-sm whitespace-nowrap">Fraud Detection</button>
+                <button onclick="showTab('aml')" id="tab-aml" class="tab-inactive py-4 px-2 text-sm whitespace-nowrap">AML Monitoring</button>
+                <button onclick="showTab('kyc')" id="tab-kyc" class="tab-inactive py-4 px-2 text-sm whitespace-nowrap">KYC Verification</button>
+                <button onclick="showTab('transactions')" id="tab-transactions" class="tab-inactive py-4 px-2 text-sm whitespace-nowrap">Transactions</button>
+                <button onclick="showTab('chargebacks')" id="tab-chargebacks" class="tab-inactive py-4 px-2 text-sm whitespace-nowrap">Chargebacks</button>
+                <button onclick="showTab('risk')" id="tab-risk" class="tab-inactive py-4 px-2 text-sm whitespace-nowrap">Risk Assessment</button>
+                <button onclick="showTab('revenue')" id="tab-revenue" class="tab-inactive py-4 px-2 text-sm whitespace-nowrap">Revenue Intel</button>
+            </div>
+        </div>
+    </div>
+
+    <main class="container mx-auto px-6 py-8">
+        <div class="section-card p-6 mb-8">
+            <div class="flex flex-col md:flex-row items-center gap-4">
+                <div class="flex-1 w-full">
+                    <input type="text" id="brandInput" value="suratbet" placeholder="Brand name..." class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-orange-500">
+                </div>
+                <button onclick="loadAll()" class="px-8 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 font-semibold">Run Financial Analysis</button>
+            </div>
+        </div>
+
+        <div id="loading" class="hidden text-center py-12">
+            <div class="inline-block w-12 h-12 border-4 border-orange-200 border-t-orange-600 rounded-full animate-spin"></div>
+            <p class="mt-4 text-gray-600">Running financial analysis...</p>
+        </div>
+
+        <div id="content-fraud" class="tab-content"><div class="section-card p-6" id="fraudContent"><p class="text-gray-500 text-sm">Run analysis to see fraud detection data...</p></div></div>
+        <div id="content-aml" class="tab-content hidden"><div class="section-card p-6" id="amlContent"><p class="text-gray-500 text-sm">Run analysis to see AML data...</p></div></div>
+        <div id="content-kyc" class="tab-content hidden"><div class="section-card p-6" id="kycContent"><p class="text-gray-500 text-sm">Run analysis to see KYC data...</p></div></div>
+        <div id="content-transactions" class="tab-content hidden"><div class="section-card p-6" id="txContent"><p class="text-gray-500 text-sm">Run analysis to see transaction data...</p></div></div>
+        <div id="content-chargebacks" class="tab-content hidden"><div class="section-card p-6" id="cbContent"><p class="text-gray-500 text-sm">Run analysis to see chargeback data...</p></div></div>
+        <div id="content-risk" class="tab-content hidden"><div class="section-card p-6" id="riskContent"><p class="text-gray-500 text-sm">Run analysis to see risk assessment data...</p></div></div>
+        <div id="content-revenue" class="tab-content hidden"><div class="section-card p-6" id="revenueContent"><p class="text-gray-500 text-sm">Run analysis to see revenue intelligence data...</p></div></div>
+    </main>
+
+    <footer class="bg-gray-900 text-white py-6 mt-12"><div class="container mx-auto px-6 text-center text-sm text-gray-400">iGaming Security Suite - Financial Monitoring Center</div></footer>
+
+    <script>
+        lucide.createIcons();
+        function showTab(n) {
+            document.querySelectorAll('.tab-content').forEach(e => e.classList.add('hidden'));
+            document.querySelectorAll('[id^="tab-"]').forEach(e => e.className = 'tab-inactive py-4 px-2 text-sm whitespace-nowrap');
+            document.getElementById(`content-${n}`).classList.remove('hidden');
+            document.getElementById(`tab-${n}`).className = 'tab-active py-4 px-2 text-sm whitespace-nowrap';
+        }
+        function getBrand() { return document.getElementById('brandInput').value.trim() || 'suratbet'; }
+        function fmt(n) { return n >= 1000000 ? (n/1000000).toFixed(1)+'M' : n >= 1000 ? (n/1000).toFixed(0)+'K' : n; }
+        function badgeClass(l) { return { critical:'badge-critical',high:'badge-high',medium:'badge-medium',low:'badge-low',HIGH:'badge-high',MEDIUM:'badge-medium',LOW:'badge-low',CRITICAL:'badge-critical' }[l] || 'badge-medium'; }
+        async function post(url, body) { return (await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) })).json(); }
+
+        async function loadAll() {
+            const brand = getBrand();
+            document.getElementById('loading').classList.remove('hidden');
+            try {
+                const [fraud, aml, kyc, tx, cb, risk, revenue] = await Promise.all([
+                    post('/api/igaming/fraud-detection', {}),
+                    post('/api/igaming/aml-monitoring', { timeframe: '30d' }),
+                    post('/api/igaming/kyc-verification', {}),
+                    post('/api/igaming/transaction-monitoring', { timeframe: '24h' }),
+                    post('/api/igaming/chargeback-prevention', { timeframe: '30d' }),
+                    post('/api/igaming/risk-assessment', {}),
+                    post('/api/turkey/revenue-intelligence', { brand })
+                ]);
+
+                // Fraud
+                if (fraud) {
+                    document.getElementById('fraudContent').innerHTML = `
+                        <h3 class="font-bold text-gray-900 mb-4">Fraud Detection Dashboard</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                            <div class="text-center p-3 bg-red-50 rounded-lg"><div class="text-xl font-bold text-red-600">${fraud.stats.totalAlerts}</div><div class="text-xs">Total Alerts</div></div>
+                            <div class="text-center p-3 bg-orange-50 rounded-lg"><div class="text-xl font-bold text-orange-600">${fraud.stats.highSeverity}</div><div class="text-xs">High Severity</div></div>
+                            <div class="text-center p-3 bg-blue-50 rounded-lg"><div class="text-xl font-bold text-blue-600">${Math.floor(fraud.stats.averageRiskScore)}</div><div class="text-xs">Avg Risk Score</div></div>
+                            <div class="text-center p-3 bg-green-50 rounded-lg"><div class="text-xl font-bold text-green-600">$${fmt(fraud.stats.preventedLosses)}</div><div class="text-xs">Prevented Losses</div></div>
+                        </div>
+                        ${fraud.alerts.map(a => `
+                            <div class="p-4 bg-gray-50 rounded-lg mb-3 border-l-4 ${a.severity === 'high' ? 'border-red-500' : 'border-yellow-500'}">
+                                <div class="flex justify-between mb-2"><span class="font-bold">${a.type.replace(/_/g,' ')}</span><span class="badge ${badgeClass(a.severity)}">${a.severity}</span></div>
+                                <p class="text-sm text-gray-700 mb-2">${a.description}</p>
+                                <div class="text-xs text-gray-500">Player: ${a.playerId} | Risk: ${a.riskScore}/100</div>
+                                <div class="text-xs text-gray-500 mt-1">Evidence: ${a.evidence.join('; ')}</div>
+                            </div>
+                        `).join('')}
+                        <div class="mt-4 p-4 bg-blue-50 rounded-lg"><h4 class="font-bold mb-2">Recommendations</h4><ul class="text-sm space-y-1">${fraud.recommendations.map(r => `<li>• ${r}</li>`).join('')}</ul></div>`;
+                }
+
+                // AML
+                if (aml) {
+                    document.getElementById('amlContent').innerHTML = `
+                        <h3 class="font-bold text-gray-900 mb-4">AML Monitoring</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                            <div class="text-center p-3 bg-red-50 rounded-lg"><div class="text-xl font-bold text-red-600">${aml.summary.totalAlerts}</div><div class="text-xs">Alerts</div></div>
+                            <div class="text-center p-3 bg-orange-50 rounded-lg"><div class="text-xl font-bold text-orange-600">${aml.summary.highSeverity}</div><div class="text-xs">High Severity</div></div>
+                            <div class="text-center p-3 bg-blue-50 rounded-lg"><div class="text-xl font-bold text-blue-600">$${fmt(aml.summary.totalAmount)}</div><div class="text-xs">Total Amount</div></div>
+                            <div class="text-center p-3 bg-purple-50 rounded-lg"><div class="text-xl font-bold text-purple-600">${aml.summary.openAlerts}</div><div class="text-xs">Open</div></div>
+                        </div>
+                        ${aml.alerts.map(a => `
+                            <div class="p-4 bg-gray-50 rounded-lg mb-3 border-l-4 ${a.severity === 'HIGH' ? 'border-red-500' : 'border-yellow-500'}">
+                                <div class="flex justify-between mb-1"><span class="font-bold">${a.alertType}</span><span class="badge ${badgeClass(a.severity)}">${a.severity}</span></div>
+                                <p class="text-sm text-gray-700">${a.description}</p>
+                                <div class="text-xs text-gray-500 mt-1">Amount: $${fmt(a.amount)} | Txns: ${a.transactions} | Status: ${a.status} | Assigned: ${a.assignedTo}</div>
+                            </div>
+                        `).join('')}`;
+                }
+
+                // KYC
+                if (kyc) {
+                    document.getElementById('kycContent').innerHTML = `
+                        <h3 class="font-bold text-gray-900 mb-4">KYC Verification Status</h3>
+                        <div class="p-4 bg-gray-50 rounded-lg mb-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-bold">Player: ${kyc.playerId}</span>
+                                <span class="px-3 py-1 rounded-full text-sm font-bold ${kyc.status === 'approved' ? 'bg-green-100 text-green-800' : kyc.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'}">${kyc.status.toUpperCase()}</span>
+                            </div>
+                            <div class="text-sm text-gray-600">Level: ${kyc.verificationLevel} | Risk Score: ${kyc.riskScore}/100</div>
+                        </div>
+                        <h4 class="font-bold mb-2">Documents</h4>
+                        <div class="space-y-2 mb-4">
+                            ${kyc.documents.map(d => `
+                                <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                                    <span class="text-sm">${d.type}</span>
+                                    <span class="text-sm ${d.status === 'verified' ? 'text-green-600' : 'text-yellow-600'} font-bold">${d.status}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <h4 class="font-bold mb-2">Completed Checks</h4>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                            ${Object.entries(kyc.completedChecks).map(([k,v]) => `
+                                <div class="p-2 rounded text-xs ${v ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}">${v ? '✅' : '❌'} ${k.replace(/([A-Z])/g, ' $1').trim()}</div>
+                            `).join('')}
+                        </div>`;
+                }
+
+                // Transactions
+                if (tx) {
+                    document.getElementById('txContent').innerHTML = `
+                        <h3 class="font-bold text-gray-900 mb-4">Transaction Monitoring</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                            <div class="text-center p-3 bg-green-50 rounded-lg"><div class="text-xl font-bold text-green-600">$${fmt(tx.analytics.totalVolume)}</div><div class="text-xs">Volume</div></div>
+                            <div class="text-center p-3 bg-blue-50 rounded-lg"><div class="text-xl font-bold text-blue-600">${tx.analytics.totalCount}</div><div class="text-xs">Transactions</div></div>
+                            <div class="text-center p-3 bg-orange-50 rounded-lg"><div class="text-xl font-bold text-orange-600">${tx.analytics.flaggedTransactions}</div><div class="text-xs">Flagged</div></div>
+                            <div class="text-center p-3 bg-red-50 rounded-lg"><div class="text-xl font-bold text-red-600">${tx.analytics.highRiskTransactions}</div><div class="text-xs">High Risk</div></div>
+                        </div>
+                        ${tx.transactions.map(t => `
+                            <div class="p-3 bg-gray-50 rounded-lg mb-2 flex justify-between items-center">
+                                <div>
+                                    <span class="font-semibold text-sm">${t.type.toUpperCase()}</span>
+                                    <span class="ml-2 text-sm">${t.playerId} - ${t.method}</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="font-bold ${t.type === 'deposit' ? 'text-green-600' : 'text-red-600'}">${t.amount} ${t.currency}</span>
+                                    <div class="text-xs text-gray-500">Risk: ${t.riskScore} ${t.flags.length ? '| ' + t.flags.join(', ') : ''}</div>
+                                </div>
+                            </div>
+                        `).join('')}`;
+                }
+
+                // Chargebacks
+                if (cb) {
+                    document.getElementById('cbContent').innerHTML = `
+                        <h3 class="font-bold text-gray-900 mb-4">Chargeback Prevention</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                            <div class="text-center p-3 bg-red-50 rounded-lg"><div class="text-xl font-bold text-red-600">${cb.analytics.totalChargebacks}</div><div class="text-xs">Chargebacks</div></div>
+                            <div class="text-center p-3 bg-green-50 rounded-lg"><div class="text-xl font-bold text-green-600">${cb.analytics.winRate}</div><div class="text-xs">Win Rate</div></div>
+                            <div class="text-center p-3 bg-blue-50 rounded-lg"><div class="text-xl font-bold text-blue-600">$${fmt(cb.analytics.totalAmount)}</div><div class="text-xs">Total Amount</div></div>
+                            <div class="text-center p-3 bg-purple-50 rounded-lg"><div class="text-xl font-bold text-purple-600">${cb.analytics.preventionSuccessRate}</div><div class="text-xs">Prevention Rate</div></div>
+                        </div>
+                        ${cb.chargebacks.map(c => `
+                            <div class="p-3 bg-gray-50 rounded-lg mb-2">
+                                <div class="flex justify-between mb-1"><span class="font-bold text-sm">${c.reason}</span><span class="px-2 py-1 text-xs rounded-full ${c.status === 'won' ? 'bg-green-100 text-green-800' : c.status === 'lost' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'}">${c.status}</span></div>
+                                <div class="text-xs text-gray-600">Player: ${c.playerId} | Amount: $${c.amount}</div>
+                            </div>
+                        `).join('')}
+                        <h4 class="font-bold mt-4 mb-2">Prevention Strategies</h4>
+                        ${cb.preventionStrategies.map(s => `
+                            <div class="p-3 bg-blue-50 rounded-lg mb-2 flex justify-between"><span class="text-sm font-semibold">${s.strategy}</span><span class="text-sm text-green-600 font-bold">${s.effectiveness}</span></div>
+                        `).join('')}`;
+                }
+
+                // Risk
+                if (risk) {
+                    document.getElementById('riskContent').innerHTML = `
+                        <h3 class="font-bold text-gray-900 mb-4">Risk Assessment</h3>
+                        <div class="text-center p-6 rounded-lg mb-6 ${risk.riskLevel === 'CRITICAL' ? 'bg-red-50' : risk.riskLevel === 'HIGH' ? 'bg-orange-50' : 'bg-yellow-50'}">
+                            <div class="text-4xl font-bold ${risk.riskLevel === 'CRITICAL' ? 'text-red-600' : risk.riskLevel === 'HIGH' ? 'text-orange-600' : 'text-yellow-600'}">${risk.overallRiskScore}/100</div>
+                            <div class="text-lg font-bold mt-1">${risk.riskLevel}</div>
+                            <div class="level-bar w-48 mx-auto mt-3"><div class="level-fill ${risk.overallRiskScore > 70 ? 'level-high' : risk.overallRiskScore > 40 ? 'level-medium' : 'level-low'}" style="width:${risk.overallRiskScore}%"></div></div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                            <div class="p-3 bg-gray-50 rounded-lg"><div class="font-bold text-sm mb-1">Financial Risk</div><div class="text-2xl font-bold">${risk.financialRisk.score}/100</div><div class="text-xs text-gray-500">Volume: $${fmt(risk.financialRisk.monthlyVolume)}</div></div>
+                            <div class="p-3 bg-gray-50 rounded-lg"><div class="font-bold text-sm mb-1">Behavioral Risk</div><div class="text-2xl font-bold">${risk.behavioralRisk.score}/100</div><div class="text-xs text-gray-500">Sessions: ${risk.behavioralRisk.sessionCount}</div></div>
+                            <div class="p-3 bg-gray-50 rounded-lg"><div class="font-bold text-sm mb-1">Compliance Risk</div><div class="text-2xl font-bold">${risk.complianceRisk.score}/100</div><div class="text-xs text-gray-500">Violations: ${risk.complianceRisk.violations}</div></div>
+                        </div>
+                        <div class="p-4 bg-blue-50 rounded-lg"><h4 class="font-bold mb-2">Recommendations</h4><ul class="text-sm space-y-1">${risk.recommendations.map(r => `<li>• ${r}</li>`).join('')}</ul></div>`;
+                }
+
+                // Revenue
+                if (revenue) {
+                    const streams = revenue.revenueStreams || [];
+                    document.getElementById('revenueContent').innerHTML = `
+                        <h3 class="font-bold text-gray-900 mb-4">Turkish Revenue Intelligence</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                            <div class="text-center p-3 bg-green-50 rounded-lg"><div class="text-xl font-bold text-green-600">${fmt(revenue.financialMetrics.grossGamingRevenue)} TRY</div><div class="text-xs">GGR</div></div>
+                            <div class="text-center p-3 bg-blue-50 rounded-lg"><div class="text-xl font-bold text-blue-600">${fmt(revenue.financialMetrics.netGamingRevenue)} TRY</div><div class="text-xs">NGR</div></div>
+                            <div class="text-center p-3 bg-purple-50 rounded-lg"><div class="text-xl font-bold text-purple-600">${fmt(revenue.financialMetrics.playerLifetimeValue)} TRY</div><div class="text-xs">Player LTV</div></div>
+                            <div class="text-center p-3 bg-orange-50 rounded-lg"><div class="text-xl font-bold text-orange-600">${revenue.financialMetrics.houseEdge}</div><div class="text-xs">House Edge</div></div>
+                        </div>
+                        <h4 class="font-bold mb-3">Revenue Streams</h4>
+                        ${streams.map(s => `
+                            <div class="p-3 bg-gray-50 rounded-lg mb-2">
+                                <div class="flex justify-between mb-1"><span class="font-semibold text-sm">${s.category}</span><span class="font-bold text-green-600">${fmt(s.monthlyEstimate)} TRY</span></div>
+                                <div class="flex items-center space-x-2">
+                                    <div class="level-bar flex-1"><div class="level-fill level-low" style="width:${s.percentage * 2}%"></div></div>
+                                    <span class="text-xs text-gray-500">${s.percentage}% | Growth: ${s.growth}</span>
+                                </div>
+                            </div>
+                        `).join('')}
+                        <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="p-4 bg-blue-50 rounded-lg"><h4 class="font-bold mb-2">Currency Analysis</h4>
+                                <div class="text-sm space-y-1"><div>USD: ${revenue.currencyAnalysis.usdEquivalent}</div><div>EUR: ${revenue.currencyAnalysis.euroEquivalent}</div><div>Crypto: ${revenue.currencyAnalysis.cryptoRevenue}</div></div>
+                            </div>
+                            <div class="p-4 bg-green-50 rounded-lg"><h4 class="font-bold mb-2">Projections</h4>
+                                <div class="text-sm space-y-1"><div>Next Month: <strong class="text-green-600">${revenue.projections.nextMonth}</strong></div><div>Next Quarter: <strong class="text-green-600">${revenue.projections.nextQuarter}</strong></div><div>YoY: <strong class="text-green-600">${revenue.projections.yearOverYear}</strong></div></div>
+                            </div>
+                        </div>`;
+                }
+            } catch(e) { console.error(e); }
+            finally { document.getElementById('loading').classList.add('hidden'); }
+        }
+    </script>
+</body>
+</html>
