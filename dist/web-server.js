@@ -28,7 +28,7 @@ import { createEnhancedReportGenerator } from './lib/enhanced-reports.js';
 import { createAutomationManager } from './lib/automation.js';
 import { analyzeBonusPage, createSideBySideComparison } from './lib/bonus-comparison.js';
 import { monitorBTKCompliance, analyzeTurkishPaymentMethods, checkKVKKCompliance, monitorTurkishDomains, monitorTurkishSocialMedia, analyzeTurkishMarket, monitorTurkishAdvertising, monitorTurkishSportsBetting, analyzeTurkishRevenue, generateTurkeyComprehensiveReport } from './lib/turkey-igaming-tools.js';
-import { getTurkeyMarketDashboard, trackCompetitors, analyzeTurkishPlayerBehavior, optimizeTurkishBonusStrategy, trackTurkishRegulatory } from './lib/turkey-market-intelligence.js';
+import { getTurkeyMarketDashboard, trackCompetitors, analyzeTurkishPlayerBehavior, optimizeTurkishBonusStrategy, trackTurkishRegulatory, getTurkishGoogleTrends, getTurkishSiteDirectory } from './lib/turkey-market-intelligence.js';
 import 'dotenv/config';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 class BrandProtectionWebServer {
@@ -1773,6 +1773,29 @@ class BrandProtectionWebServer {
             catch (error) {
                 console.error('Regulatory tracking failed:', error);
                 res.status(500).json({ error: 'Regulatory tracking failed' });
+            }
+        });
+        // Google Trends for Turkish iGaming
+        this.app.post('/api/turkey/google-trends', async (req, res) => {
+            try {
+                const { brand = 'suratbet' } = req.body;
+                const result = await getTurkishGoogleTrends(brand);
+                res.json(result);
+            }
+            catch (error) {
+                console.error('Google Trends failed:', error);
+                res.status(500).json({ error: 'Google Trends analysis failed' });
+            }
+        });
+        // Turkish Site Directory
+        this.app.get('/api/turkey/site-directory', (req, res) => {
+            try {
+                const result = getTurkishSiteDirectory();
+                res.json(result);
+            }
+            catch (error) {
+                console.error('Site directory failed:', error);
+                res.status(500).json({ error: 'Site directory failed' });
             }
         });
         // Serve React app for all other routes
