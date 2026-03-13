@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turkey Market Dashboard - iGaming Security Suite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .gradient-bg { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); }
+        .card-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .card-hover:hover { transform: translateY(-3px); box-shadow: 0 14px 28px rgba(0,0,0,0.12); }
+        .kpi-card { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 16px; }
+        .kpi-green { border-left: 4px solid #10b981; }
+        .kpi-blue { border-left: 4px solid #3b82f6; }
+        .kpi-purple { border-left: 4px solid #8b5cf6; }
+        .kpi-orange { border-left: 4px solid #f59e0b; }
+        .kpi-red { border-left: 4px solid #ef4444; }
+        .kpi-teal { border-left: 4px solid #14b8a6; }
+        .level-bar { height: 8px; border-radius: 4px; overflow: hidden; background: #e5e7eb; }
+        .level-fill { height: 100%; transition: width 0.6s ease; border-radius: 4px; }
+        .level-high { background: linear-gradient(90deg, #ef4444, #dc2626); }
+        .level-medium { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .level-low { background: linear-gradient(90deg, #10b981, #059669); }
+        .tab-active { border-bottom: 3px solid #dc2626; color: #dc2626; font-weight: 700; }
+        .tab-inactive { border-bottom: 3px solid transparent; color: #6b7280; }
+        .pulse-dot { animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .competitor-row:hover { background: #f8fafc; }
+        .trend-up { color: #10b981; }
+        .trend-down { color: #ef4444; }
+        .badge { padding: 2px 10px; border-radius: 12px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; }
+        .badge-critical { background: #fef2f2; color: #dc2626; }
+        .badge-high { background: #fff7ed; color: #ea580c; }
+        .badge-medium { background: #fffbeb; color: #d97706; }
+        .badge-low { background: #f0fdf4; color: #16a34a; }
+        .section-card { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.04); }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-2xl">
+        <div class="container mx-auto px-6 py-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <a href="/" class="flex items-center space-x-3 hover:opacity-80 transition-opacity">
+                        <div class="w-12 h-12 bg-white bg-opacity-20 rounded-xl flex items-center justify-center">
+                            <span class="text-2xl">🇹🇷</span>
+                        </div>
+                        <div>
+                            <h1 class="text-2xl font-bold">Turkey Market Dashboard</h1>
+                            <p class="text-red-100 text-sm">Turkish iGaming Market Intelligence Platform</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center space-x-4">
+                    <div class="bg-white bg-opacity-10 rounded-lg px-4 py-2">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-2 h-2 bg-green-400 rounded-full pulse-dot"></div>
+                            <span class="text-sm font-medium">Live Data</span>
+                        </div>
+                    </div>
+                    <a href="/" class="bg-white bg-opacity-20 rounded-lg px-4 py-2 text-sm font-medium hover:bg-opacity-30 transition-colors">
+                        <i data-lucide="arrow-left" class="w-4 h-4 inline mr-1"></i> Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <div class="bg-white shadow-sm border-b sticky top-0 z-30">
+        <div class="container mx-auto px-6">
+            <div class="flex space-x-6 overflow-x-auto">
+                <button onclick="showTab('overview')" id="tab-overview" class="tab-active py-4 px-2 text-sm whitespace-nowrap">Market Overview</button>
+                <button onclick="showTab('competitors')" id="tab-competitors" class="tab-inactive py-4 px-2 text-sm whitespace-nowrap">Competitor Intel</button>
+                <button onclick="showTab('domains')" id="tab-domains" class="tab-inactive py-4 px-2 text-sm whitespace-nowrap">Domain Monitor</button>
+                <button onclick="showTab('payments')" id="tab-payments" class="tab-inactive py-4 px-2 text-sm whitespace-nowrap">Payment Methods</button>
+                <button onclick="showTab('social')" id="tab-social" class="tab-inactive py-4 px-2 text-sm whitespace-nowrap">Social Media</button>
+                <button onclick="showTab('sports')" id="tab-sports" class="tab-inactive py-4 px-2 text-sm whitespace-nowrap">Sports Betting</button>
+                <button onclick="showTab('bonus')" id="tab-bonus" class="tab-inactive py-4 px-2 text-sm whitespace-nowrap">Bonus Strategy</button>
+                <button onclick="showTab('regulatory')" id="tab-regulatory" class="tab-inactive py-4 px-2 text-sm whitespace-nowrap">Regulatory</button>
+            </div>
+        </div>
+    </div>
+
+    <main class="container mx-auto px-6 py-8">
+        <!-- Brand Input -->
+        <div class="section-card p-6 mb-8">
+            <div class="flex flex-col md:flex-row items-center gap-4">
+                <div class="flex-1 w-full">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Brand Name</label>
+                    <input type="text" id="brandInput" value="suratbet" placeholder="Enter brand name..."
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 text-lg">
+                </div>
+                <div class="flex gap-3 pt-6">
+                    <button onclick="loadAllData()" class="px-8 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-semibold flex items-center space-x-2">
+                        <i data-lucide="search" class="w-5 h-5"></i>
+                        <span>Analyze Market</span>
+                    </button>
+                    <button onclick="loadComprehensiveReport()" class="px-6 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition-colors font-semibold flex items-center space-x-2">
+                        <i data-lucide="file-text" class="w-5 h-5"></i>
+                        <span>Full Report</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Indicator -->
+        <div id="loadingIndicator" class="hidden text-center py-12">
+            <div class="inline-block w-12 h-12 border-4 border-red-200 border-t-red-600 rounded-full animate-spin"></div>
+            <p class="mt-4 text-gray-600 font-medium">Analyzing Turkish market data...</p>
+        </div>
+
+        <!-- Tab Content: Overview -->
+        <div id="content-overview" class="tab-content fade-in">
+            <!-- KPI Cards -->
+            <div id="kpiGrid" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <div class="kpi-card kpi-green p-5">
+                    <div class="text-sm text-gray-500">GGR (Monthly)</div>
+                    <div class="text-2xl font-bold text-gray-900 mt-1" id="kpi-ggr">--</div>
+                    <div class="text-xs text-green-600 mt-1" id="kpi-ggr-change">--</div>
+                </div>
+                <div class="kpi-card kpi-blue p-5">
+                    <div class="text-sm text-gray-500">Active Players</div>
+                    <div class="text-2xl font-bold text-gray-900 mt-1" id="kpi-players">--</div>
+                    <div class="text-xs text-blue-600 mt-1" id="kpi-players-change">--</div>
+                </div>
+                <div class="kpi-card kpi-purple p-5">
+                    <div class="text-sm text-gray-500">Conversion Rate</div>
+                    <div class="text-2xl font-bold text-gray-900 mt-1" id="kpi-conversion">--</div>
+                    <div class="text-xs text-purple-600 mt-1" id="kpi-conversion-change">--</div>
+                </div>
+                <div class="kpi-card kpi-orange p-5">
+                    <div class="text-sm text-gray-500">Avg Deposit</div>
+                    <div class="text-2xl font-bold text-gray-900 mt-1" id="kpi-deposit">--</div>
+                    <div class="text-xs text-orange-600 mt-1" id="kpi-deposit-change">--</div>
+                </div>
+                <div class="kpi-card kpi-teal p-5">
+                    <div class="text-sm text-gray-500">Player LTV</div>
+                    <div class="text-2xl font-bold text-gray-900 mt-1" id="kpi-ltv">--</div>
+                    <div class="text-xs text-teal-600 mt-1" id="kpi-ltv-change">--</div>
+                </div>
+                <div class="kpi-card kpi-red p-5">
+                    <div class="text-sm text-gray-500">Churn Rate</div>
+                    <div class="text-2xl font-bold text-gray-900 mt-1" id="kpi-churn">--</div>
+                    <div class="text-xs text-red-600 mt-1" id="kpi-churn-change">--</div>
+                </div>
+                <div class="kpi-card kpi-orange p-5">
+                    <div class="text-sm text-gray-500">Bonus Cost</div>
+                    <div class="text-2xl font-bold text-gray-900 mt-1" id="kpi-bonus">--</div>
+                    <div class="text-xs text-orange-600 mt-1" id="kpi-bonus-change">--</div>
+                </div>
+                <div class="kpi-card kpi-blue p-5">
+                    <div class="text-sm text-gray-500">Support Tickets</div>
+                    <div class="text-2xl font-bold text-gray-900 mt-1" id="kpi-support">--</div>
+                    <div class="text-xs text-blue-600 mt-1" id="kpi-support-change">--</div>
+                </div>
+            </div>
+
+            <!-- Market Overview Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                <!-- Market Size -->
+                <div class="section-card p-6">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                        <span class="mr-2">📊</span> Turkish Market Size
+                    </h3>
+                    <div id="marketSizeContent" class="space-y-4">
+                        <p class="text-gray-500 text-sm">Load data to see market size metrics...</p>
+                    </div>
+                </div>
+                <!-- Real-Time Metrics -->
+                <div class="section-card p-6">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                        <span class="mr-2">⚡</span> Real-Time Metrics
+                    </h3>
+                    <div id="realTimeContent" class="space-y-4">
+                        <p class="text-gray-500 text-sm">Load data to see real-time metrics...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Market Trends -->
+            <div class="section-card p-6 mb-8">
+                <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                    <span class="mr-2">📈</span> Market Trends
+                </h3>
+                <div id="trendsContent" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <p class="text-gray-500 text-sm col-span-4">Load data to see market trends...</p>
+                </div>
+            </div>
+
+            <!-- Player Segments -->
+            <div class="section-card p-6">
+                <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                    <span class="mr-2">👥</span> Turkish Player Segments
+                </h3>
+                <div id="segmentsContent" class="space-y-4">
+                    <p class="text-gray-500 text-sm">Load data to see player segments...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Content: Competitors -->
+        <div id="content-competitors" class="tab-content hidden fade-in">
+            <div class="section-card p-6 mb-8">
+                <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                    <span class="mr-2">🔍</span> Competitor Intelligence Matrix
+                </h3>
+                <div class="overflow-x-auto">
+                    <table id="competitorTable" class="w-full text-sm">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-4 py-3 text-left font-semibold text-gray-600">Brand</th>
+                                <th class="px-4 py-3 text-left font-semibold text-gray-600">Current Domain</th>
+                                <th class="px-4 py-3 text-right font-semibold text-gray-600">Traffic</th>
+                                <th class="px-4 py-3 text-left font-semibold text-gray-600">Welcome Bonus</th>
+                                <th class="px-4 py-3 text-right font-semibold text-gray-600">Games</th>
+                                <th class="px-4 py-3 text-right font-semibold text-gray-600">Payments</th>
+                                <th class="px-4 py-3 text-right font-semibold text-gray-600">Telegram</th>
+                                <th class="px-4 py-3 text-right font-semibold text-gray-600">Score</th>
+                            </tr>
+                        </thead>
+                        <tbody id="competitorTableBody">
+                            <tr><td colspan="8" class="px-4 py-8 text-center text-gray-500">Run analysis to see competitors...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Market Opportunities -->
+            <div class="section-card p-6">
+                <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                    <span class="mr-2">💡</span> Market Opportunities
+                </h3>
+                <div id="opportunitiesContent" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <p class="text-gray-500 text-sm">Run analysis to see opportunities...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Content: Domains -->
+        <div id="content-domains" class="tab-content hidden fade-in">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <div class="section-card p-6 text-center">
+                    <div class="text-3xl font-bold text-green-600" id="activeDomainCount">--</div>
+                    <div class="text-sm text-gray-600">Active Domains</div>
+                </div>
+                <div class="section-card p-6 text-center">
+                    <div class="text-3xl font-bold text-red-600" id="blockedDomainCount">--</div>
+                    <div class="text-sm text-gray-600">BTK Blocked</div>
+                </div>
+                <div class="section-card p-6 text-center">
+                    <div class="text-3xl font-bold text-purple-600" id="rotationSpeed">--</div>
+                    <div class="text-sm text-gray-600">Avg Rotation</div>
+                </div>
+            </div>
+            <div class="section-card p-6 mb-8">
+                <h3 class="text-lg font-bold text-gray-900 mb-4">Domain Rotation Tracker</h3>
+                <div id="domainResults" class="space-y-3">
+                    <p class="text-gray-500 text-sm">Run analysis to see domain tracking...</p>
+                </div>
+            </div>
+            <div class="section-card p-6">
+                <h3 class="text-lg font-bold text-gray-900 mb-4">BTK Compliance Status</h3>
+                <div id="btkResults" class="space-y-3">
+                    <p class="text-gray-500 text-sm">Run analysis to see BTK compliance data...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Content: Payments -->
+        <div id="content-payments" class="tab-content hidden fade-in">
+            <div class="section-card p-6 mb-8">
+                <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                    <span class="mr-2">💳</span> Turkish Payment Methods Analysis
+                </h3>
+                <div id="paymentResults" class="space-y-4">
+                    <p class="text-gray-500 text-sm">Run analysis to see payment method data...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Content: Social -->
+        <div id="content-social" class="tab-content hidden fade-in">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <div class="section-card p-6 text-center">
+                    <div class="text-3xl font-bold text-blue-600" id="totalSocialReach">--</div>
+                    <div class="text-sm text-gray-600">Total Social Reach</div>
+                </div>
+                <div class="section-card p-6 text-center">
+                    <div class="text-3xl font-bold text-purple-600" id="telegramChannelCount">--</div>
+                    <div class="text-sm text-gray-600">Telegram Channels</div>
+                </div>
+                <div class="section-card p-6 text-center">
+                    <div class="text-3xl font-bold text-red-600" id="highRiskAccounts">--</div>
+                    <div class="text-sm text-gray-600">High Risk Accounts</div>
+                </div>
+            </div>
+            <div class="section-card p-6">
+                <h3 class="text-lg font-bold text-gray-900 mb-4">Social Media Intelligence</h3>
+                <div id="socialResults" class="space-y-4">
+                    <p class="text-gray-500 text-sm">Run analysis to see social media data...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Content: Sports -->
+        <div id="content-sports" class="tab-content hidden fade-in">
+            <div class="section-card p-6 mb-8">
+                <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                    <span class="mr-2">⚽</span> Turkish Sports Betting Intelligence
+                </h3>
+                <div id="sportsResults" class="space-y-4">
+                    <p class="text-gray-500 text-sm">Run analysis to see sports betting data...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Content: Bonus -->
+        <div id="content-bonus" class="tab-content hidden fade-in">
+            <div class="section-card p-6 mb-8">
+                <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                    <span class="mr-2">🎁</span> Bonus Strategy Optimizer
+                </h3>
+                <div id="bonusResults" class="space-y-4">
+                    <p class="text-gray-500 text-sm">Run analysis to see bonus optimization data...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Content: Regulatory -->
+        <div id="content-regulatory" class="tab-content hidden fade-in">
+            <div class="section-card p-6 mb-8">
+                <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                    <span class="mr-2">⚖️</span> Turkish Regulatory Tracker
+                </h3>
+                <div id="regulatoryResults" class="space-y-4">
+                    <p class="text-gray-500 text-sm">Run analysis to see regulatory data...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-gray-900 text-white py-6 mt-12">
+        <div class="container mx-auto px-6 text-center text-sm text-gray-400">
+            iGaming Security Suite - Turkey Market Intelligence | All rights reserved
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('[id^="tab-"]').forEach(el => { el.className = 'tab-inactive py-4 px-2 text-sm whitespace-nowrap'; });
+            document.getElementById(`content-${tabName}`).classList.remove('hidden');
+            document.getElementById(`tab-${tabName}`).className = 'tab-active py-4 px-2 text-sm whitespace-nowrap';
+        }
+
+        function getBrand() { return document.getElementById('brandInput').value.trim() || 'suratbet'; }
+
+        function formatNumber(n) {
+            if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
+            if (n >= 1000) return (n / 1000).toFixed(1) + 'K';
+            return n.toString();
+        }
+
+        function badgeClass(level) {
+            const map = { critical: 'badge-critical', high: 'badge-high', medium: 'badge-medium', low: 'badge-low' };
+            return map[level] || 'badge-medium';
+        }
+
+        async function apiPost(endpoint, body) {
+            const res = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+            return res.json();
+        }
+
+        async function loadAllData() {
+            const brand = getBrand();
+            document.getElementById('loadingIndicator').classList.remove('hidden');
+
+            try {
+                const [dashboard, competitors, domains, payments, social, sports, bonus, regulatory] = await Promise.all([
+                    apiPost('/api/turkey/market-dashboard', { brand }),
+                    apiPost('/api/turkey/competitor-intelligence', { brand }),
+                    apiPost('/api/turkey/domain-monitoring', { brand }),
+                    apiPost('/api/turkey/payment-methods', { brand }),
+                    apiPost('/api/turkey/social-media', { brand }),
+                    apiPost('/api/turkey/sports-betting', { brand }),
+                    apiPost('/api/turkey/bonus-strategy', { brand }),
+                    fetch('/api/turkey/regulatory-tracker').then(r => r.json())
+                ]);
+
+                renderDashboard(dashboard);
+                renderCompetitors(competitors);
+                renderDomains(domains);
+                renderPayments(payments);
+                renderSocial(social);
+                renderSports(sports);
+                renderBonus(bonus);
+                renderRegulatory(regulatory);
+            } catch (err) {
+                console.error('Failed to load data:', err);
+            } finally {
+                document.getElementById('loadingIndicator').classList.add('hidden');
+            }
+        }
+
+        async function loadComprehensiveReport() {
+            const brand = getBrand();
+            document.getElementById('loadingIndicator').classList.remove('hidden');
+            try {
+                const report = await apiPost('/api/turkey/comprehensive-report', { brand });
+                alert(`Comprehensive report generated!\n\nOverall Risk Score: ${report.overallRiskScore}/100\nBrand Strength: ${report.executiveSummary.brandStrength}\nMarket Position: ${report.executiveSummary.marketPosition}\n\nKey Findings:\n${report.executiveSummary.keyFindings.join('\n')}`);
+            } catch (err) {
+                console.error('Report generation failed:', err);
+            } finally {
+                document.getElementById('loadingIndicator').classList.add('hidden');
+            }
+        }
+
+        function renderDashboard(data) {
+            if (!data || !data.kpiCards) return;
+            const kpis = data.kpiCards;
+            const ids = ['ggr', 'players', 'conversion', 'deposit', 'ltv', 'churn', 'bonus', 'support'];
+            ids.forEach((id, i) => {
+                if (kpis[i]) {
+                    document.getElementById(`kpi-${id}`).textContent = kpis[i].value;
+                    document.getElementById(`kpi-${id}-change`).textContent = kpis[i].change;
+                }
+            });
+
+            const mo = data.marketOverview;
+            if (mo) {
+                document.getElementById('marketSizeContent').innerHTML = `
+                    <div class="space-y-3">
+                        ${Object.entries(mo.estimatedMarketSize).map(([k, v]) => `
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600 text-sm">${k.replace(/([A-Z])/g, ' $1').trim()}</span>
+                                <span class="font-bold text-gray-900">${v}</span>
+                            </div>
+                        `).join('')}
+                        <hr class="my-3">
+                        <div class="text-sm text-gray-600">
+                            <div class="flex justify-between"><span>YoY Growth</span><span class="font-bold text-green-600">${mo.growth.yearOverYear}</span></div>
+                            <div class="flex justify-between mt-1"><span>QoQ Growth</span><span class="font-bold text-green-600">${mo.growth.quarterOverQuarter}</span></div>
+                        </div>
+                    </div>`;
+                document.getElementById('realTimeContent').innerHTML = `
+                    <div class="space-y-3">
+                        <div class="flex justify-between"><span class="text-gray-600 text-sm">Online Players Now</span><span class="font-bold text-green-600">${formatNumber(data.realTimeMetrics.currentOnlinePlayers)}</span></div>
+                        <div class="flex justify-between"><span class="text-gray-600 text-sm">Active Bets</span><span class="font-bold text-blue-600">${formatNumber(data.realTimeMetrics.activeBetsRight_now)}</span></div>
+                        <div class="flex justify-between"><span class="text-gray-600 text-sm">Deposits (24h)</span><span class="font-bold">${formatNumber(data.realTimeMetrics.depositsLast24h)} TRY</span></div>
+                        <div class="flex justify-between"><span class="text-gray-600 text-sm">Withdrawals (24h)</span><span class="font-bold">${formatNumber(data.realTimeMetrics.withdrawalsLast24h)} TRY</span></div>
+                        <div class="flex justify-between"><span class="text-gray-600 text-sm">New Registrations (24h)</span><span class="font-bold text-purple-600">${formatNumber(data.realTimeMetrics.newRegistrationsLast24h)}</span></div>
+                        <div class="flex justify-between"><span class="text-gray-600 text-sm">Top Event</span><span class="font-bold text-sm">${data.realTimeMetrics.topBettingEvent}</span></div>
+                        <div class="flex justify-between"><span class="text-gray-600 text-sm">Top Slot</span><span class="font-bold text-sm">${data.realTimeMetrics.topSlotGame}</span></div>
+                    </div>`;
+            }
+        }
+
+        function renderCompetitors(data) {
+            if (!data || !data.competitors) return;
+            const tbody = document.getElementById('competitorTableBody');
+            tbody.innerHTML = data.competitors.map(c => `
+                <tr class="competitor-row border-b border-gray-100">
+                    <td class="px-4 py-3 font-semibold">${c.name}</td>
+                    <td class="px-4 py-3 text-blue-600 text-xs">${c.currentDomain}</td>
+                    <td class="px-4 py-3 text-right">${formatNumber(c.estimatedTraffic)}</td>
+                    <td class="px-4 py-3 text-xs">${c.welcomeBonus}</td>
+                    <td class="px-4 py-3 text-right">${formatNumber(c.casinoGames)}</td>
+                    <td class="px-4 py-3 text-right">${c.paymentMethods.length}</td>
+                    <td class="px-4 py-3 text-right">${formatNumber(c.telegramMembers)}</td>
+                    <td class="px-4 py-3 text-right">
+                        <div class="flex items-center justify-end space-x-2">
+                            <div class="level-bar w-16"><div class="level-fill ${c.strengthScore >= 80 ? 'level-low' : c.strengthScore >= 60 ? 'level-medium' : 'level-high'}" style="width:${c.strengthScore}%"></div></div>
+                            <span class="font-bold text-sm">${c.strengthScore}</span>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+
+            if (data.analysis) {
+                document.getElementById('opportunitiesContent').innerHTML = data.analysis.marketOpportunities.map(opp => `
+                    <div class="p-4 bg-green-50 rounded-lg border border-green-100">
+                        <div class="flex items-start space-x-2">
+                            <span class="text-green-600">💡</span>
+                            <span class="text-sm text-gray-700">${opp}</span>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function renderDomains(data) {
+            if (!data) return;
+            document.getElementById('activeDomainCount').textContent = data.summary?.activeCount || 0;
+            document.getElementById('blockedDomainCount').textContent = data.summary?.blockedCount || 0;
+            document.getElementById('rotationSpeed').textContent = data.summary?.averageDomainAge || '--';
+
+            const active = data.activeDomains || [];
+            document.getElementById('domainResults').innerHTML = active.length ? active.slice(0, 15).map(d => `
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div>
+                        <span class="font-semibold text-sm">${d.domain}</span>
+                        <span class="badge ${badgeClass(d.riskLevel)} ml-2">${d.riskLevel}</span>
+                    </div>
+                    <div class="text-right text-xs text-gray-500">
+                        <div>${d.hosting?.provider || ''} (${d.hosting?.country || ''})</div>
+                        <div>Registrar: ${d.registrar}</div>
+                    </div>
+                </div>
+            `).join('') : '<p class="text-gray-500 text-sm">No active domains found.</p>';
+        }
+
+        function renderPayments(data) {
+            if (!data || !data.paymentMethods) return;
+            const detected = data.paymentMethods.filter(m => m.detected);
+            document.getElementById('paymentResults').innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    ${detected.map(m => `
+                        <div class="p-4 bg-gray-50 rounded-lg border ${m.riskLevel === 'high' ? 'border-red-200' : 'border-gray-200'}">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="font-bold text-gray-900">${m.name}</span>
+                                <span class="badge ${badgeClass(m.riskLevel)}">${m.riskLevel}</span>
+                            </div>
+                            <div class="text-xs text-gray-600 space-y-1">
+                                <div>Popularity: ${m.popularity}%</div>
+                                <div>Processing: ${m.processingTime}</div>
+                                <div>Limits: ${m.limits.min}-${formatNumber(m.limits.max)} ${m.limits.currency}</div>
+                                <div>Providers: ${m.providers.join(', ')}</div>
+                                ${m.analysis.fraudIndicators.length ? `<div class="text-red-600 mt-1">Flags: ${m.analysis.fraudIndicators.join(', ')}</div>` : ''}
+                            </div>
+                            <div class="level-bar mt-2"><div class="level-fill ${m.riskLevel === 'high' ? 'level-high' : m.riskLevel === 'medium' ? 'level-medium' : 'level-low'}" style="width:${m.popularity}%"></div></div>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="mt-6 p-4 bg-blue-50 rounded-lg">
+                    <h4 class="font-bold text-gray-900 mb-2">Summary</h4>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                        <div><span class="text-gray-600">Total Detected:</span> <strong>${data.summary.totalMethodsDetected}</strong></div>
+                        <div><span class="text-gray-600">Suspicious:</span> <strong class="text-red-600">${data.summary.suspiciousMethods}</strong></div>
+                        <div><span class="text-gray-600">Most Popular:</span> <strong>${data.summary.mostPopularMethod}</strong></div>
+                        <div><span class="text-gray-600">KVKK:</span> <strong>${data.summary.kvkkComplianceRate}</strong></div>
+                    </div>
+                </div>`;
+        }
+
+        function renderSocial(data) {
+            if (!data) return;
+            document.getElementById('totalSocialReach').textContent = formatNumber(data.summary?.totalReach || 0);
+            document.getElementById('telegramChannelCount').textContent = data.telegram?.totalChannels || 0;
+            document.getElementById('highRiskAccounts').textContent = data.summary?.highRiskAccounts || 0;
+
+            const tg = data.telegram?.channels || [];
+            const tw = data.twitter?.accounts || [];
+            document.getElementById('socialResults').innerHTML = `
+                <h4 class="font-bold text-gray-900 mb-3">Telegram Channels</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
+                    ${tg.map(c => `
+                        <div class="p-3 bg-gray-50 rounded-lg border ${c.riskLevel === 'high' ? 'border-red-200' : 'border-gray-200'}">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-semibold text-sm">${c.channel}</span>
+                                <span class="badge ${badgeClass(c.riskLevel)}">${c.riskLevel}</span>
+                            </div>
+                            <div class="text-xs text-gray-600">Members: ${formatNumber(c.members)} | ${c.contentType}</div>
+                        </div>
+                    `).join('')}
+                </div>
+                <h4 class="font-bold text-gray-900 mb-3">Twitter/X Accounts</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
+                    ${tw.map(a => `
+                        <div class="p-3 bg-gray-50 rounded-lg border ${a.riskLevel === 'high' ? 'border-red-200' : 'border-gray-200'}">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-semibold text-sm">${a.handle}</span>
+                                <span class="badge ${badgeClass(a.riskLevel)}">${a.riskLevel}</span>
+                            </div>
+                            <div class="text-xs text-gray-600">Followers: ${formatNumber(a.followers)} | ${a.contentType}</div>
+                        </div>
+                    `).join('')}
+                </div>
+                <h4 class="font-bold text-gray-900 mb-3">Forum Sentiment</h4>
+                <div class="flex space-x-4 text-sm">
+                    <span class="text-green-600 font-bold">Positive: ${data.forums?.sentimentBreakdown?.positive || 0}</span>
+                    <span class="text-gray-600 font-bold">Neutral: ${data.forums?.sentimentBreakdown?.neutral || 0}</span>
+                    <span class="text-red-600 font-bold">Negative: ${data.forums?.sentimentBreakdown?.negative || 0}</span>
+                </div>`;
+        }
+
+        function renderSports(data) {
+            if (!data) return;
+            const markets = data.bettingMarkets || [];
+            document.getElementById('sportsResults').innerHTML = `
+                <div class="overflow-x-auto mb-6">
+                    <table class="w-full text-sm">
+                        <thead class="bg-gray-50"><tr>
+                            <th class="px-4 py-3 text-left font-semibold">Market</th>
+                            <th class="px-4 py-3 text-right font-semibold">Popularity</th>
+                            <th class="px-4 py-3 text-left font-semibold">Volume</th>
+                            <th class="px-4 py-3 text-right font-semibold">Matches/Week</th>
+                        </tr></thead>
+                        <tbody>
+                            ${markets.map(m => `<tr class="border-b border-gray-100">
+                                <td class="px-4 py-3 font-semibold">${m.market}</td>
+                                <td class="px-4 py-3 text-right">
+                                    <div class="flex items-center justify-end space-x-2">
+                                        <div class="level-bar w-20"><div class="level-fill level-low" style="width:${m.popularity}%"></div></div>
+                                        <span>${m.popularity}%</span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-3">${m.bettingVolume}</td>
+                                <td class="px-4 py-3 text-right">${m.matchesPerWeek}</td>
+                            </tr>`).join('')}
+                        </tbody>
+                    </table>
+                </div>
+                ${data.iddaaComparison ? `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-4 bg-red-50 rounded-lg">
+                        <h4 class="font-bold text-red-900 mb-2">IDDAA Limitations</h4>
+                        <ul class="text-sm text-red-700 space-y-1">${data.iddaaComparison.iddaaLimitations.map(l => `<li>• ${l}</li>`).join('')}</ul>
+                    </div>
+                    <div class="p-4 bg-green-50 rounded-lg">
+                        <h4 class="font-bold text-green-900 mb-2">Competitor Advantages</h4>
+                        <ul class="text-sm text-green-700 space-y-1">${data.iddaaComparison.competitorAdvantages.map(a => `<li>• ${a}</li>`).join('')}</ul>
+                    </div>
+                </div>` : ''}`;
+        }
+
+        function renderBonus(data) {
+            if (!data) return;
+            const current = data.currentBonuses || [];
+            const comp = data.competitorBonuses || [];
+            const suggestions = data.optimizationSuggestions || [];
+            document.getElementById('bonusResults').innerHTML = `
+                <h4 class="font-bold text-gray-900 mb-3">Current Bonus Structure</h4>
+                <div class="overflow-x-auto mb-6">
+                    <table class="w-full text-sm">
+                        <thead class="bg-gray-50"><tr>
+                            <th class="px-3 py-2 text-left">Type</th><th class="px-3 py-2 text-left">Offer</th>
+                            <th class="px-3 py-2">Wagering</th><th class="px-3 py-2">Effectiveness</th><th class="px-3 py-2">Conversion</th>
+                        </tr></thead>
+                        <tbody>${current.map(b => `<tr class="border-b">
+                            <td class="px-3 py-2 font-semibold">${b.type}</td><td class="px-3 py-2">${b.offer}</td>
+                            <td class="px-3 py-2 text-center">${b.wageringRequirement}</td>
+                            <td class="px-3 py-2 text-center"><div class="flex items-center justify-center space-x-1"><div class="level-bar w-16"><div class="level-fill ${b.effectiveness >= 70 ? 'level-low' : b.effectiveness >= 50 ? 'level-medium' : 'level-high'}" style="width:${b.effectiveness}%"></div></div><span>${b.effectiveness}%</span></div></td>
+                            <td class="px-3 py-2 text-center">${b.conversionRate}</td>
+                        </tr>`).join('')}</tbody>
+                    </table>
+                </div>
+                <h4 class="font-bold text-gray-900 mb-3">Competitor Bonus Comparison</h4>
+                <div class="overflow-x-auto mb-6">
+                    <table class="w-full text-sm">
+                        <thead class="bg-gray-50"><tr>
+                            <th class="px-3 py-2 text-left">Competitor</th><th class="px-3 py-2">Welcome</th>
+                            <th class="px-3 py-2">Deposit</th><th class="px-3 py-2">Cashback</th><th class="px-3 py-2">No Deposit</th><th class="px-3 py-2">Wagering</th>
+                        </tr></thead>
+                        <tbody>${comp.map(c => `<tr class="border-b">
+                            <td class="px-3 py-2 font-semibold">${c.competitor}</td>
+                            <td class="px-3 py-2 text-center">${c.welcome}</td><td class="px-3 py-2 text-center">${c.deposit}</td>
+                            <td class="px-3 py-2 text-center">${c.cashback}</td><td class="px-3 py-2 text-center">${c.noDeposit}</td><td class="px-3 py-2 text-center">${c.wagering}</td>
+                        </tr>`).join('')}</tbody>
+                    </table>
+                </div>
+                <h4 class="font-bold text-gray-900 mb-3">Optimization Suggestions</h4>
+                <div class="space-y-3">
+                    ${suggestions.map(s => `
+                        <div class="p-4 rounded-lg border ${s.priority === 'high' ? 'bg-red-50 border-red-200' : 'bg-yellow-50 border-yellow-200'}">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="font-bold text-gray-900">${s.area}</span>
+                                <span class="badge ${s.priority === 'high' ? 'badge-high' : 'badge-medium'}">${s.priority}</span>
+                            </div>
+                            <p class="text-sm text-gray-700 mb-1">${s.suggestedChange}</p>
+                            <div class="flex space-x-4 text-xs"><span class="text-green-600">Impact: ${s.expectedImpact}</span><span class="text-orange-600">Cost: ${s.costImpact}</span></div>
+                        </div>
+                    `).join('')}
+                </div>`;
+        }
+
+        function renderRegulatory(data) {
+            if (!data) return;
+            const updates = data.regulatoryUpdates || [];
+            const calendar = data.complianceCalendar || [];
+            document.getElementById('regulatoryResults').innerHTML = `
+                <div class="mb-6 p-4 rounded-lg ${data.riskAssessment?.overallRegulatoryRisk === 'HIGH' ? 'bg-red-50 border border-red-200' : 'bg-yellow-50 border border-yellow-200'}">
+                    <div class="flex items-center space-x-2 mb-2">
+                        <span class="text-xl">⚠️</span>
+                        <span class="font-bold text-gray-900">Overall Regulatory Risk: ${data.riskAssessment?.overallRegulatoryRisk || 'N/A'}</span>
+                    </div>
+                    <p class="text-sm text-gray-700">${data.riskAssessment?.shortTermOutlook || ''}</p>
+                </div>
+                <h4 class="font-bold text-gray-900 mb-3">Recent Regulatory Updates</h4>
+                <div class="space-y-3 mb-6">
+                    ${updates.map(u => `
+                        <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                            <div class="flex justify-between items-start mb-2">
+                                <div>
+                                    <span class="font-bold text-gray-900">${u.title}</span>
+                                    <span class="ml-2 text-xs text-gray-500">${u.date}</span>
+                                </div>
+                                <span class="badge ${badgeClass(u.impact.toLowerCase())}">${u.impact}</span>
+                            </div>
+                            <p class="text-sm text-gray-700 mb-2">${u.description}</p>
+                            <div class="text-xs text-gray-500">Authority: ${u.authority} | Status: ${u.status}</div>
+                        </div>
+                    `).join('')}
+                </div>
+                <h4 class="font-bold text-gray-900 mb-3">Compliance Calendar</h4>
+                <div class="space-y-2">
+                    ${calendar.map(c => `
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-sm font-mono text-gray-600">${c.date}</span>
+                                <span class="text-sm">${c.event}</span>
+                            </div>
+                            <span class="badge ${badgeClass(c.priority.toLowerCase())}">${c.priority}</span>
+                        </div>
+                    `).join('')}
+                </div>
+                ${data.authorities ? `
+                <h4 class="font-bold text-gray-900 mb-3 mt-6">Turkish Regulatory Authorities</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    ${Object.entries(data.authorities).map(([k, v]) => `
+                        <div class="p-3 bg-gray-50 rounded-lg">
+                            <div class="font-bold text-sm">${v.name}</div>
+                            <div class="text-xs text-gray-600">${v.role}</div>
+                            <span class="badge ${badgeClass(v.threatLevel.toLowerCase())} mt-1 inline-block">${v.threatLevel}</span>
+                        </div>
+                    `).join('')}
+                </div>` : ''}`;
+        }
+    </script>
+</body>
+</html>

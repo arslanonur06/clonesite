@@ -64,6 +64,25 @@ import { createEnhancedWhoisChecker } from './lib/enhanced-whois.js';
 import { createEnhancedReportGenerator } from './lib/enhanced-reports.js';
 import { createAutomationManager } from './lib/automation.js';
 import { analyzeBonusPage, createSideBySideComparison } from './lib/bonus-comparison.js';
+import {
+  monitorBTKCompliance,
+  analyzeTurkishPaymentMethods,
+  checkKVKKCompliance,
+  monitorTurkishDomains,
+  monitorTurkishSocialMedia,
+  analyzeTurkishMarket,
+  monitorTurkishAdvertising,
+  monitorTurkishSportsBetting,
+  analyzeTurkishRevenue,
+  generateTurkeyComprehensiveReport
+} from './lib/turkey-igaming-tools.js';
+import {
+  getTurkeyMarketDashboard,
+  trackCompetitors,
+  analyzeTurkishPlayerBehavior,
+  optimizeTurkishBonusStrategy,
+  trackTurkishRegulatory
+} from './lib/turkey-market-intelligence.js';
 import 'dotenv/config';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -324,7 +343,7 @@ class BrandProtectionWebServer {
           };
         });
 
-        const sideBySide = createSideBySideComparison(baseProfile ? [baseProfile, ...competitorProfiles] : competitorProfiles);
+        const sideBySide = createSideBySideComparison((baseProfile ? [baseProfile, ...competitorProfiles] : competitorProfiles) as any);
 
         const wageringValues = results
           .map((r) => Number(String(r.wagering).replace(/[^\d]/g, '')))
@@ -1761,6 +1780,202 @@ class BrandProtectionWebServer {
         });
       } catch (error) {
         res.status(500).json({ error: 'Setup reports failed' });
+      }
+    });
+
+    // ================================================================
+    // TURKEY-SPECIFIC API ENDPOINTS
+    // ================================================================
+
+    // Turkey Market Dashboard
+    this.app.post('/api/turkey/market-dashboard', async (req, res) => {
+      try {
+        const { brand = 'suratbet' } = req.body;
+        const result = await getTurkeyMarketDashboard(brand);
+        res.json(result);
+      } catch (error) {
+        console.error('Turkey market dashboard failed:', error);
+        res.status(500).json({ error: 'Turkey market dashboard failed' });
+      }
+    });
+
+    // BTK/RTUK Compliance Monitor
+    this.app.post('/api/turkey/btk-compliance', async (req, res) => {
+      try {
+        const { brand, domains = [] } = req.body;
+        if (!brand) return res.status(400).json({ error: 'Brand name is required' });
+        const result = await monitorBTKCompliance(brand, domains);
+        res.json(result);
+      } catch (error) {
+        console.error('BTK compliance check failed:', error);
+        res.status(500).json({ error: 'BTK compliance check failed' });
+      }
+    });
+
+    // Turkish Payment Methods Analysis
+    this.app.post('/api/turkey/payment-methods', async (req, res) => {
+      try {
+        const { brand, targetUrl } = req.body;
+        if (!brand) return res.status(400).json({ error: 'Brand name is required' });
+        const result = await analyzeTurkishPaymentMethods(brand, targetUrl);
+        res.json(result);
+      } catch (error) {
+        console.error('Turkish payment analysis failed:', error);
+        res.status(500).json({ error: 'Turkish payment analysis failed' });
+      }
+    });
+
+    // KVKK Compliance Checker
+    this.app.post('/api/turkey/kvkk-compliance', async (req, res) => {
+      try {
+        const { brand, domains = [] } = req.body;
+        if (!brand) return res.status(400).json({ error: 'Brand name is required' });
+        const result = await checkKVKKCompliance(brand, domains);
+        res.json(result);
+      } catch (error) {
+        console.error('KVKK compliance check failed:', error);
+        res.status(500).json({ error: 'KVKK compliance check failed' });
+      }
+    });
+
+    // Turkish Domain Monitoring
+    this.app.post('/api/turkey/domain-monitoring', async (req, res) => {
+      try {
+        const { brand } = req.body;
+        if (!brand) return res.status(400).json({ error: 'Brand name is required' });
+        const result = await monitorTurkishDomains(brand);
+        res.json(result);
+      } catch (error) {
+        console.error('Turkish domain monitoring failed:', error);
+        res.status(500).json({ error: 'Turkish domain monitoring failed' });
+      }
+    });
+
+    // Turkish Social Media Monitoring
+    this.app.post('/api/turkey/social-media', async (req, res) => {
+      try {
+        const { brand } = req.body;
+        if (!brand) return res.status(400).json({ error: 'Brand name is required' });
+        const result = await monitorTurkishSocialMedia(brand);
+        res.json(result);
+      } catch (error) {
+        console.error('Turkish social media monitoring failed:', error);
+        res.status(500).json({ error: 'Turkish social media monitoring failed' });
+      }
+    });
+
+    // Turkish Market Analysis
+    this.app.post('/api/turkey/market-analysis', async (req, res) => {
+      try {
+        const { brand } = req.body;
+        if (!brand) return res.status(400).json({ error: 'Brand name is required' });
+        const result = await analyzeTurkishMarket(brand);
+        res.json(result);
+      } catch (error) {
+        console.error('Turkish market analysis failed:', error);
+        res.status(500).json({ error: 'Turkish market analysis failed' });
+      }
+    });
+
+    // Turkish Advertising Monitor
+    this.app.post('/api/turkey/advertising-monitor', async (req, res) => {
+      try {
+        const { brand } = req.body;
+        if (!brand) return res.status(400).json({ error: 'Brand name is required' });
+        const result = await monitorTurkishAdvertising(brand);
+        res.json(result);
+      } catch (error) {
+        console.error('Turkish advertising monitoring failed:', error);
+        res.status(500).json({ error: 'Turkish advertising monitoring failed' });
+      }
+    });
+
+    // Turkish Sports Betting Monitor
+    this.app.post('/api/turkey/sports-betting', async (req, res) => {
+      try {
+        const { brand } = req.body;
+        if (!brand) return res.status(400).json({ error: 'Brand name is required' });
+        const result = await monitorTurkishSportsBetting(brand);
+        res.json(result);
+      } catch (error) {
+        console.error('Turkish sports betting monitoring failed:', error);
+        res.status(500).json({ error: 'Turkish sports betting monitoring failed' });
+      }
+    });
+
+    // Turkish Revenue Intelligence
+    this.app.post('/api/turkey/revenue-intelligence', async (req, res) => {
+      try {
+        const { brand } = req.body;
+        if (!brand) return res.status(400).json({ error: 'Brand name is required' });
+        const result = await analyzeTurkishRevenue(brand);
+        res.json(result);
+      } catch (error) {
+        console.error('Turkish revenue analysis failed:', error);
+        res.status(500).json({ error: 'Turkish revenue analysis failed' });
+      }
+    });
+
+    // Turkey Comprehensive Report
+    this.app.post('/api/turkey/comprehensive-report', async (req, res) => {
+      try {
+        const { brand } = req.body;
+        if (!brand) return res.status(400).json({ error: 'Brand name is required' });
+        const result = await generateTurkeyComprehensiveReport(brand);
+        res.json(result);
+      } catch (error) {
+        console.error('Turkey comprehensive report failed:', error);
+        res.status(500).json({ error: 'Turkey comprehensive report failed' });
+      }
+    });
+
+    // Competitor Intelligence
+    this.app.post('/api/turkey/competitor-intelligence', async (req, res) => {
+      try {
+        const { brand } = req.body;
+        if (!brand) return res.status(400).json({ error: 'Brand name is required' });
+        const result = await trackCompetitors(brand);
+        res.json(result);
+      } catch (error) {
+        console.error('Competitor intelligence failed:', error);
+        res.status(500).json({ error: 'Competitor intelligence failed' });
+      }
+    });
+
+    // Turkish Player Behavior
+    this.app.post('/api/turkey/player-behavior', async (req, res) => {
+      try {
+        const { brand } = req.body;
+        if (!brand) return res.status(400).json({ error: 'Brand name is required' });
+        const result = await analyzeTurkishPlayerBehavior(brand);
+        res.json(result);
+      } catch (error) {
+        console.error('Turkish player behavior analysis failed:', error);
+        res.status(500).json({ error: 'Turkish player behavior analysis failed' });
+      }
+    });
+
+    // Turkish Bonus Strategy Optimizer
+    this.app.post('/api/turkey/bonus-strategy', async (req, res) => {
+      try {
+        const { brand } = req.body;
+        if (!brand) return res.status(400).json({ error: 'Brand name is required' });
+        const result = await optimizeTurkishBonusStrategy(brand);
+        res.json(result);
+      } catch (error) {
+        console.error('Bonus strategy optimization failed:', error);
+        res.status(500).json({ error: 'Bonus strategy optimization failed' });
+      }
+    });
+
+    // Turkish Regulatory Tracker
+    this.app.get('/api/turkey/regulatory-tracker', async (req, res) => {
+      try {
+        const result = await trackTurkishRegulatory();
+        res.json(result);
+      } catch (error) {
+        console.error('Regulatory tracking failed:', error);
+        res.status(500).json({ error: 'Regulatory tracking failed' });
       }
     });
 

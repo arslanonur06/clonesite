@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Analytics & CRM - iGaming Security Suite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .gradient-bg { background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%); }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .section-card { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.04); }
+        .level-bar { height: 8px; border-radius: 4px; overflow: hidden; background: #e5e7eb; }
+        .level-fill { height: 100%; transition: width 0.6s ease; border-radius: 4px; }
+        .level-high { background: linear-gradient(90deg, #ef4444, #dc2626); }
+        .level-medium { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .level-low { background: linear-gradient(90deg, #10b981, #059669); }
+        .badge { padding: 2px 10px; border-radius: 12px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; }
+        .badge-critical { background: #fef2f2; color: #dc2626; }
+        .badge-high { background: #fff7ed; color: #ea580c; }
+        .badge-medium { background: #fffbeb; color: #d97706; }
+        .badge-low { background: #f0fdf4; color: #16a34a; }
+        .tab-active { border-bottom: 3px solid #7c3aed; color: #7c3aed; font-weight: 700; }
+        .tab-inactive { border-bottom: 3px solid transparent; color: #6b7280; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <header class="gradient-bg text-white shadow-2xl">
+        <div class="container mx-auto px-6 py-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <a href="/" class="flex items-center space-x-3 hover:opacity-80 transition-opacity">
+                        <div class="w-12 h-12 bg-white bg-opacity-20 rounded-xl flex items-center justify-center">
+                            <i data-lucide="users" class="w-7 h-7"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-2xl font-bold">Player Analytics & CRM</h1>
+                            <p class="text-purple-100 text-sm">Player Behavior, VIP Management & Segmentation</p>
+                        </div>
+                    </a>
+                </div>
+                <a href="/" class="bg-white bg-opacity-20 rounded-lg px-4 py-2 text-sm font-medium hover:bg-opacity-30">
+                    <i data-lucide="arrow-left" class="w-4 h-4 inline mr-1"></i> Dashboard
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="bg-white shadow-sm border-b sticky top-0 z-30">
+        <div class="container mx-auto px-6">
+            <div class="flex space-x-6 overflow-x-auto">
+                <button onclick="showTab('behavior')" id="tab-behavior" class="tab-active py-4 px-2 text-sm whitespace-nowrap">Player Behavior</button>
+                <button onclick="showTab('segments')" id="tab-segments" class="tab-inactive py-4 px-2 text-sm whitespace-nowrap">Segmentation</button>
+                <button onclick="showTab('vip')" id="tab-vip" class="tab-inactive py-4 px-2 text-sm whitespace-nowrap">VIP Management</button>
+                <button onclick="showTab('tournaments')" id="tab-tournaments" class="tab-inactive py-4 px-2 text-sm whitespace-nowrap">Tournaments</button>
+                <button onclick="showTab('loyalty')" id="tab-loyalty" class="tab-inactive py-4 px-2 text-sm whitespace-nowrap">Loyalty Programs</button>
+                <button onclick="showTab('games')" id="tab-games" class="tab-inactive py-4 px-2 text-sm whitespace-nowrap">Game Performance</button>
+            </div>
+        </div>
+    </div>
+
+    <main class="container mx-auto px-6 py-8">
+        <div class="section-card p-6 mb-8">
+            <div class="flex flex-col md:flex-row items-center gap-4">
+                <div class="flex-1 w-full">
+                    <input type="text" id="brandInput" value="suratbet" placeholder="Brand name..."
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
+                </div>
+                <button onclick="loadAllData()" class="px-8 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-semibold">
+                    Load Analytics
+                </button>
+            </div>
+        </div>
+
+        <div id="loadingIndicator" class="hidden text-center py-12">
+            <div class="inline-block w-12 h-12 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
+            <p class="mt-4 text-gray-600">Loading player analytics...</p>
+        </div>
+
+        <!-- Behavior Tab -->
+        <div id="content-behavior" class="tab-content">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <div class="section-card p-5 text-center"><div class="text-2xl font-bold text-purple-600" id="totalPlayers">--</div><div class="text-xs text-gray-500">Total Players</div></div>
+                <div class="section-card p-5 text-center"><div class="text-2xl font-bold text-green-600" id="avgDeposit">--</div><div class="text-xs text-gray-500">Avg Deposit</div></div>
+                <div class="section-card p-5 text-center"><div class="text-2xl font-bold text-blue-600" id="avgSession">--</div><div class="text-xs text-gray-500">Avg Session (min)</div></div>
+                <div class="section-card p-5 text-center"><div class="text-2xl font-bold text-orange-600" id="mobileShare">--</div><div class="text-xs text-gray-500">Mobile Share</div></div>
+            </div>
+            <div class="section-card p-6" id="behaviorContent">
+                <p class="text-gray-500 text-sm">Load analytics to see player behavior data...</p>
+            </div>
+        </div>
+
+        <!-- Segments Tab -->
+        <div id="content-segments" class="tab-content hidden">
+            <div class="section-card p-6" id="segmentContent">
+                <p class="text-gray-500 text-sm">Load analytics to see player segments...</p>
+            </div>
+        </div>
+
+        <!-- VIP Tab -->
+        <div id="content-vip" class="tab-content hidden">
+            <div class="section-card p-6" id="vipContent">
+                <p class="text-gray-500 text-sm">Load analytics to see VIP management data...</p>
+            </div>
+        </div>
+
+        <!-- Tournaments Tab -->
+        <div id="content-tournaments" class="tab-content hidden">
+            <div class="section-card p-6" id="tournamentContent">
+                <p class="text-gray-500 text-sm">Load analytics to see tournament data...</p>
+            </div>
+        </div>
+
+        <!-- Loyalty Tab -->
+        <div id="content-loyalty" class="tab-content hidden">
+            <div class="section-card p-6" id="loyaltyContent">
+                <p class="text-gray-500 text-sm">Load analytics to see loyalty program data...</p>
+            </div>
+        </div>
+
+        <!-- Games Tab -->
+        <div id="content-games" class="tab-content hidden">
+            <div class="section-card p-6" id="gamesContent">
+                <p class="text-gray-500 text-sm">Load analytics to see game performance data...</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-gray-900 text-white py-6 mt-12">
+        <div class="container mx-auto px-6 text-center text-sm text-gray-400">iGaming Security Suite - Player Analytics & CRM</div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        function showTab(name) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('[id^="tab-"]').forEach(el => el.className = 'tab-inactive py-4 px-2 text-sm whitespace-nowrap');
+            document.getElementById(`content-${name}`).classList.remove('hidden');
+            document.getElementById(`tab-${name}`).className = 'tab-active py-4 px-2 text-sm whitespace-nowrap';
+        }
+
+        function getBrand() { return document.getElementById('brandInput').value.trim() || 'suratbet'; }
+        function fmt(n) { return n >= 1000000 ? (n/1000000).toFixed(1)+'M' : n >= 1000 ? (n/1000).toFixed(1)+'K' : n; }
+
+        async function apiPost(url, body) {
+            const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+            return r.json();
+        }
+
+        async function loadAllData() {
+            const brand = getBrand();
+            document.getElementById('loadingIndicator').classList.remove('hidden');
+            try {
+                const [behavior, segments, vip, tournaments, loyalty, games] = await Promise.all([
+                    apiPost('/api/turkey/player-behavior', { brand }),
+                    apiPost('/api/igaming/player-segmentation', { criteria: 'value' }),
+                    apiPost('/api/igaming/vip-players', {}),
+                    apiPost('/api/igaming/tournaments', { action: 'list' }),
+                    apiPost('/api/igaming/loyalty-programs', { action: 'list' }),
+                    apiPost('/api/igaming/game-performance', { timeframe: '30d' })
+                ]);
+
+                renderBehavior(behavior);
+                renderSegments(segments);
+                renderVIP(vip);
+                renderTournaments(tournaments);
+                renderLoyalty(loyalty);
+                renderGames(games);
+            } catch (e) { console.error(e); }
+            finally { document.getElementById('loadingIndicator').classList.add('hidden'); }
+        }
+
+        function renderBehavior(data) {
+            if (!data) return;
+            document.getElementById('totalPlayers').textContent = fmt(data.totalEstimatedPlayers || 0);
+            document.getElementById('avgDeposit').textContent = (data.behavioralInsights?.depositPatterns?.averageDepositAmount || '--');
+            document.getElementById('avgSession').textContent = '42';
+            document.getElementById('mobileShare').textContent = '74%';
+
+            const segs = data.playerSegments || [];
+            document.getElementById('behaviorContent').innerHTML = `
+                <h3 class="font-bold text-gray-900 mb-4">Turkish Player Segments</h3>
+                <div class="space-y-4">
+                    ${segs.map(s => `
+                        <div class="p-4 bg-gray-50 rounded-lg">
+                            <div class="flex justify-between items-start mb-2">
+                                <div>
+                                    <span class="font-bold text-gray-900">${s.segment}</span>
+                                    <span class="text-xs text-gray-500 ml-2">${s.description}</span>
+                                </div>
+                                <span class="text-lg font-bold text-purple-600">${s.percentage}%</span>
+                            </div>
+                            <div class="level-bar mb-2"><div class="level-fill level-low" style="width:${s.percentage * 2.5}%"></div></div>
+                            <div class="grid grid-cols-2 md:grid-cols-5 gap-2 text-xs text-gray-600">
+                                <div>Avg Age: <strong>${s.avgAge}</strong></div>
+                                <div>Avg Deposit: <strong>${s.avgDeposit} TRY</strong></div>
+                                <div>Session: <strong>${s.avgSessionMinutes}m</strong></div>
+                                <div>Retention: <strong>${s.retentionRate}%</strong></div>
+                                <div>LTV: <strong>${fmt(s.ltv)} TRY</strong></div>
+                            </div>
+                            <div class="mt-2 text-xs text-gray-500">Products: ${s.preferredProducts.join(', ')}</div>
+                        </div>
+                    `).join('')}
+                </div>
+                ${data.behavioralInsights ? `
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-4 bg-blue-50 rounded-lg">
+                        <h4 class="font-bold text-gray-900 mb-2">Top Retention Drivers</h4>
+                        <ul class="text-sm text-gray-700 space-y-1">${data.behavioralInsights.retentionFactors.topRetentionDrivers.map(d => `<li>• ${d}</li>`).join('')}</ul>
+                    </div>
+                    <div class="p-4 bg-red-50 rounded-lg">
+                        <h4 class="font-bold text-gray-900 mb-2">Top Churn Reasons</h4>
+                        <ul class="text-sm text-gray-700 space-y-1">${data.behavioralInsights.retentionFactors.topChurnReasons.map(r => `<li>• ${r}</li>`).join('')}</ul>
+                    </div>
+                </div>` : ''}`;
+        }
+
+        function renderSegments(data) {
+            if (!data || !data.segments) return;
+            document.getElementById('segmentContent').innerHTML = `
+                <h3 class="font-bold text-gray-900 mb-4">Player Segmentation</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div class="text-center p-3 bg-purple-50 rounded-lg"><div class="text-xl font-bold text-purple-600">${fmt(data.overview.totalPlayers)}</div><div class="text-xs text-gray-500">Total Players</div></div>
+                    <div class="text-center p-3 bg-green-50 rounded-lg"><div class="text-xl font-bold text-green-600">${fmt(data.overview.totalMonthlyRevenue)} TRY</div><div class="text-xs text-gray-500">Monthly Revenue</div></div>
+                    <div class="text-center p-3 bg-blue-50 rounded-lg"><div class="text-xl font-bold text-blue-600">${Math.floor(data.overview.averageValuePerPlayer)} TRY</div><div class="text-xs text-gray-500">Avg Value/Player</div></div>
+                    <div class="text-center p-3 bg-orange-50 rounded-lg"><div class="text-xl font-bold text-orange-600">${data.overview.mostValuableSegment}</div><div class="text-xs text-gray-500">Most Valuable</div></div>
+                </div>
+                <div class="space-y-4">
+                    ${data.segments.map(s => `
+                        <div class="p-4 bg-gray-50 rounded-lg">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="font-bold text-gray-900">${s.name}</span>
+                                <span class="font-bold text-purple-600">${fmt(s.playerCount)} players</span>
+                            </div>
+                            <p class="text-xs text-gray-500 mb-2">${s.criteria}</p>
+                            <div class="grid grid-cols-2 gap-2 text-xs">
+                                <div>Monthly Revenue: <strong>${fmt(s.monthlyRevenue)} TRY</strong></div>
+                                <div>Avg Value: <strong>${fmt(s.averageValue)} TRY</strong></div>
+                            </div>
+                            <div class="mt-2"><span class="text-xs text-gray-500">Actions: </span><span class="text-xs text-blue-600">${s.recommendedActions.join(' | ')}</span></div>
+                        </div>
+                    `).join('')}
+                </div>
+                ${data.insights ? `<div class="mt-4 p-4 bg-yellow-50 rounded-lg"><h4 class="font-bold text-gray-900 mb-2">Key Insights</h4><ul class="text-sm text-gray-700 space-y-1">${data.insights.map(i => `<li>• ${i}</li>`).join('')}</ul></div>` : ''}`;
+        }
+
+        function renderVIP(data) {
+            if (!data) return;
+            const players = data.vipPlayers || [];
+            document.getElementById('vipContent').innerHTML = `
+                <h3 class="font-bold text-gray-900 mb-4">VIP Player Management</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div class="text-center p-3 bg-yellow-50 rounded-lg"><div class="text-xl font-bold text-yellow-600">${data.totalVips}</div><div class="text-xs text-gray-500">Total VIPs</div></div>
+                    <div class="text-center p-3 bg-green-50 rounded-lg"><div class="text-xl font-bold text-green-600">${fmt(data.totalLifetimeValue)} TRY</div><div class="text-xs text-gray-500">Total LTV</div></div>
+                    <div class="text-center p-3 bg-blue-50 rounded-lg"><div class="text-xl font-bold text-blue-600">${fmt(Math.floor(data.averageMonthlyWager))} TRY</div><div class="text-xs text-gray-500">Avg Monthly Wager</div></div>
+                    <div class="text-center p-3 bg-purple-50 rounded-lg"><div class="text-xl font-bold text-purple-600">${data.levels?.diamond || 0}</div><div class="text-xs text-gray-500">Diamond VIPs</div></div>
+                </div>
+                <div class="space-y-4">
+                    ${players.map(p => `
+                        <div class="p-4 bg-gradient-to-r ${p.level === 'Diamond' ? 'from-blue-50 to-purple-50' : 'from-gray-50 to-gray-100'} rounded-lg">
+                            <div class="flex justify-between items-start mb-2">
+                                <div><span class="font-bold text-lg">${p.name}</span><span class="ml-2 text-xs px-2 py-1 rounded-full ${p.level === 'Diamond' ? 'bg-blue-100 text-blue-800' : 'bg-gray-200 text-gray-700'}">${p.level}</span></div>
+                                <span class="text-sm font-bold text-green-600">${fmt(p.lifetimeValue)} TRY LTV</span>
+                            </div>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs text-gray-600">
+                                <div>Monthly Wager: <strong>${fmt(p.monthlyWager)} TRY</strong></div>
+                                <div>Manager: <strong>${p.personalManager}</strong></div>
+                                <div>Loyalty Points: <strong>${fmt(p.loyaltyPoints)}</strong></div>
+                                <div>Next Reward: <strong>${p.nextReward}</strong></div>
+                            </div>
+                            <div class="mt-2 text-xs text-gray-500">Benefits: ${p.benefits.join(', ')}</div>
+                        </div>
+                    `).join('')}
+                </div>`;
+        }
+
+        function renderTournaments(data) {
+            if (!data) return;
+            const t = data.tournaments || [];
+            document.getElementById('tournamentContent').innerHTML = `
+                <h3 class="font-bold text-gray-900 mb-4">Tournament Management</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div class="text-center p-3 bg-green-50 rounded-lg"><div class="text-xl font-bold text-green-600">${data.totalActive}</div><div class="text-xs text-gray-500">Active</div></div>
+                    <div class="text-center p-3 bg-blue-50 rounded-lg"><div class="text-xl font-bold text-blue-600">${data.totalUpcoming}</div><div class="text-xs text-gray-500">Upcoming</div></div>
+                    <div class="text-center p-3 bg-purple-50 rounded-lg"><div class="text-xl font-bold text-purple-600">${fmt(data.totalPrizePool)}</div><div class="text-xs text-gray-500">Prize Pool</div></div>
+                    <div class="text-center p-3 bg-orange-50 rounded-lg"><div class="text-xl font-bold text-orange-600">${fmt(data.totalParticipants)}</div><div class="text-xs text-gray-500">Participants</div></div>
+                </div>
+                ${t.map(tour => `
+                    <div class="p-4 bg-gray-50 rounded-lg mb-3">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="font-bold text-gray-900">${tour.name}</span>
+                            <span class="px-2 py-1 text-xs rounded-full ${tour.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}">${tour.status}</span>
+                        </div>
+                        <div class="text-xs text-gray-600">Type: ${tour.type} | Prize: ${fmt(tour.prizePool)} | Players: ${fmt(tour.participants)}</div>
+                        ${tour.topPlayers ? `<div class="mt-2 text-xs text-gray-500">Top: ${tour.topPlayers.map(p => `${p.player} (${fmt(p.prize)})`).join(', ')}</div>` : ''}
+                    </div>
+                `).join('')}`;
+        }
+
+        function renderLoyalty(data) {
+            if (!data) return;
+            const programs = data.programs || [];
+            document.getElementById('loyaltyContent').innerHTML = `
+                <h3 class="font-bold text-gray-900 mb-4">Loyalty Programs</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div class="text-center p-3 bg-purple-50 rounded-lg"><div class="text-xl font-bold text-purple-600">${data.summary?.totalPrograms}</div><div class="text-xs text-gray-500">Programs</div></div>
+                    <div class="text-center p-3 bg-green-50 rounded-lg"><div class="text-xl font-bold text-green-600">${fmt(data.summary?.totalMembers)}</div><div class="text-xs text-gray-500">Members</div></div>
+                    <div class="text-center p-3 bg-blue-50 rounded-lg"><div class="text-xl font-bold text-blue-600">${fmt(data.summary?.totalLifetimeValue)} TRY</div><div class="text-xs text-gray-500">Total LTV</div></div>
+                    <div class="text-center p-3 bg-orange-50 rounded-lg"><div class="text-xl font-bold text-orange-600">${fmt(Math.floor(data.summary?.averageValuePerMember || 0))} TRY</div><div class="text-xs text-gray-500">Avg Value</div></div>
+                </div>
+                ${programs.map(p => `
+                    <div class="p-4 bg-gray-50 rounded-lg mb-3">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="font-bold text-gray-900">${p.name} (${p.tier})</span>
+                            <span class="font-bold text-purple-600">${fmt(p.currentMembers)} members</span>
+                        </div>
+                        <div class="text-xs text-gray-600 mb-1">Min Deposit: ${fmt(p.requirements.minimumDeposit)} | Monthly Wager: ${fmt(p.requirements.monthlyWager)}</div>
+                        <div class="text-xs text-gray-500">Benefits: ${p.benefits.join(', ')}</div>
+                    </div>
+                `).join('')}`;
+        }
+
+        function renderGames(data) {
+            if (!data) return;
+            const games = data.games || [];
+            document.getElementById('gamesContent').innerHTML = `
+                <h3 class="font-bold text-gray-900 mb-4">Game Performance Analytics</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div class="text-center p-3 bg-green-50 rounded-lg"><div class="text-xl font-bold text-green-600">${fmt(data.totalSessions)}</div><div class="text-xs text-gray-500">Total Sessions</div></div>
+                    <div class="text-center p-3 bg-blue-50 rounded-lg"><div class="text-xl font-bold text-blue-600">${fmt(data.totalWagered)}</div><div class="text-xs text-gray-500">Total Wagered</div></div>
+                    <div class="text-center p-3 bg-purple-50 rounded-lg"><div class="text-xl font-bold text-purple-600">${fmt(data.totalRevenue)}</div><div class="text-xs text-gray-500">Total Revenue</div></div>
+                    <div class="text-center p-3 bg-orange-50 rounded-lg"><div class="text-xl font-bold text-orange-600">${data.averageRTP}%</div><div class="text-xs text-gray-500">Avg RTP</div></div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead class="bg-gray-50"><tr>
+                            <th class="px-4 py-3 text-left">Game</th><th class="px-4 py-3">Provider</th>
+                            <th class="px-4 py-3">RTP</th><th class="px-4 py-3">Sessions</th>
+                            <th class="px-4 py-3">Revenue</th><th class="px-4 py-3">Rank</th>
+                        </tr></thead>
+                        <tbody>${games.map(g => `<tr class="border-b">
+                            <td class="px-4 py-3 font-semibold">${g.name}</td>
+                            <td class="px-4 py-3 text-center text-xs">${g.provider}</td>
+                            <td class="px-4 py-3 text-center">${g.rtp}%</td>
+                            <td class="px-4 py-3 text-center">${fmt(g.sessions)}</td>
+                            <td class="px-4 py-3 text-center font-bold text-green-600">${fmt(g.revenue)}</td>
+                            <td class="px-4 py-3 text-center">#${g.popularityRank}</td>
+                        </tr>`).join('')}</tbody>
+                    </table>
+                </div>`;
+        }
+    </script>
+</body>
+</html>

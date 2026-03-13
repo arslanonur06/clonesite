@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compliance & Regulatory Center - iGaming Security Suite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .gradient-bg { background: linear-gradient(135deg, #059669 0%, #047857 100%); }
+        .section-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.04); }
+        .level-bar { height: 8px; border-radius: 4px; overflow: hidden; background: #e5e7eb; }
+        .level-fill { height: 100%; transition: width 0.6s ease; border-radius: 4px; }
+        .level-high { background: linear-gradient(90deg, #ef4444, #dc2626); }
+        .level-medium { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .level-low { background: linear-gradient(90deg, #10b981, #059669); }
+        .badge { padding: 2px 10px; border-radius: 12px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; }
+        .badge-critical { background: #fef2f2; color: #dc2626; }
+        .badge-high { background: #fff7ed; color: #ea580c; }
+        .badge-medium { background: #fffbeb; color: #d97706; }
+        .badge-low { background: #f0fdf4; color: #16a34a; }
+        .tab-active { border-bottom: 3px solid #059669; color: #059669; font-weight: 700; }
+        .tab-inactive { border-bottom: 3px solid transparent; color: #6b7280; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <header class="gradient-bg text-white shadow-2xl">
+        <div class="container mx-auto px-6 py-6">
+            <div class="flex items-center justify-between">
+                <a href="/" class="flex items-center space-x-3 hover:opacity-80">
+                    <div class="w-12 h-12 bg-white bg-opacity-20 rounded-xl flex items-center justify-center"><i data-lucide="shield" class="w-7 h-7"></i></div>
+                    <div><h1 class="text-2xl font-bold">Compliance & Regulatory Center</h1><p class="text-green-100 text-sm">KVKK, BTK, License Verification & Responsible Gaming</p></div>
+                </a>
+                <a href="/" class="bg-white bg-opacity-20 rounded-lg px-4 py-2 text-sm font-medium hover:bg-opacity-30"><i data-lucide="arrow-left" class="w-4 h-4 inline mr-1"></i> Dashboard</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="bg-white shadow-sm border-b sticky top-0 z-30">
+        <div class="container mx-auto px-6">
+            <div class="flex space-x-6 overflow-x-auto">
+                <button onclick="showTab('kvkk')" id="tab-kvkk" class="tab-active py-4 px-2 text-sm whitespace-nowrap">KVKK Compliance</button>
+                <button onclick="showTab('btk')" id="tab-btk" class="tab-inactive py-4 px-2 text-sm whitespace-nowrap">BTK/RTUK Status</button>
+                <button onclick="showTab('license')" id="tab-license" class="tab-inactive py-4 px-2 text-sm whitespace-nowrap">License Verification</button>
+                <button onclick="showTab('responsible')" id="tab-responsible" class="tab-inactive py-4 px-2 text-sm whitespace-nowrap">Responsible Gaming</button>
+                <button onclick="showTab('geo')" id="tab-geo" class="tab-inactive py-4 px-2 text-sm whitespace-nowrap">Geo Compliance</button>
+                <button onclick="showTab('security')" id="tab-security" class="tab-inactive py-4 px-2 text-sm whitespace-nowrap">Security Analysis</button>
+            </div>
+        </div>
+    </div>
+
+    <main class="container mx-auto px-6 py-8">
+        <div class="section-card p-6 mb-8">
+            <div class="flex flex-col md:flex-row items-center gap-4">
+                <div class="flex-1 w-full">
+                    <input type="text" id="brandInput" value="suratbet" placeholder="Brand name..." class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-green-500">
+                </div>
+                <button onclick="loadAll()" class="px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold">Run Compliance Check</button>
+            </div>
+        </div>
+
+        <div id="loading" class="hidden text-center py-12">
+            <div class="inline-block w-12 h-12 border-4 border-green-200 border-t-green-600 rounded-full animate-spin"></div>
+            <p class="mt-4 text-gray-600">Running compliance checks...</p>
+        </div>
+
+        <div id="content-kvkk" class="tab-content"><div class="section-card p-6" id="kvkkContent"><p class="text-gray-500 text-sm">Run check to see KVKK compliance data...</p></div></div>
+        <div id="content-btk" class="tab-content hidden"><div class="section-card p-6" id="btkContent"><p class="text-gray-500 text-sm">Run check to see BTK/RTUK data...</p></div></div>
+        <div id="content-license" class="tab-content hidden"><div class="section-card p-6" id="licenseContent"><p class="text-gray-500 text-sm">Run check to see license verification data...</p></div></div>
+        <div id="content-responsible" class="tab-content hidden"><div class="section-card p-6" id="responsibleContent"><p class="text-gray-500 text-sm">Run check to see responsible gaming data...</p></div></div>
+        <div id="content-geo" class="tab-content hidden"><div class="section-card p-6" id="geoContent"><p class="text-gray-500 text-sm">Run check to see geo compliance data...</p></div></div>
+        <div id="content-security" class="tab-content hidden"><div class="section-card p-6" id="securityContent"><p class="text-gray-500 text-sm">Run check to see security analysis data...</p></div></div>
+    </main>
+
+    <footer class="bg-gray-900 text-white py-6 mt-12"><div class="container mx-auto px-6 text-center text-sm text-gray-400">iGaming Security Suite - Compliance Center</div></footer>
+
+    <script>
+        lucide.createIcons();
+        function showTab(n) {
+            document.querySelectorAll('.tab-content').forEach(e => e.classList.add('hidden'));
+            document.querySelectorAll('[id^="tab-"]').forEach(e => e.className = 'tab-inactive py-4 px-2 text-sm whitespace-nowrap');
+            document.getElementById(`content-${n}`).classList.remove('hidden');
+            document.getElementById(`tab-${n}`).className = 'tab-active py-4 px-2 text-sm whitespace-nowrap';
+        }
+        function getBrand() { return document.getElementById('brandInput').value.trim() || 'suratbet'; }
+        function badgeClass(l) { return { critical:'badge-critical',high:'badge-high',medium:'badge-medium',low:'badge-low' }[l] || 'badge-medium'; }
+        async function post(url, body) { return (await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) })).json(); }
+
+        async function loadAll() {
+            const brand = getBrand();
+            document.getElementById('loading').classList.remove('hidden');
+            try {
+                const [kvkk, btk, license, responsible, geo, security] = await Promise.all([
+                    post('/api/turkey/kvkk-compliance', { brand }),
+                    post('/api/turkey/btk-compliance', { brand }),
+                    post('/api/igaming/license-verify', { domains: [`${brand}.com`,`${brand}.net`], brand }),
+                    post('/api/igaming/responsible-gaming', { brand }),
+                    post('/api/igaming/geo-compliance', { brand, restrictedRegions: ['TR','US','AU'] }),
+                    post('/api/igaming/security-analysis', { domains: [`${brand}.com`,`${brand}.net`], brand })
+                ]);
+
+                // KVKK
+                if (kvkk && kvkk.results) {
+                    document.getElementById('kvkkContent').innerHTML = `
+                        <h3 class="font-bold text-gray-900 mb-4">KVKK Compliance Results</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                            <div class="text-center p-3 bg-green-50 rounded-lg"><div class="text-xl font-bold text-green-600">${kvkk.summary.averageComplianceScore}%</div><div class="text-xs text-gray-500">Avg Score</div></div>
+                            <div class="text-center p-3 bg-blue-50 rounded-lg"><div class="text-xl font-bold text-blue-600">${kvkk.summary.compliantDomains}</div><div class="text-xs text-gray-500">Compliant</div></div>
+                            <div class="text-center p-3 bg-red-50 rounded-lg"><div class="text-xl font-bold text-red-600">${kvkk.summary.nonCompliantDomains}</div><div class="text-xs text-gray-500">Non-Compliant</div></div>
+                            <div class="text-center p-3 bg-orange-50 rounded-lg"><div class="text-xl font-bold text-orange-600">${kvkk.summary.totalViolations}</div><div class="text-xs text-gray-500">Violations</div></div>
+                        </div>
+                        ${kvkk.results.map(r => `
+                            <div class="p-4 bg-gray-50 rounded-lg mb-3">
+                                <div class="flex justify-between items-start mb-2">
+                                    <span class="font-bold">${r.domain}</span>
+                                    <div class="flex items-center space-x-2">
+                                        <div class="level-bar w-20"><div class="level-fill ${r.complianceScore >= 70 ? 'level-low' : r.complianceScore >= 40 ? 'level-medium' : 'level-high'}" style="width:${r.complianceScore}%"></div></div>
+                                        <span class="badge ${badgeClass(r.riskLevel)}">${r.complianceLevel}</span>
+                                    </div>
+                                </div>
+                                <div class="text-sm text-gray-600 mb-2">Score: ${r.complianceScore}/100 | Potential Fine: ${r.penalties.potentialFine}</div>
+                                ${r.violations.length ? `<div class="text-xs text-red-600">Violations: ${r.violations.join('; ')}</div>` : '<div class="text-xs text-green-600">No violations detected</div>'}
+                            </div>
+                        `).join('')}
+                        <div class="mt-4 p-4 bg-blue-50 rounded-lg"><h4 class="font-bold mb-2">Recommendations</h4><ul class="text-sm space-y-1">${kvkk.recommendations.map(r => `<li>• ${r}</li>`).join('')}</ul></div>`;
+                }
+
+                // BTK
+                if (btk && btk.results) {
+                    document.getElementById('btkContent').innerHTML = `
+                        <h3 class="font-bold text-gray-900 mb-4">BTK/RTUK Compliance Monitor</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                            <div class="text-center p-3 bg-red-50 rounded-lg"><div class="text-xl font-bold text-red-600">${btk.summary.blockedDomains}</div><div class="text-xs text-gray-500">Blocked</div></div>
+                            <div class="text-center p-3 bg-orange-50 rounded-lg"><div class="text-xl font-bold text-orange-600">${btk.summary.activeBypassDomains}</div><div class="text-xs text-gray-500">VPN Bypass</div></div>
+                            <div class="text-center p-3 bg-blue-50 rounded-lg"><div class="text-xl font-bold text-blue-600">${btk.summary.totalMirrorSites}</div><div class="text-xs text-gray-500">Mirror Sites</div></div>
+                            <div class="text-center p-3 bg-purple-50 rounded-lg"><div class="text-xl font-bold text-purple-600">${btk.summary.enforcementEffectiveness}</div><div class="text-xs text-gray-500">Effectiveness</div></div>
+                        </div>
+                        ${btk.results.slice(0, 10).map(r => `
+                            <div class="p-3 bg-gray-50 rounded-lg mb-2 flex justify-between items-center">
+                                <div><span class="font-semibold text-sm">${r.domain}</span><span class="badge ${badgeClass(r.riskLevel)} ml-2">${r.riskLevel}</span></div>
+                                <div class="text-xs text-gray-500">${r.btkStatus.isBlocked ? 'Blocked' : 'Active'} | ${r.accessAnalysis.mirrorSites} mirrors</div>
+                            </div>
+                        `).join('')}`;
+                }
+
+                // License
+                if (license && license.results) {
+                    document.getElementById('licenseContent').innerHTML = `
+                        <h3 class="font-bold text-gray-900 mb-4">Gaming License Verification</h3>
+                        <div class="grid grid-cols-3 gap-4 mb-6">
+                            <div class="text-center p-3 bg-green-50 rounded-lg"><div class="text-xl font-bold text-green-600">${license.licensed}</div><div class="text-xs">Licensed</div></div>
+                            <div class="text-center p-3 bg-red-50 rounded-lg"><div class="text-xl font-bold text-red-600">${license.unlicensed}</div><div class="text-xs">Unlicensed</div></div>
+                            <div class="text-center p-3 bg-blue-50 rounded-lg"><div class="text-xl font-bold text-blue-600">${license.totalChecked}</div><div class="text-xs">Total Checked</div></div>
+                        </div>
+                        ${license.results.map(r => `
+                            <div class="p-3 bg-gray-50 rounded-lg mb-2 flex justify-between">
+                                <span class="font-semibold text-sm">${r.domain}</span>
+                                <div class="text-sm">
+                                    ${r.hasValidLicense ? `<span class="text-green-600 font-bold">${r.jurisdiction} - ${r.licenseNumber}</span>` : '<span class="text-red-600 font-bold">UNLICENSED</span>'}
+                                </div>
+                            </div>
+                        `).join('')}`;
+                }
+
+                // Responsible Gaming
+                if (responsible && responsible.results) {
+                    document.getElementById('responsibleContent').innerHTML = `
+                        <h3 class="font-bold text-gray-900 mb-4">Responsible Gaming Compliance</h3>
+                        <div class="text-center p-4 bg-green-50 rounded-lg mb-6"><div class="text-3xl font-bold text-green-600">${responsible.averageCompliance}%</div><div class="text-sm text-gray-500">Average Compliance Score</div></div>
+                        ${responsible.results.map(r => `
+                            <div class="p-4 bg-gray-50 rounded-lg mb-3">
+                                <div class="flex justify-between mb-2"><span class="font-bold">${r.domain}</span><span class="badge ${badgeClass(r.riskLevel)}">${r.complianceScore}%</span></div>
+                                <div class="level-bar mb-2"><div class="level-fill ${r.complianceScore >= 70 ? 'level-low' : r.complianceScore >= 40 ? 'level-medium' : 'level-high'}" style="width:${r.complianceScore}%"></div></div>
+                                <div class="text-xs text-green-600">Present: ${r.features.join(', ')}</div>
+                                ${r.missingFeatures.length ? `<div class="text-xs text-red-600 mt-1">Missing: ${r.missingFeatures.join(', ')}</div>` : ''}
+                            </div>
+                        `).join('')}`;
+                }
+
+                // Geo
+                if (geo && geo.results) {
+                    document.getElementById('geoContent').innerHTML = `
+                        <h3 class="font-bold text-gray-900 mb-4">Geo-Blocking Compliance</h3>
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div class="text-center p-3 bg-green-50 rounded-lg"><div class="text-xl font-bold text-green-600">${geo.fullyCompliant}</div><div class="text-xs">Compliant</div></div>
+                            <div class="text-center p-3 bg-red-50 rounded-lg"><div class="text-xl font-bold text-red-600">${geo.nonCompliant}</div><div class="text-xs">Non-Compliant</div></div>
+                        </div>
+                        ${geo.results.map(r => `
+                            <div class="p-3 bg-gray-50 rounded-lg mb-2">
+                                <div class="flex justify-between mb-1"><span class="font-semibold text-sm">${r.domain}</span><span class="badge ${badgeClass(r.riskLevel)}">${r.complianceScore}%</span></div>
+                                <div class="text-xs">Blocked: ${r.blockedRegions.join(', ') || 'None'} | Accessible: <span class="text-red-600">${r.accessibleRegions.join(', ') || 'None'}</span></div>
+                            </div>
+                        `).join('')}`;
+                }
+
+                // Security
+                if (security && security.results) {
+                    document.getElementById('securityContent').innerHTML = `
+                        <h3 class="font-bold text-gray-900 mb-4">Security Analysis</h3>
+                        <div class="text-center p-3 bg-red-50 rounded-lg mb-6"><div class="text-xl font-bold text-red-600">${security.criticalSecurity}</div><div class="text-xs">Critical Security Issues</div></div>
+                        ${security.results.map(r => `
+                            <div class="p-4 bg-gray-50 rounded-lg mb-3">
+                                <div class="flex justify-between mb-2"><span class="font-bold">${r.domain}</span><span class="badge ${badgeClass(r.riskLevel)}">${r.securityScore}/100</span></div>
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+                                    <div>SSL: ${r.ssl ? '✅' : '❌'}</div>
+                                    <div>2FA: ${r.twoFactorAuth ? '✅' : '❌'}</div>
+                                    <div>Encryption: ${r.dataEncryption ? '✅' : '❌'}</div>
+                                    <div>Secure Pay: ${r.securePayments ? '✅' : '❌'}</div>
+                                </div>
+                            </div>
+                        `).join('')}`;
+                }
+            } catch(e) { console.error(e); }
+            finally { document.getElementById('loading').classList.add('hidden'); }
+        }
+    </script>
+</body>
+</html>
