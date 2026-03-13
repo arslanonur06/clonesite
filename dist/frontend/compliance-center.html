@@ -85,19 +85,26 @@
         }
         function getBrand() { return document.getElementById('brandInput').value.trim() || 'suratbet'; }
         function badgeClass(l) { return { critical:'badge-critical',high:'badge-high',medium:'badge-medium',low:'badge-low' }[l] || 'badge-medium'; }
-        async function post(url, body) { return (await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) })).json(); }
+        async function post(url, body) {
+            const r = await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+            if (!r.ok) throw new Error(`${url}: ${r.status}`);
+            const ct = r.headers.get('content-type') || '';
+            if (!ct.includes('json')) throw new Error(`${url}: non-JSON response`);
+            return r.json();
+        }
+        async function safePost(url, body) { try { return await post(url, body); } catch(e) { console.warn(e.message); return null; } }
 
         async function loadAll() {
             const brand = getBrand();
             document.getElementById('loading').classList.remove('hidden');
             try {
                 const [kvkk, btk, license, responsible, geo, security] = await Promise.all([
-                    post('/api/turkey/kvkk-compliance', { brand }),
-                    post('/api/turkey/btk-compliance', { brand }),
-                    post('/api/igaming/license-verify', { domains: [`${brand}.com`,`${brand}.net`], brand }),
-                    post('/api/igaming/responsible-gaming', { brand }),
-                    post('/api/igaming/geo-compliance', { brand, restrictedRegions: ['TR','US','AU'] }),
-                    post('/api/igaming/security-analysis', { domains: [`${brand}.com`,`${brand}.net`], brand })
+                    safePost('/api/turkey/kvkk-compliance', { brand }),
+                    safePost('/api/turkey/btk-compliance', { brand }),
+                    safePost('/api/igaming/license-verify', { domains: [`${brand}.com`,`${brand}.net`], brand }),
+                    safePost('/api/igaming/responsible-gaming', { brand }),
+                    safePost('/api/igaming/geo-compliance', { brand, restrictedRegions: ['TR','US','AU'] }),
+                    safePost('/api/igaming/security-analysis', { domains: [`${brand}.com`,`${brand}.net`], brand })
                 ]);
 
                 // KVKK

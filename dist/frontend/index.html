@@ -403,6 +403,7 @@
             el.innerHTML = '<div class="text-center py-4"><div class="inline-block w-8 h-8 border-3 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div><p class="text-sm text-gray-500 mt-2">Loading Google Trends data...</p></div>';
             try {
                 const res = await fetch('/api/turkey/google-trends', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ brand: 'suratbet' }) });
+                if (!res.ok) throw new Error(`Server returned ${res.status}. Run: npm run build && npm run web`);
                 const data = await res.json();
                 const kw = data.trendKeywords || [];
                 const rq = data.relatedQueries || [];
@@ -458,7 +459,7 @@
                         </div>
                     </div>`;
             } catch (e) {
-                el.innerHTML = '<p class="text-red-500">Failed to load trends. Ensure the server is running.</p>';
+                el.innerHTML = `<div class="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm"><strong>Failed to load Google Trends.</strong> Your server needs rebuilding with the latest code.<br><br>Run these commands in your terminal:<br><code class="bg-red-100 px-2 py-1 rounded block mt-2">cd clonesite && npm run build && npm run web</code></div>`;
             }
         }
 
@@ -467,6 +468,7 @@
             el.innerHTML = '<div class="text-center py-4"><div class="inline-block w-8 h-8 border-3 border-red-200 border-t-red-600 rounded-full animate-spin"></div><p class="text-sm text-gray-500 mt-2">Loading site directory...</p></div>';
             try {
                 const res = await fetch('/api/turkey/site-directory');
+                if (!res.ok) throw new Error(`Server returned ${res.status}. Run: npm run build && npm run web`);
                 const data = await res.json();
                 const sites = data.sites || [];
                 el.innerHTML = `
@@ -511,7 +513,7 @@
                         </div>
                     ` : ''}`;
             } catch (e) {
-                el.innerHTML = '<p class="text-red-500">Failed to load directory. Ensure the server is running.</p>';
+                el.innerHTML = `<div class="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm"><strong>Failed to load Site Directory.</strong> Your server needs rebuilding with the latest code.<br><br>Run these commands in your terminal:<br><code class="bg-red-100 px-2 py-1 rounded block mt-2">cd clonesite && npm run build && npm run web</code></div>`;
             }
         }
     </script>

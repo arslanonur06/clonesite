@@ -402,8 +402,13 @@
 
         async function apiPost(endpoint, body) {
             const res = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+            if (!res.ok) throw new Error(`${endpoint} returned ${res.status}`);
+            const ct = res.headers.get('content-type') || '';
+            if (!ct.includes('json')) throw new Error(`${endpoint} returned non-JSON`);
             return res.json();
         }
+        async function safePost(endpoint, body) { try { return await apiPost(endpoint, body); } catch(e) { console.warn(e.message); return null; } }
+        async function safeGet(endpoint) { try { const r = await fetch(endpoint); if (!r.ok) throw new Error(`${endpoint}: ${r.status}`); return r.json(); } catch(e) { console.warn(e.message); return null; } }
 
         async function loadAllData() {
             const brand = getBrand();
@@ -411,28 +416,34 @@
 
             try {
                 const [dashboard, competitors, domains, payments, social, sports, bonus, regulatory, trends, directory] = await Promise.all([
-                    apiPost('/api/turkey/market-dashboard', { brand }),
-                    apiPost('/api/turkey/competitor-intelligence', { brand }),
-                    apiPost('/api/turkey/domain-monitoring', { brand }),
-                    apiPost('/api/turkey/payment-methods', { brand }),
-                    apiPost('/api/turkey/social-media', { brand }),
-                    apiPost('/api/turkey/sports-betting', { brand }),
-                    apiPost('/api/turkey/bonus-strategy', { brand }),
-                    fetch('/api/turkey/regulatory-tracker').then(r => r.json()),
-                    apiPost('/api/turkey/google-trends', { brand }),
-                    fetch('/api/turkey/site-directory').then(r => r.json())
+                    safePost('/api/turkey/market-dashboard', { brand }),
+                    safePost('/api/turkey/competitor-intelligence', { brand }),
+                    safePost('/api/turkey/domain-monitoring', { brand }),
+                    safePost('/api/turkey/payment-methods', { brand }),
+                    safePost('/api/turkey/social-media', { brand }),
+                    safePost('/api/turkey/sports-betting', { brand }),
+                    safePost('/api/turkey/bonus-strategy', { brand }),
+                    safeGet('/api/turkey/regulatory-tracker'),
+                    safePost('/api/turkey/google-trends', { brand }),
+                    safeGet('/api/turkey/site-directory')
                 ]);
 
-                renderDashboard(dashboard);
-                renderCompetitors(competitors);
-                renderDomains(domains);
-                renderPayments(payments);
-                renderSocial(social);
-                renderSports(sports);
-                renderBonus(bonus);
-                renderRegulatory(regulatory);
-                renderTrends(trends);
-                renderDirectory(directory);
+                if (dashboard) renderDashboard(dashboard);
+                if (competitors) renderCompetitors(competitors);
+                if (domains) renderDomains(domains);
+                if (payments) renderPayments(payments);
+                if (social) renderSocial(social);
+                if (sports) renderSports(sports);
+                if (bonus) renderBonus(bonus);
+                if (regulatory) renderRegulatory(regulatory);
+                if (trends) renderTrends(trends);
+                if (directory) renderDirectory(directory);
+
+                const failCount = [dashboard,competitors,domains,payments,social,sports,bonus,regulatory,trends,directory].filter(x => !x).length;
+                if (failCount > 0) {
+                    document.getElementById('loadingIndicator').classList.remove('hidden');
+                    document.getElementById('loadingIndicator').innerHTML = `<div class="p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-yellow-800 text-sm max-w-xl mx-auto"><strong>${failCount} API(s) failed.</strong> Your server may need rebuilding.<br><code class="bg-yellow-100 px-2 py-1 rounded mt-1 inline-block">npm run build && npm run web</code></div>`;
+                }
             } catch (err) {
                 console.error('Failed to load data:', err);
             } finally {
