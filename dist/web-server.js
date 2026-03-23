@@ -2044,7 +2044,7 @@ class BrandProtectionWebServer {
     }
 }
 // Start the server
-const server = new BrandProtectionWebServer(3000);
+const server = new BrandProtectionWebServer(3002);
 server.start().catch(console.error);
 // Graceful shutdown
 process.on('SIGINT', async () => {
